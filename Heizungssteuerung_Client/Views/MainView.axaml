@@ -19,9 +19,10 @@
 			   Background="Black"
 			   PaneBackground="#1e1e1e">
 		<SplitView.Pane>
-			<StackPanel Spacing="5"
-						Margin="5">
-				<Button Name="TriggerPaneButton" Content="+" Command="{Binding TriggerPane}"/>
+			<StackPanel Spacing="5" Margin="5">
+				<Button MaxWidth="38" Name="TriggerPaneButton" Command="{Binding TriggerPane}" Cursor="Hand">
+					<Image Source="/Assets/menu.png"/>
+				</Button>
 				<ListBox ItemsSource="{Binding Items}">
 					<ListBox.ItemTemplate>
 						<DataTemplate DataType="{x:Type vm:ListItemTemplate}">
@@ -41,7 +42,6 @@
 					<TransitioningContentControl Content="{Binding CurrentPage}"/>
 				</Border>
 			</Grid>
-			
 		</SplitView.Content>
 	</SplitView>	
 </UserControl>
