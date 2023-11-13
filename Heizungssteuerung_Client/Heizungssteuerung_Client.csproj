@@ -11,15 +11,29 @@
   </ItemGroup>
   
   <ItemGroup>
+    <Compile Remove="Utilities\SkiaControl.cs" />
+    <Compile Remove="Utilities\SvgImage.cs" />
+  </ItemGroup>
+  
+  <ItemGroup>
     <None Remove="Assets\menu.svg" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <None Include="Utilities\ColorExtention.cs" />
+    <None Include="Utilities\GlobalCache.cs" />
+    <None Include="Controls\SkiaControl.cs" />
+    <None Include="SvgImage.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Avalonia" Version="11.0.5" />
+    <PackageReference Include="Avalonia.Skia" Version="11.0.5" />
     <PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.5" />
     <PackageReference Include="Avalonia.Fonts.Inter" Version="11.0.5" />
     <PackageReference Include="Avalonia.ReactiveUI" Version="11.0.5" />
     <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
     <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.5" />
+    <PackageReference Include="SkiaSharp.Svg" Version="1.60.0" />
   </ItemGroup>
 </Project>
