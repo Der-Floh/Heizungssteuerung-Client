@@ -4,15 +4,15 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
 			    xmlns:vm="clr-namespace:Heizungssteuerung_Client.ViewModels"
-             x:Class="Heizungssteuerung_Client.HomePageView"
-			  x:DataType="vm:HomePageViewModel"
+             x:Class="Heizungssteuerung_Client.SettingsPageView"
+			  x:DataType="vm:SettingsPageViewModel"
 			 >
 	<Design.DataContext>
 		<!-- This only sets the DataContext for the previewer in an IDE,
          to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
-		<vm:HomePageViewModel />
+		<vm:SettingsPageViewModel />
 	</Design.DataContext>
 	<Grid>
-		<TextBlock Text="Hello" />
+		<TextBlock Text="Hello"></TextBlock>
 	</Grid>
 </UserControl>
