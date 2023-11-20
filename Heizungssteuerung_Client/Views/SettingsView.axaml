@@ -2,26 +2,31 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-			 xmlns:local="clr-namespace:Heizungssteuerung_Client"
+			 xmlns:local="clr-namespace:Heizungssteuerung_Client.Views"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Heizungssteuerung_Client.Views.SettingsView">
 
 	<ScrollViewer>
 		<WrapPanel Name="SettingsWrapPanel" Margin="10">
 			<Border BorderBrush="#3B3B3B" BorderThickness="2" CornerRadius="5" Margin="5">
-				<StackPanel Orientation="Horizontal" Background="#3B3B3B">	
+				<StackPanel Orientation="Horizontal" Background="#3B3B3B" Grid.IsSharedSizeScope="True">
 					<TextBlock Text="Energy Effiency" VerticalAlignment="Center" Padding="10,0,10,0" Cursor="Help" ToolTip.Tip="The energy effiency of your house. Can usually be found in your Energy Certificate (Energieausweis)."/>
 					<ComboBox Cursor="Hand" Margin="5,10,5,5" Name="IsolationClassComboBox" />
 				</StackPanel>
 			</Border>
 			<Border BorderBrush="#3B3B3B" BorderThickness="2" CornerRadius="5" Margin="5">
-				<StackPanel Orientation="Horizontal" Background="#3B3B3B">
+				<StackPanel Background="#3B3B3B" Orientation="Horizontal">
+					<TextBlock Text="Step Size Temperature" VerticalAlignment="Center" Padding="10,0,10,0"/>
+					<NumericUpDown FontFamily="monospace" Name="StepSizeTemperatureNumericUpDown" Increment="0.5" Minimum="0" Maximum="5" Cursor="Hand"/>
+				</StackPanel>
+			</Border>
+			<Border BorderBrush="#3B3B3B" BorderThickness="2" CornerRadius="5" Margin="5">
+				<StackPanel Orientation="Horizontal" Background="#3B3B3B" Grid.IsSharedSizeScope="True">
 					<TextBlock Text="Outside Temperature Range" VerticalAlignment="Center" Padding="10,0,10,0" Cursor="Help" ToolTip.Tip="Specifiy the range of the minimum and maximum outside temperature."/>
 					<StackPanel Margin="5,0,5,0">
 						<TextBlock Text="Minium Value" ToolTip.Tip="Specify"/>
 						<NumericUpDown Name="MinOutsideTemperatureNumericUpDown" Value="-10" Cursor="Hand" Minimum="-40" Maximum="70"/>
 					</StackPanel>
-				
 				<StackPanel Margin="5,0,5,0">
 					<TextBlock Text="Maximum Value"/>
 					<NumericUpDown Name="MaxOutsideTemperatureNumericUpDown" Value="40" Cursor="Hand" Minimum="-40" Maximum="70"/>
@@ -29,7 +34,7 @@
 			</StackPanel>
 			</Border>
 			<Border BorderBrush="#3B3B3B" BorderThickness="2" CornerRadius="5" Margin="5">
-				<StackPanel Orientation="Horizontal" Background="#3B3B3B">
+				<StackPanel Orientation="Horizontal" Background="#3B3B3B" Grid.IsSharedSizeScope="True">
 					<TextBlock Text="User Temperature Range" VerticalAlignment="Center" Padding="10,0,10,0" ToolTip.Tip="Specifiy the range of the minimum and maximum prefered user temperature."/>
 					<StackPanel Margin="5">
 						<TextBlock Text="Minium Value"/>
@@ -42,20 +47,25 @@
 				</StackPanel>
 			</Border>
 			<Border BorderBrush="#3B3B3B" BorderThickness="2" CornerRadius="5" Margin="5">
-				<StackPanel Background="#3B3B3B" Orientation="Horizontal">
-				<TextBlock Text="Temperature Handle Size Radius" VerticalAlignment="Center" Padding="10,0,10,0"/>
-				<NumericUpDown Name="TemperatureHandleSizeNumericUpDown" Value="30" Cursor="Hand" Minimum="1" Maximum="100"/>
+				<StackPanel Background="#3B3B3B" Orientation="Horizontal" Grid.IsSharedSizeScope="True">
+					<TextBlock Text="Temperature Handle Size Radius" VerticalAlignment="Center" Padding="10,0,10,0"/>
+					<NumericUpDown Name="TemperatureHandleSizeNumericUpDown" Value="30" Cursor="Hand" Minimum="1" Maximum="100"/>
 				</StackPanel>
 			</Border>
-			<StackPanel Background="#3B3B3B" Orientation="Horizontal" Margin="5">
-				<TextBlock Text="Rounding Precision" VerticalAlignment="Center" Padding="10,0,10,0"/>
-				<NumericUpDown Name="RoundingprecisionNumericUpDown" Value="1" Cursor="Hand" Minimum="1" Maximum="4"/>
-			</StackPanel>
-			<StackPanel Background="#3B3B3B" Orientation="Horizontal" Margin="5">
-				<TextBlock Text="Step Size Temperature" VerticalAlignment="Center" Padding="10,0,10,0"/>
-				<NumericUpDown Name="StepSizeTemperatureNumericUpDown" Increment="0.5" Minimum="0" Maximum="5" Cursor="Hand"/>
-			</StackPanel>
-			<ToggleButton/>
+			<Border BorderBrush="#3B3B3B" BorderThickness="2" CornerRadius="5" Margin="5">
+				<StackPanel Background="#3B3B3B" Orientation="Horizontal" Grid.IsSharedSizeScope="True">
+					<TextBlock Text="Rounding Precision" VerticalAlignment="Center" Padding="10,0,10,0"/>
+					<NumericUpDown Name="RoundingprecisionNumericUpDown" Value="1" Cursor="Hand" Minimum="1" Maximum="4"/>
+				</StackPanel>
+			</Border>
+			<Border BorderBrush="#3B3B3B" BorderThickness="2" CornerRadius="5" Margin="5">
+				<StackPanel Background="#3B3B3B" Orientation="Horizontal" Grid.IsSharedSizeScope="True">
+					<TextBlock Text="Theme" VerticalAlignment="Center" Padding="10,0,10,0"/>
+					<RadioButton Content="Dark" Padding="0,0,10,0" IsChecked="true"/>
+					<RadioButton Content="Light" Padding="0,0,10,0"/>
+				</StackPanel>
+			</Border>
+			<local:SettingView SettingType="NumericUpDown" Text="Test" Minimum="6" Maximum="10" Value="7"/>
 		</WrapPanel>
 	</ScrollViewer>
 </UserControl>

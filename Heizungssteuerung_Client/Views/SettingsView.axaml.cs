@@ -1,25 +1,11 @@
-using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Markup.Xaml;
+using Heizungssteuerung_Client.Data;
 using System;
-using static Heizungssteuerung_Client.Views.SettingsView;
 
 namespace Heizungssteuerung_Client.Views;
 
 public partial class SettingsView : UserControl
 {
-    public enum IsolationClasses
-    {
-        AA,
-        A,
-        B,
-        C,
-        D,
-        E,
-        F,
-        G,
-        H
-    }
     public SettingsView()
     {
         InitializeComponent();

@@ -1,0 +1,13 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Heizungssteuerung_Client.Views.Settings.SettingNumericUpDownSingleView">
+
+	<StackPanel Orientation="Horizontal" Background="#3B3B3B">
+		<TextBlock Name="SingleTextBlock" VerticalAlignment="Center" Padding="10,0,10,0"/>
+		<NumericUpDown Name="SingleNumericUpDown" Cursor="Hand"/>
+	</StackPanel>
+	
+</UserControl>
