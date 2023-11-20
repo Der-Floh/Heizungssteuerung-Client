@@ -3,7 +3,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:Heizungssteuerung_Client.ViewModels"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             xmlns:Current="clr-namespace:Heizungssteuerung_Client"
+			 mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Heizungssteuerung_Client.Views.MainView"
              x:DataType="vm:MainViewModel">
   <Design.DataContext>
@@ -21,7 +22,7 @@
 		<SplitView.Pane>
 			<StackPanel Spacing="5" Margin="5">
 				<Button MaxWidth="38" Name="TriggerPaneButton" Command="{Binding TriggerPane}" Cursor="Hand">
-					<Image Source="/Assets/menu.png"/>
+					<Current:SvgImage Source="/Assets/menu.svg"/>
 				</Button>
 				<ListBox ItemsSource="{Binding Items}">
 					<ListBox.ItemTemplate>
