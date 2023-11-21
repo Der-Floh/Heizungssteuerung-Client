@@ -7,10 +7,12 @@
              x:Class="Heizungssteuerung_Client.Views.UserTempPickerContainerView">
 	<Grid>
 		<Grid.RowDefinitions>
-			<RowDefinition Height="5*"/>
+			<RowDefinition Height="8*"/>
 			<RowDefinition Height="*"/>
 		</Grid.RowDefinitions>
-		<!--<views:UserTempPickerView/>-->
-		<!--<views:UserTempSettingsView Grid.Row="1"/>-->
+		<views:UserTempPickerView/>
+		<StackPanel Grid.Row="1">
+			<views:SettingView SettingType="" Text="Test" Minimum="6" Maximum="10" Value="7"/>
+		</StackPanel>
 	</Grid>
 </UserControl>

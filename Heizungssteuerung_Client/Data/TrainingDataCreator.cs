@@ -15,17 +15,6 @@ public sealed class TrainingDataCreator
     public float MaxHeatingTemperature { get; set; } = 20f;
     public TrainingDataItem[]? TrainingDataItems { get; set; }
 
-    public void SaveTrainingDataSet(IEnumerable<TrainingDataItem>? trainingDataItems = null)
-    {
-        if (trainingDataItems is null)
-            trainingDataItems = TrainingDataItems;
-        if (trainingDataItems is null)
-            throw new ArgumentNullException(nameof(trainingDataItems));
-
-        //string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Downloads", "TrainingData.json");
-        //JsonHandler.WriteJson(trainingDataItems, path);
-    }
-
     public void SaveTrainingDataSetCsv(IEnumerable<TrainingDataItem>? trainingDataItems = null)
     {
         if (trainingDataItems is null)
@@ -58,8 +47,9 @@ public sealed class TrainingDataCreator
         //File.WriteAllText(path, csv.ToString());
     }
 
-    public IEnumerable<TrainingDataItem> GenerateTrainingDataSet(int amount)
+    public IEnumerable<TrainingDataItem> GenerateTrainingDataSet(int amount, List<Temperature> temperatures)
     {
+        AddMiddleTemperatures(amount, temperatures);
         List<TrainingDataItem> trainingDataItems = new List<TrainingDataItem>();
         for (int i = 0; i < amount; i++)
         {
@@ -70,6 +60,34 @@ public sealed class TrainingDataCreator
         }
         TrainingDataItems = trainingDataItems.ToArray();
         return trainingDataItems;
+    }
+
+    private void AddMiddleTemperatures(int amount, List<Temperature> temperatures)
+    {
+        if (amount <= 0)
+            throw new ArgumentException("Amount must be greater than 0.");
+
+        int originalCount = temperatures.Count;
+
+        for (int i = 1; i <= amount; i++)
+        {
+            double index = (double)i / (amount + 1);
+            int newIndex = (int)(index * originalCount);
+
+            Temperature newItem = GetMiddleTemperature(temperatures[newIndex - 1], temperatures[newIndex]);
+            temperatures.Insert(newIndex, newItem);
+        }
+    }
+
+    public Temperature GetMiddleTemperature(Temperature left, Temperature right)
+    {
+        return new Temperature
+        {
+            X = (left.X + right.X) / 2,
+            Y = (left.Y + right.Y) / 2,
+            XValue = (left.XValue + right.XValue) / 2,
+            YValue = (left.YValue + right.YValue) / 2,
+        };
     }
 
     public TrainingDataInput CreateInput()
