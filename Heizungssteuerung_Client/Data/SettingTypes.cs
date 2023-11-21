@@ -4,4 +4,6 @@ public enum SettingTypes
 {
     NumericUpDown,
     Toggle,
+    ComboBox,
+    RadioButton,
 }

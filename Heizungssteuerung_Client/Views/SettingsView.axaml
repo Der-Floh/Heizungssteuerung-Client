@@ -66,6 +66,7 @@
 				</StackPanel>
 			</Border>
 			<local:SettingView SettingType="NumericUpDown" Text="Test" Minimum="6" Maximum="10" Value="7"/>
+			<local:SettingView SettingType="ComboBox" Text="Test" />
 		</WrapPanel>
 	</ScrollViewer>
 </UserControl>

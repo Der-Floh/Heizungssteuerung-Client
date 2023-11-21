@@ -1,6 +1,7 @@
 using Avalonia.Controls;
 using Heizungssteuerung_Client.Data;
 using Heizungssteuerung_Client.Views.Settings;
+using System.Collections;
 using System.ComponentModel;
 
 namespace Heizungssteuerung_Client.Views;
@@ -22,10 +23,21 @@ public partial class SettingView : UserControl, INotifyPropertyChanged
     public decimal Maximum { get => _maximum; set { if (_maximum == value) return; _maximum = value; SetMaximum(value); OnPropertyChanged(nameof(Maximum)); } }
     private decimal _maximum;
 
+    public IEnumerable Items { get => _items; set { if (_items == value) return; _items = value; SetItems(value); OnPropertyChanged(nameof(Items)); } }
+    private IEnumerable _items;
+
+    public object? SelectedItem { get => _selectedItem; set { if (_selectedItem == value) return; _selectedItem = value; SetSelectedItem(value); OnPropertyChanged(nameof(SelectedItem)); } }
+    private object? _selectedItem;
+
+    public int SelectedIndex { get => _selectedIndex; set { if (_selectedIndex == value) return; _selectedIndex = value; SetSelectedIndex(value); OnPropertyChanged(nameof(SelectedIndex)); } }
+    private int _selectedIndex;
+
     private SettingNumericUpDownSingleView? settingNumericUpDownSingleView;
     private SettingToggleSingleView? settingToggleSingleView;
+    private SettingComboBoxSingleView? SettingComboBoxSingleView;
+    private SettingRadioButtonMultipleView? settingRadioButtonMultipleView;
 
-    public event PropertyChangedEventHandler PropertyChanged;
+    public event PropertyChangedEventHandler? PropertyChanged;
 
     public SettingView()
     {
@@ -46,9 +58,18 @@ public partial class SettingView : UserControl, INotifyPropertyChanged
                 settingToggleSingleView = new SettingToggleSingleView();
                 SettingPanel.Children.Add(settingToggleSingleView);
                 break;
+            case SettingTypes.ComboBox:
+                SettingPanel.Children.Clear();
+                SettingComboBoxSingleView = new SettingComboBoxSingleView();
+                SettingPanel.Children.Add(SettingComboBoxSingleView);
+                break;
+            case SettingTypes.RadioButton:
+                SettingPanel.Children.Clear();
+                settingRadioButtonMultipleView = new SettingRadioButtonMultipleView();
+                SettingPanel.Children.Add(settingRadioButtonMultipleView);
+                break;
         }
     }
-
     private void SetText(string text)
     {
         switch (SettingType)
@@ -63,7 +84,6 @@ public partial class SettingView : UserControl, INotifyPropertyChanged
                 break;
         }
     }
-
     private void SetMinimum(decimal minimum)
     {
         switch (SettingType)
@@ -74,7 +94,6 @@ public partial class SettingView : UserControl, INotifyPropertyChanged
                 break;
         }
     }
-
     private void SetMaximum(decimal maximum)
     {
         switch (SettingType)
@@ -85,7 +104,6 @@ public partial class SettingView : UserControl, INotifyPropertyChanged
                 break;
         }
     }
-
     private void SetValue(decimal value)
     {
         switch (SettingType)
@@ -96,7 +114,37 @@ public partial class SettingView : UserControl, INotifyPropertyChanged
                 break;
         }
     }
+    private void SetItems(IEnumerable Items)
+    {
+        switch (SettingType)
+        {
+            case SettingTypes.ComboBox:
+                if (SettingComboBoxSingleView is not null)
+                    SettingComboBoxSingleView.Items = Items;
+                break;
+        }
+    }
+    private void SetSelectedItem(object? SelectedItem)
+    {
+        switch (SettingType)
+        {
+            case SettingTypes.ComboBox:
+                if (SettingComboBoxSingleView is not null)
+                    SettingComboBoxSingleView.SelectedItem = SelectedItem;
+                break;
+        }
 
+    }
+    private void SetSelectedIndex(int SelectedIndex)
+    {
+        switch (SettingTypes.ComboBox)
+        {
+            case SettingTypes.ComboBox:
+                if (SettingComboBoxSingleView is not null)
+                    SettingComboBoxSingleView.SelectedIndex = SelectedIndex;
+                break;
+        }
+    }
     protected virtual void OnPropertyChanged(string propertyName)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

@@ -3,11 +3,11 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="Heizungssteuerung_Client.Views.Settings.SettingComboBoxSingleView">
+             x:Class="Heizungssteuerung_Client.Views.Settings.SettingRadioButtonMultipleView">
 
-	<StackPanel Orientation="Horizontal" Background="#3B3B3B" Grid.IsSharedSizeScope="True">
-		<TextBlock Name="SingleTextBlock" VerticalAlignment="Center" Padding="10,0,10,0" Cursor="Help"/>
-		<ComboBox Name="SingleComboBox" Cursor="Hand" Margin="5,10,5,5"/>
+	<StackPanel Background="#3B3B3B" Orientation="Horizontal">
+		<TextBlock Name="MultipleTextBlock" VerticalAlignment="Center" Padding="10,0,10,0"/>
+		<RadioButton Name="MultipleRadioButton" Padding="0,0,10,0" IsChecked="true"/>
 	</StackPanel>
-	
+
 </UserControl>
