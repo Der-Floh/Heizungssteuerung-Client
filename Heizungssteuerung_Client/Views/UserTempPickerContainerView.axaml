@@ -7,12 +7,15 @@
              x:Class="Heizungssteuerung_Client.Views.UserTempPickerContainerView">
 	<Grid>
 		<Grid.RowDefinitions>
-			<RowDefinition Height="8*"/>
+			<RowDefinition Height="6*"/>
 			<RowDefinition Height="*"/>
 		</Grid.RowDefinitions>
 		<views:UserTempPickerView/>
-		<StackPanel Grid.Row="1">
-			<views:SettingView SettingType="" Text="Test" Minimum="6" Maximum="10" Value="7"/>
-		</StackPanel>
+		<ScrollViewer Grid.Row="1">
+			<WrapPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+				<views:SettingView Name="IsolcationClassComboBox" SettingType="ComboBox" Text="Isolation Class"/>
+				<views:SettingView Name="TrainButton" SettingType="Button" Text="Train Model"/>
+			</WrapPanel>
+		</ScrollViewer>
 	</Grid>
 </UserControl>

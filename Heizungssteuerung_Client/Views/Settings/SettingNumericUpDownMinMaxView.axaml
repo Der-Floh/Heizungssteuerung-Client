@@ -1,0 +1,22 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Heizungssteuerung_Client.Views.Settings.SettingNumericUpDownMinMaxView">
+
+	<WrapPanel Name="MinMaxStackPanel" Orientation="Horizontal" Background="#3B3B3B" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+		<TextBlock Name="MinMaxTextBlock" Padding="10,0,10,0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+		<StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+			<StackPanel Name="MinStackPanel" Orientation="Vertical" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center">
+				<TextBlock Name="MinTextBlock" Text="Minium" VerticalAlignment="Top" HorizontalAlignment="Center"/>
+				<NumericUpDown Name="MinNumericUpDown" FontFamily="Monospace" Margin="5,5,5,0" Cursor="Hand" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+			</StackPanel>
+			<StackPanel Name="MaxStackPanel" Orientation="Vertical" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center">
+				<TextBlock Name="MaxTextBlock" Text="Maximum" VerticalAlignment="Top" HorizontalAlignment="Center"/>
+				<NumericUpDown Name="MaxNumericUpDown" FontFamily="Monospace" Margin="5,5,5,0" Cursor="Hand" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+			</StackPanel>
+		</StackPanel>
+	</WrapPanel>
+	
+</UserControl>

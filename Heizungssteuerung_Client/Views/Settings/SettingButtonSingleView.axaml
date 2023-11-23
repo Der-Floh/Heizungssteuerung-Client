@@ -5,9 +5,9 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Heizungssteuerung_Client.Views.Settings.SettingButtonSingleView">
 
-	<StackPanel Orientation="Horizontal" Background="#3B3B3B">
-		<TextBlock IsVisible="False" Name="SingleTextBlock" VerticalAlignment="Center" Padding="10,0,10,0"/>
-		<Button Name="SingleButton" Cursor="Hand"/>
-	</StackPanel>
+	<WrapPanel Orientation="Horizontal" Background="#3B3B3B" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+		<TextBlock Name="SingleTextBlock" IsVisible="False" Padding="10,0,10,0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+		<Button Name="SingleButton" Cursor="Hand" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+	</WrapPanel>
 	
 </UserControl>

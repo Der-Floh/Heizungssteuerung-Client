@@ -2,10 +2,11 @@
 
 public enum SettingTypes
 {
+    None,
     Button,
     NumericUpDown,
+    NumericUpDownMinMax,
     ComboBox,
-    CheckBox,
     Toggle,
     RadioButton,
     Slider,
