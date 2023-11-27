@@ -500,21 +500,21 @@ public partial class SettingView : UserControl, INotifyPropertyChanged
     {
         if (settingNumericUpDownMinMaxView is null)
             return;
-        _maxNumericUpDownValue = settingNumericUpDownMinMaxView.MaxNumericUpDownValue;
+        _maxNumericUpDownValue = e.NewValue ?? _maxNumericUpDownValue;
         OnPropertyChangedRuntime(nameof(MaxNumericUpDownValue));
     }
     private void SettingNumericUpDownMinMaxView_MinNumericUpDownValueChanged(object? sender, NumericUpDownValueChangedEventArgs e)
     {
         if (settingNumericUpDownMinMaxView is null)
             return;
-        _minNumericUpDownValue = settingNumericUpDownMinMaxView.MinNumericUpDownValue;
+        _minNumericUpDownValue = e.NewValue ?? _minNumericUpDownValue;
         OnPropertyChangedRuntime(nameof(MinNumericUpDownValue));
     }
     private void SettingNumericUpDownSingleView_NumericUpDownValueChanged(object? sender, NumericUpDownValueChangedEventArgs e)
     {
         if (settingNumericUpDownSingleView is null)
             return;
-        _value = settingNumericUpDownSingleView.Value;
+        _value = e.NewValue ?? _value;
         OnPropertyChangedRuntime(nameof(Value));
     }
     private void SettingButtonSingleView_Click(object? sender, RoutedEventArgs e)
