@@ -8,5 +8,5 @@
         x:Class="Heizungssteuerung_Client.Views.MainWindow"
         Icon="/Assets/avalonia-logo.ico"
         Title="Heizungssteuerung_Client">
-	<views:UserTempPickerContainerView />
+	<views:SettingsView />
 </Window>
