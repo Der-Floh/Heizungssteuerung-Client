@@ -6,31 +6,31 @@ namespace Heizungssteuerung_Client.Views;
 
 public partial class SettingsView : UserControl
 {
-    public IsolationClasses IsolationClass { get; set; }
-    public decimal StepSizeTemperature { get; set; }
-    public decimal MinOutsideTemperature { get; set; }
-    public decimal MaxOutsideTemperature { get; set; }
-    public decimal MinUserTemperature { get; set; }
-    public decimal MaxUserTemperature { get; set; }
-    public decimal TemperatureHandleSize { get; set; }
-    public decimal Roundingprecision { get; set; }
-    public string Theme { get; set; }
+    public static IsolationClasses IsolationClass { get; set; }
+    public static decimal StepSizeTemperature { get; set; }
+    public static decimal MinOutsideTemperature { get; set; }
+    public static decimal MaxOutsideTemperature { get; set; }
+    public static decimal MinUserTemperature { get; set; }
+    public static decimal MaxUserTemperature { get; set; }
+    public static decimal TemperatureHandleSize { get; set; }
+    public static decimal RoundingPrecision { get; set; }
+    public static string? ThemeSetting { get; set; }
 
     public SettingsView()
     {
         InitializeComponent();
 
         IsolationClassComboBox.ItemsSource = Enum.GetNames(typeof(IsolationClasses));
-        IsolationClassComboBox.PropertyChangedRuntime += IsolationClassComboBox_PropertyChanged;
+        ThemeRadioButtons.ItemsSource = new string[] { "Light", "Dark" };
 
+
+        IsolationClassComboBox.PropertyChangedRuntime += IsolationClassComboBox_PropertyChanged;
         StepSizeTemperatureNumericUpDown.PropertyChangedRuntime += StepSizeTemperatureNumericUpDown_PropertyChanged;
         OutsideTemperatureNumericUpDown.PropertyChangedRuntime += OutsideTemperatureNumericUpDown_PropertyChanged;
         UserTemperatureNumericUpDown.PropertyChangedRuntime += UserTemperatureNumericUpDown_PropertyChanged;
         TemperatureHandleSizeNumericUpDown.PropertyChangedRuntime += TemperatureHandleSizeNumericUpDown_PropertyChanged;
         RoundingprecisionNumericUpDown.PropertyChangedRuntime += RoundingprecisionNumericUpDown_PropertyChanged;
         ThemeRadioButtons.PropertyChangedRuntime += ThemeRadioButtons_PropertyChanged;
-
-        ThemeRadioButtons.ItemsSource = new string[] { "Light", "Dark" };
     }
 
     private void IsolationClassComboBox_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -45,17 +45,17 @@ public partial class SettingsView : UserControl
     }
     private void OutsideTemperatureNumericUpDown_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
     {
-        if (e.PropertyName == nameof(OutsideTemperatureNumericUpDown.Minimum))
-            MinOutsideTemperature = OutsideTemperatureNumericUpDown.Value;
-        if (e.PropertyName == nameof(OutsideTemperatureNumericUpDown.Maximum))
-            MaxOutsideTemperature = OutsideTemperatureNumericUpDown.Value;
+        if (e.PropertyName == nameof(OutsideTemperatureNumericUpDown.MinNumericUpDownValue))
+            MinOutsideTemperature = OutsideTemperatureNumericUpDown.MinNumericUpDownValue;
+        if (e.PropertyName == nameof(OutsideTemperatureNumericUpDown.MaxNumericUpDownValue))
+            MaxOutsideTemperature = OutsideTemperatureNumericUpDown.MaxNumericUpDownValue;
     }
     private void UserTemperatureNumericUpDown_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
     {
-        if (e.PropertyName == nameof(UserTemperatureNumericUpDown.Minimum))
-            MinUserTemperature = UserTemperatureNumericUpDown.Value;
-        if (e.PropertyName == nameof(UserTemperatureNumericUpDown.Maximum))
-            MaxUserTemperature = UserTemperatureNumericUpDown.Value;
+        if (e.PropertyName == nameof(UserTemperatureNumericUpDown.MinNumericUpDownValue))
+            MinUserTemperature = UserTemperatureNumericUpDown.MinNumericUpDownValue;
+        if (e.PropertyName == nameof(UserTemperatureNumericUpDown.MaxNumericUpDownValue))
+            MaxUserTemperature = UserTemperatureNumericUpDown.MaxNumericUpDownValue;
     }
     private void TemperatureHandleSizeNumericUpDown_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
     {
@@ -65,7 +65,7 @@ public partial class SettingsView : UserControl
     private void RoundingprecisionNumericUpDown_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
     {
         if (e.PropertyName == nameof(RoundingprecisionNumericUpDown.Value))
-            Roundingprecision = RoundingprecisionNumericUpDown.Value;
+            RoundingPrecision = RoundingprecisionNumericUpDown.Value;
     }
     private void ThemeRadioButtons_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
     {
@@ -73,7 +73,7 @@ public partial class SettingsView : UserControl
         {
             RadioButton? button = ThemeRadioButtons.SelectedItem as RadioButton;
             if (button is not null)
-                Theme = button.Content.ToString();
+                ThemeSetting = button.Content.ToString();
         }
     }
 

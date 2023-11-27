@@ -19,9 +19,9 @@ public partial class SettingRadioButtonMultipleView : UserControl
     public bool ShowTextBlock { get => _showTextBlock; set { _showTextBlock = value; MultipleTextBlock.IsVisible = value; } }
     private bool _showTextBlock = true;
 
-    public int CheckedIndex { get => RadioButtons.IndexOf(RadioButtons.Find(x => x.IsChecked ?? false)); set => RadioButtons[value].IsChecked = true; }
+    public int CheckedIndex { get => RadioButtons.IndexOf(RadioButtons.FindLast(x => x.IsChecked ?? false)); set => RadioButtons[value].IsChecked = true; }
 
-    public RadioButton CheckedButton { get => RadioButtons.Find(x => x.IsChecked ?? false); set => RadioButtons[RadioButtons.IndexOf(value)].IsChecked = true; }
+    public RadioButton CheckedButton { get => RadioButtons.FindLast(x => x.IsChecked ?? false); set => RadioButtons[RadioButtons.IndexOf(value)].IsChecked = true; }
 
     public List<RadioButton> RadioButtons { get => radioButtons; set { radioButtons = value; foreach (RadioButton radioButton in value) AddRadioButton(radioButton); } }
     private List<RadioButton> radioButtons = new List<RadioButton>();

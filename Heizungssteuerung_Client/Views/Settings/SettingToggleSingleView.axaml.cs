@@ -27,7 +27,7 @@ public partial class SettingToggleSingleView : UserControl
         UpdateToolTipVisibility();
     }
 
-    private void SingleToggleButton_IsCheckedChanged(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    private void SingleToggleButton_IsCheckedChanged(object? sender, RoutedEventArgs e)
     {
         _isChecked = SingleToggleButton.IsChecked ?? false;
         IsCheckedChanged?.Invoke(sender, e);
