@@ -1,0 +1,3 @@
+- [Home](/)
+- [Data](/data)
+  - [IsolationClasses](/data/isolation-classes.md)
