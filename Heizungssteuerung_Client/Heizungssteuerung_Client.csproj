@@ -35,7 +35,7 @@
   </ItemGroup>
   
   <ItemGroup>
-    <None Include="Utilities\ColorExtention.cs" />
+    <None Include="Utilities\ColorExtentions.cs" />
     <None Include="Utilities\GlobalCache.cs" />
     <None Include="Controls\SkiaControl.cs" />
     <None Include="SvgImage.cs" />
