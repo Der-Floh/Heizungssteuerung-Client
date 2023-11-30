@@ -12,13 +12,38 @@ namespace Heizungssteuerung_Client.Views;
 
 public partial class UserTempPickerView : UserControl
 {
-    public double XTemperatureStart { get; set; } = -10;
-    public double XTemperatureEnd { get; set; } = 40;
-    public double XTemperatureStepSize { get; set; } = 5f;
-    public double YTemperatureStart { get; set; } = 90;
-    public double YTemperatureEnd { get; set; } = 0;
-    public double YTemperatureStepSize { get; set; } = 0.5f;
-    public int DecimalPlaces { get; set; } = 2;
+    public bool SyncSettings { get => _syncSettings; set { _syncSettings = value; if (value) InitTemperatureEvents(); else InitTemperatures(); } }
+    private bool _syncSettings;
+    public double XTemperatureStart { get; set; } = (double)SettingsView.MinOutsideTemperature;
+    public double XTemperatureEnd { get; set; } = (double)SettingsView.MaxOutsideTemperature;
+    public double XTemperatureStepSize { get; set; } = (double)SettingsView.OutsideTemperatureStepSize;
+    public double YTemperatureStart { get; set; } = (double)SettingsView.MaxUserTemperature;
+    public double YTemperatureEnd { get; set; } = (double)SettingsView.MinUserTemperature;
+    public double YTemperatureStepSize { get; set; } = (double)SettingsView.StepSizeTemperature;
+    public int DecimalPlaces { get; set; } = (int)SettingsView.RoundingPrecision;
+    public bool Editable
+    {
+        get => _editable;
+        set
+        {
+            if (_editable == value)
+                return;
+            _editable = value;
+            if (value)
+            {
+                PointerPressed += CoordinateSystem_PointerPressed;
+                PointerReleased += CoordinateSystem_PointerReleased;
+                PointerMoved += CoordinateSystem_PointerMoved;
+            }
+            else
+            {
+                PointerPressed -= CoordinateSystem_PointerPressed;
+                PointerReleased -= CoordinateSystem_PointerReleased;
+                PointerMoved -= CoordinateSystem_PointerMoved;
+            }
+        }
+    }
+    private bool _editable;
 
     public int MarginLines { get; set; } = 40;
     public int MarginBottom { get; set; } = 40;
@@ -26,9 +51,23 @@ public partial class UserTempPickerView : UserControl
     public double SliderHeight { get; set; }
     public IBrush GridColor { get; set; } = new SolidColorBrush(Color.FromArgb(255, 148, 151, 156));
     public IBrush TempColor { get; set; } = new SolidColorBrush(Color.FromArgb(255, 0, 0, 0));
+    public string XValuesStringAppend { get; set; } = "°";
+    public string YValuesStringAppend { get; set; } = "°";
 
-    public Temperature[] Temperatures { get; set; }
-    private int currentTempIndex = -1;
+    public Temperature[] Temperatures
+    {
+        get => SyncSettings ? SettingsView.UserTemperatures : _temperatures;
+        set
+        {
+            if (SyncSettings)
+                SettingsView.UserTemperatures = value;
+            else
+                _temperatures = value;
+        }
+    }
+    private Temperature[] _temperatures;
+    public int WaveUpdateSpeed { get; set; } = 20;
+    private int _currentTempIndex = -1;
     private bool IsTempMoving
     {
         get => _isTempMoving;
@@ -36,9 +75,9 @@ public partial class UserTempPickerView : UserControl
         {
             _isTempMoving = value;
             if (value)
-                Temperatures[currentTempIndex].HandleColor = Temperature.DefaultOnHandleColor;
+                Temperatures[_currentTempIndex].HandleColor = Temperature.DefaultOnHandleColor;
             else
-                Temperatures[currentTempIndex].HandleColor = Temperature.DefaultOffHandleColor;
+                Temperatures[_currentTempIndex].HandleColor = Temperature.DefaultOffHandleColor;
             InvalidateVisual();
         }
     }
@@ -59,13 +98,12 @@ public partial class UserTempPickerView : UserControl
 
     public UserTempPickerView()
     {
-        Temperatures = CalculateTemperatures();
+        if (SyncSettings)
+            InitTemperatureEvents();
+        else
+            InitTemperatures();
 
         InitializeComponent();
-
-        PointerPressed += CoordinateSystem_PointerPressed;
-        PointerReleased += CoordinateSystem_PointerReleased;
-        PointerMoved += CoordinateSystem_PointerMoved;
 
         SizeChanged += CoordinateSystem_SizeChanged;
 
@@ -102,17 +140,17 @@ public partial class UserTempPickerView : UserControl
         int index = GetNearestTemperatureIndex(x, y);
         if (index != -1 && IsPointInsideCircle(x, y, Temperatures[index].X, Temperatures[index].Y, Temperatures[index].Radius))
         {
-            currentTempIndex = index;
+            _currentTempIndex = index;
             IsTempMoving = true;
         }
     }
 
     private void CoordinateSystem_PointerReleased(object? sender, PointerReleasedEventArgs e)
     {
-        if (currentTempIndex >= 0)
+        if (_currentTempIndex >= 0)
         {
             IsTempMoving = false;
-            currentTempIndex = -1;
+            _currentTempIndex = -1;
         }
     }
 
@@ -121,7 +159,7 @@ public partial class UserTempPickerView : UserControl
         if (IsTempMoving)
         {
             double y = e.GetCurrentPoint(this).Position.Y;
-            Temperatures[currentTempIndex].YValue = PositionToValue(y, SliderHeight);
+            Temperatures[_currentTempIndex].YValue = PositionToValue(y, SliderHeight);
             //double posTop = MarginTop + temperatures[currentTempIndex].Radius;
             //double posBottom = Bounds.Height - MarginBottom - temperatures[currentTempIndex].Radius;
             //bool isTopOk = y >= posTop;
@@ -160,7 +198,7 @@ public partial class UserTempPickerView : UserControl
             context.DrawLine(pen, new Point(Temperatures[i].X, MarginTop), new Point(Temperatures[i].X, Bounds.Height - MarginBottom));
 
             double temp = Math.Round(Temperatures[i].XValue, DecimalPlaces);
-            string text = temp.ToString("0.0") + "°";
+            string text = temp.ToString("0.0") + XValuesStringAppend;
 
             FormattedText formattedText = new FormattedText(text, de, FlowDirection.LeftToRight, typeface, FontSize, GridColor);
             Geometry? tempNumberTextGeometry = formattedText.BuildGeometry(new Point(0, 0));
@@ -188,7 +226,7 @@ public partial class UserTempPickerView : UserControl
             context.DrawEllipse(Temperatures[i].HandleColor, pen, new Point(Temperatures[i].X, Temperatures[i].Y), Temperatures[i].Radius, Temperatures[i].Radius);
 
             double tempValue = Math.Round(Temperatures[i].YValue, 1);
-            string temp = tempValue.ToString("0.0") + "°";
+            string temp = tempValue.ToString("0.0") + YValuesStringAppend;
 
             FormattedText formattedTempValueText = new FormattedText(temp, de, FlowDirection.LeftToRight, typeface, FontSize, TempColor);
             Geometry? tempNumberTextGeometry = formattedTempValueText.BuildGeometry(new Point(0, 0));
@@ -264,12 +302,25 @@ public partial class UserTempPickerView : UserControl
         return temperatures;
     }
 
+    public void InitTemperatures()
+    {
+        Temperatures = CalculateTemperatures();
+    }
+
     private Temperature[] CalculateTemperatures()
     {
         double min = Math.Min(XTemperatureStart, XTemperatureEnd);
         double max = Math.Max(XTemperatureStart, XTemperatureEnd);
         Temperature[] temperatures = GetTemperatures(min, max, XTemperatureStepSize);
         return temperatures;
+    }
+
+    private void InitTemperatureEvents()
+    {
+        foreach (Temperature temperature in Temperatures)
+        {
+            temperature.PropertyChanged += TemperaturePropertyChanged;
+        };
     }
 
     private double PositionToValue(double sliderPosition, double height)

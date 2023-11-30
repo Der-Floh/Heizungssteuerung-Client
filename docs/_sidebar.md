@@ -1,3 +1,5 @@
 - [Home](/)
-- [Data](/data)
-  - [IsolationClasses](/data/isolation-classes.md)
+- [Heizungssteuerung Client](/main/temp-control-client)
+  - [Isolation Classes](/main/temp-control-client/isolation-classes)
+- [Heizungssteuerung SDK](/main/temp-control-sdk)
+- [Heizungssteuerung API](/main/temp-control-api)

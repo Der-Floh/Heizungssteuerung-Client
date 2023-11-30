@@ -7,7 +7,7 @@
 
 	<WrapPanel Orientation="Horizontal" Background="#3B3B3B" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
 		<TextBlock Name="SingleTextBlock" IsVisible="False" Padding="10,0,10,0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-		<Button Name="SingleButton" Cursor="Hand" FontFamily="monospace" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+		<Button Name="SingleButton" Cursor="Hand" FontFamily="Monospace" VerticalAlignment="Center" HorizontalAlignment="Center"/>
 	</WrapPanel>
 	
 </UserControl>

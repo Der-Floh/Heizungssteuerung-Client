@@ -1,4 +1,5 @@
 using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Heizungssteuerung_Client.ViewModels;
@@ -19,6 +20,7 @@ public partial class App : Application
         {
             desktop.MainWindow = new MainWindow
             {
+                WindowStartupLocation = WindowStartupLocation.CenterScreen,
                 DataContext = new MainViewModel()
             };
         }
