@@ -22,7 +22,7 @@ public sealed class WaveGenerator
         double wavePosition = WaveHeight / 2;
         if (position >= 0)
             wavePosition = position;
-        return Wave.GenerateWave(WaveWidth, wavePosition, _stopwatch.Elapsed.TotalSeconds, 100);
+        return Wave.GenerateWave(WaveWidth, wavePosition, _stopwatch.Elapsed.TotalSeconds, 50);
     }
 }
 
