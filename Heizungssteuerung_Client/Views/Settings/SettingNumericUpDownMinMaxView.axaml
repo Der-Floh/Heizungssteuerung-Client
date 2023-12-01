@@ -10,11 +10,11 @@
 		<StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
 			<StackPanel Name="MinStackPanel" Orientation="Vertical" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center">
 				<TextBlock Name="MinTextBlock" Text="Minium" VerticalAlignment="Top" HorizontalAlignment="Center"/>
-				<NumericUpDown Name="MinNumericUpDown" FontFamily="Monospace" Margin="5,5,5,0" Cursor="Hand" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+				<NumericUpDown Name="MinNumericUpDown" Value="0.0" FontFamily="Monospace" Margin="5,5,5,0" Cursor="Hand" VerticalAlignment="Center" HorizontalAlignment="Center"/>
 			</StackPanel>
 			<StackPanel Name="MaxStackPanel" Orientation="Vertical" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center">
 				<TextBlock Name="MaxTextBlock" Text="Maximum" VerticalAlignment="Top" HorizontalAlignment="Center"/>
-				<NumericUpDown Name="MaxNumericUpDown" FontFamily="Monospace" Margin="5,5,5,0" Cursor="Hand" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+				<NumericUpDown Name="MaxNumericUpDown" Value="0.0" FontFamily="Monospace" Margin="5,5,5,0" Cursor="Hand" VerticalAlignment="Center" HorizontalAlignment="Center"/>
 			</StackPanel>
 		</StackPanel>
 	</WrapPanel>

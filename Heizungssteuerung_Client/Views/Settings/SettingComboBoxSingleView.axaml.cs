@@ -16,7 +16,7 @@ public partial class SettingComboBoxSingleView : UserControl
     public IEnumerable? Items { get => _items; set { _items = value; SingleComboBox.ItemsSource = value; } }
     private IEnumerable? _items;
 
-    public object? SelectedItem { get => _selectedItem; set { _selectedItem = value; SingleComboBox.SelectedItem = value; } }
+    public object? SelectedItem { get => _selectedItem; set { _selectedItem = value; SingleComboBox.SelectedItem = value?.ToString(); } }
     private object? _selectedItem;
 
     public int SelectedIndex { get => _selectedIndex; set { _selectedIndex = value; SingleComboBox.SelectedIndex = value; } }

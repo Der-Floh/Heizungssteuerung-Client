@@ -16,11 +16,26 @@
   </ItemGroup>
   
   <ItemGroup>
+    <None Remove="Assets\Icons\Temp-Control-Colorful.ico" />
+    <None Remove="Assets\Icons\Temp-Control-Colorful.png" />
+    <None Remove="Assets\Icons\Temp-Control-Colorful.svg" />
+    <None Remove="Assets\Icons\Temp-Control-House-Colorful.ico" />
+    <None Remove="Assets\Icons\Temp-Control-House-Colorful.png" />
+    <None Remove="Assets\Icons\Temp-Control-House-Colorful.svg" />
+    <None Remove="Assets\Icons\Temp-Control-House.ico" />
+    <None Remove="Assets\Icons\Temp-Control-House.png" />
+    <None Remove="Assets\Icons\Temp-Control-House.svg" />
+    <None Remove="Assets\Icons\Temp-Control-Simple.ico" />
+    <None Remove="Assets\Icons\Temp-Control-Simple.png" />
+    <None Remove="Assets\Icons\Temp-Control-Simple.svg" />
+    <None Remove="Assets\Icons\Temp-Control.ico" />
+    <None Remove="Assets\Icons\Temp-Control.png" />
+    <None Remove="Assets\Icons\Temp-Control.svg" />
     <None Remove="Assets\menu.svg" />
   </ItemGroup>
   
   <ItemGroup>
-    <None Include="Utilities\ColorExtention.cs" />
+    <None Include="Utilities\ColorExtentions.cs" />
     <None Include="Utilities\GlobalCache.cs" />
     <None Include="Controls\SkiaControl.cs" />
     <None Include="SvgImage.cs" />
@@ -38,8 +53,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Views\MenuItemView.axaml.cs">
-      <DependentUpon>MenuItemView.axaml</DependentUpon>
+    <ProjectReference Include="..\..\Heizungssteuerung_API\Heizungssteuerung_API\Heizungssteuerung_API.csproj" />
+    <ProjectReference Include="..\..\Heizungssteuerung_SDK\Heizungssteuerung_SDK\Heizungssteuerung_SDK.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Views\TempPredictorViewContainer.axaml.cs">
+      <DependentUpon>TempPredictorViewContainer.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\UserTempPickerView.axaml.cs">
+      <DependentUpon>UserTempPickerView.axaml</DependentUpon>
     </Compile>
   </ItemGroup>
 </Project>

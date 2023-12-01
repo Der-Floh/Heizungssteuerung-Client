@@ -7,7 +7,7 @@
 
 	<WrapPanel Orientation="Horizontal" Background="#3B3B3B" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
 		<TextBlock Name="SingleTextBlock" Padding="10,0,10,0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-		<NumericUpDown Name="SingleNumericUpDown" FontFamily="Monospace" Cursor="Hand" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+		<NumericUpDown Name="SingleNumericUpDown" Value="0.0" FontFamily="Monospace" Cursor="Hand" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center"/>
 	</WrapPanel>
 	
 </UserControl>

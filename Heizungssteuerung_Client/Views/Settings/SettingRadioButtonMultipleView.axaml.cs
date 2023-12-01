@@ -19,9 +19,10 @@ public partial class SettingRadioButtonMultipleView : UserControl
     public bool ShowTextBlock { get => _showTextBlock; set { _showTextBlock = value; MultipleTextBlock.IsVisible = value; } }
     private bool _showTextBlock = true;
 
-    public int CheckedIndex { get => RadioButtons.IndexOf(RadioButtons.Find(x => x.IsChecked ?? false)); set => RadioButtons[value].IsChecked = true; }
+    public int CheckedIndex { get => _checkedIndex; set { _checkedIndex = value; RadioButtons[value].IsChecked = true; } }
+    private int _checkedIndex = -1;
 
-    public RadioButton CheckedButton { get => RadioButtons.Find(x => x.IsChecked ?? false); set => RadioButtons[RadioButtons.IndexOf(value)].IsChecked = true; }
+    public RadioButton CheckedButton { get => RadioButtons[CheckedIndex]; set => CheckedIndex = RadioButtons.IndexOf(value); }
 
     public List<RadioButton> RadioButtons { get => radioButtons; set { radioButtons = value; foreach (RadioButton radioButton in value) AddRadioButton(radioButton); } }
     private List<RadioButton> radioButtons = new List<RadioButton>();
@@ -81,6 +82,11 @@ public partial class SettingRadioButtonMultipleView : UserControl
 
     private void MultipleRadioButton_IsCheckedChanged(object? sender, RoutedEventArgs e)
     {
+        if (sender is null)
+            return;
+        if (!((RadioButton)sender).IsChecked ?? false)
+            return;
+        _checkedIndex = RadioButtons.IndexOf((RadioButton)sender);
         SelectionChanged?.Invoke(sender, e);
     }
 }

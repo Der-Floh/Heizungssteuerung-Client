@@ -4,7 +4,7 @@ using SkiaSharp;
 
 namespace Heizungssteuerung_Client.Utilities;
 
-internal static class ColorExtention
+internal static class ColorExtentions
 {
     internal static SKColor ToSKColor(this Color color) => new SKColor(color.R, color.G, color.B, color.A);
     internal static SKColor ToSKColor(this IBrush brush, float? alpha = null)
