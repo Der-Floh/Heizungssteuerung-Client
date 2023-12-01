@@ -8,5 +8,5 @@
         x:Class="Heizungssteuerung_Client.Views.MainWindow"
         Icon="/Assets/Icons/Temp-Control-Simple.ico"
         Title="Heizungssteuerung_Client">
-	<views:TempPredictorViewContainer />
+	<views:TempPredictorContainerView />
 </Window>

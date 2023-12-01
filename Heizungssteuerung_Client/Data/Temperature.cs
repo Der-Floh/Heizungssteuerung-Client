@@ -17,8 +17,8 @@ public class Temperature : INotifyPropertyChanged
     public double YValue { get => _yValue; set { if (value != _yValue) { _yValue = value; OnPropertyChanged(nameof(YValue)); } } }
     private double _yValue;
     public IBrush HandleColor { get; set; } = DefaultOffHandleColor;
-    public static IBrush DefaultOnHandleColor { get; } = new SolidColorBrush(Color.FromArgb(255, 85, 177, 85));
-    public static IBrush DefaultOffHandleColor { get; } = new SolidColorBrush(Color.FromArgb(255, 244, 74, 85));
+    public static IBrush DefaultOnHandleColor { get; } = new SolidColorBrush(ColorSettings.OnHandleColor);
+    public static IBrush DefaultOffHandleColor { get; } = new SolidColorBrush(ColorSettings.OffHandleColor);
 
     public Temperature() { }
     public Temperature(Guid id) { Id = id; }

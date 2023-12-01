@@ -29,7 +29,7 @@ public partial class UserTempPickerContainerView : UserControl
                 LoadingWaveView.WaveHeightPercent = 0.8;
                 LoadingWaveView.DrawWave = true;
                 await LoadingWaveView.EnterFromBottom();
-                await Task.Delay(3000);
+                await Task.Delay(10000);
                 //HeatingControlModel model = new HeatingControlModel();
                 //await model.Train();
                 //model.Save();

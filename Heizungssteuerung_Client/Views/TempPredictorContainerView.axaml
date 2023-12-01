@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:views="clr-namespace:Heizungssteuerung_Client.Views"
 			 mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="Heizungssteuerung_Client.Views.TempPredictorViewContainer">
+             x:Class="Heizungssteuerung_Client.Views.TempPredictorContainerView">
 
 	<UserControl.Styles>
 		<Style Selector="TextBlock">
@@ -23,7 +23,15 @@
 			<RowDefinition Height="6*"/>
 			<RowDefinition Height="*"/>
 		</Grid.RowDefinitions>
-		<views:UserTempPickerView Name="UserTemperaturePickerView" XValuesStringAppend="h"/>
+		<views:UserTempPickerView Name="UserTemperaturePickerView" XValuesStringAppend="h"
+								  XTemperatureStart="3"
+								  XTemperatureEnd="24"
+								  XTemperatureStepSize="3"
+								  YTemperatureStart="120"
+								  YTemperatureEnd="0"
+								  YTemperatureStepSize="0.5"
+								  XAxisText="Time in hours"
+								  YAxisText="Temperature Outside"/>
 		<ScrollViewer Grid.Row="1">
 			<WrapPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
 				<views:SettingView Name="PredictButton" SettingType="Button" Text="Predict Model"/>

@@ -1,3 +1,4 @@
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Media;
@@ -5,7 +6,6 @@ using Heizungssteuerung_Client.Data;
 using System;
 using System.ComponentModel;
 using System.Globalization;
-using Color = Avalonia.Media.Color;
 using Point = Avalonia.Point;
 
 namespace Heizungssteuerung_Client.Views;
@@ -20,6 +20,8 @@ public partial class UserTempPickerView : UserControl
     public double YTemperatureStart { get; set; } = (double)SettingsView.MaxUserTemperature;
     public double YTemperatureEnd { get; set; } = (double)SettingsView.MinUserTemperature;
     public double YTemperatureStepSize { get; set; } = (double)SettingsView.StepSizeTemperature;
+    public string? XAxisText { get; set; }
+    public string? YAxisText { get; set; }
     public int DecimalPlaces { get; set; } = (int)SettingsView.RoundingPrecision;
     public bool Editable
     {
@@ -49,8 +51,9 @@ public partial class UserTempPickerView : UserControl
     public int MarginBottom { get; set; } = 40;
     public int MarginTop { get; set; } = 20;
     public double SliderHeight { get; set; }
-    public IBrush GridColor { get; set; } = new SolidColorBrush(Color.FromArgb(255, 148, 151, 156));
-    public IBrush TempColor { get; set; } = new SolidColorBrush(Color.FromArgb(255, 0, 0, 0));
+    public IBrush GridColor { get; set; } = new SolidColorBrush(ColorSettings.GridColor);
+    public IBrush TempColor { get; set; } = new SolidColorBrush(ColorSettings.TextColor);
+    public IBrush LineColor { get; set; } = new SolidColorBrush(ColorSettings.TempLineColor);
     public string XValuesStringAppend { get; set; } = "°";
     public string YValuesStringAppend { get; set; } = "°";
 
@@ -65,7 +68,7 @@ public partial class UserTempPickerView : UserControl
                 _temperatures = value;
         }
     }
-    private Temperature[] _temperatures;
+    private Temperature[]? _temperatures;
     public int WaveUpdateSpeed { get; set; } = 20;
     private int _currentTempIndex = -1;
     private bool IsTempMoving
@@ -74,10 +77,7 @@ public partial class UserTempPickerView : UserControl
         set
         {
             _isTempMoving = value;
-            if (value)
-                Temperatures[_currentTempIndex].HandleColor = Temperature.DefaultOnHandleColor;
-            else
-                Temperatures[_currentTempIndex].HandleColor = Temperature.DefaultOffHandleColor;
+            Temperatures[_currentTempIndex].HandleColor = value ? Temperature.DefaultOnHandleColor : Temperature.DefaultOffHandleColor;
             InvalidateVisual();
         }
     }
@@ -88,22 +88,24 @@ public partial class UserTempPickerView : UserControl
         set
         {
             _isTempHovering = value;
-            if (value)
-                Cursor = new Cursor(StandardCursorType.Hand);
-            else
-                Cursor = new Cursor(StandardCursorType.Arrow);
+            Cursor = value ? new Cursor(StandardCursorType.Hand) : new Cursor(StandardCursorType.Arrow);
         }
     }
     private bool _isTempHovering = false;
 
+    private Typeface _typeface;
+    private CultureInfo _de = new CultureInfo("de-DE");
+
     public UserTempPickerView()
     {
+        InitializeComponent();
+
+        _typeface = new Typeface(FontFamily.Name, FontStyle.Normal, FontWeight.Bold);
+
         if (SyncSettings)
             InitTemperatureEvents();
         else
             InitTemperatures();
-
-        InitializeComponent();
 
         SizeChanged += CoordinateSystem_SizeChanged;
 
@@ -127,6 +129,7 @@ public partial class UserTempPickerView : UserControl
         DrawLines(context);
         DrawConnectionLines(context);
         DrawHandles(context);
+        DrawText(context);
 
         base.Render(context);
     }
@@ -190,9 +193,6 @@ public partial class UserTempPickerView : UserControl
             Thickness = 3
         };
 
-        Typeface typeface = new Typeface(FontFamily.Name, FontStyle.Normal, FontWeight.Bold);
-        CultureInfo de = new CultureInfo("de-DE");
-
         for (int i = 0; i < Temperatures.Length; i++)
         {
             context.DrawLine(pen, new Point(Temperatures[i].X, MarginTop), new Point(Temperatures[i].X, Bounds.Height - MarginBottom));
@@ -200,7 +200,7 @@ public partial class UserTempPickerView : UserControl
             double temp = Math.Round(Temperatures[i].XValue, DecimalPlaces);
             string text = temp.ToString("0.0") + XValuesStringAppend;
 
-            FormattedText formattedText = new FormattedText(text, de, FlowDirection.LeftToRight, typeface, FontSize, GridColor);
+            FormattedText formattedText = new FormattedText(text, _de, FlowDirection.LeftToRight, _typeface, FontSize, GridColor);
             Geometry? tempNumberTextGeometry = formattedText.BuildGeometry(new Point(0, 0));
 
             double preWidth = tempNumberTextGeometry.Bounds.Width - tempNumberTextGeometry.Bounds.Width;
@@ -212,14 +212,11 @@ public partial class UserTempPickerView : UserControl
 
     private void DrawHandles(DrawingContext context)
     {
-        Pen pen = new Pen(GridColor)
+        Pen pen = new Pen(LineColor)
         {
             LineCap = PenLineCap.Round,
             Thickness = 3
         };
-
-        Typeface typeface = new Typeface(FontFamily.Name, FontStyle.Normal, FontWeight.Bold);
-        CultureInfo de = new CultureInfo("de-DE");
 
         for (int i = 0; i < Temperatures.Length; i++)
         {
@@ -228,7 +225,7 @@ public partial class UserTempPickerView : UserControl
             double tempValue = Math.Round(Temperatures[i].YValue, 1);
             string temp = tempValue.ToString("0.0") + YValuesStringAppend;
 
-            FormattedText formattedTempValueText = new FormattedText(temp, de, FlowDirection.LeftToRight, typeface, FontSize, TempColor);
+            FormattedText formattedTempValueText = new FormattedText(temp, _de, FlowDirection.LeftToRight, _typeface, FontSize, TempColor);
             Geometry? tempNumberTextGeometry = formattedTempValueText.BuildGeometry(new Point(0, 0));
 
             double preWidth = tempNumberTextGeometry.Bounds.Width - tempNumberTextGeometry.Bounds.Width;
@@ -241,7 +238,7 @@ public partial class UserTempPickerView : UserControl
 
     private void DrawConnectionLines(DrawingContext context)
     {
-        Pen pen = new Pen(GridColor)
+        Pen pen = new Pen(LineColor)
         {
             LineCap = PenLineCap.Round,
             Thickness = 3
@@ -253,6 +250,43 @@ public partial class UserTempPickerView : UserControl
             {
                 context.DrawLine(pen, new Point(Temperatures[i].X, Temperatures[i].Y), new Point(Temperatures[i + 1].X, Temperatures[i + 1].Y));
             }
+        }
+    }
+
+    private void DrawText(DrawingContext context)
+    {
+        if (!string.IsNullOrEmpty(XAxisText))
+        {
+            FormattedText formattedXText = new FormattedText(XAxisText, _de, FlowDirection.LeftToRight, _typeface, FontSize, GridColor);
+            Geometry? tempXTextGeometry = formattedXText.BuildGeometry(new Point(0, 0));
+
+            double preWidth = tempXTextGeometry.Bounds.Width - tempXTextGeometry.Bounds.Width;
+            double preHeight = tempXTextGeometry.Bounds.Height - tempXTextGeometry.Bounds.Height;
+            double xOffset = (tempXTextGeometry.Bounds.Width / 2f) + preWidth;
+            double yOffset = (tempXTextGeometry.Bounds.Height / 2f) + preHeight;
+            context.DrawText(formattedXText, new Point(Bounds.Width / 2 - xOffset, Bounds.Height - yOffset * 3));
+        }
+
+        if (!string.IsNullOrEmpty(YAxisText))
+        {
+            Pen pen = new Pen(GridColor)
+            {
+                LineCap = PenLineCap.Round,
+                Thickness = 3
+            };
+
+            FormattedText formattedYText = new FormattedText(YAxisText, _de, FlowDirection.LeftToRight, _typeface, FontSize, GridColor);
+            Geometry? tempYTextGeometry = formattedYText.BuildGeometry(new Point(0, 0));
+            double xOffset = tempYTextGeometry.Bounds.Width / 2.0;
+            double yOffset = tempYTextGeometry.Bounds.Height / 2.0;
+
+            Point textCenter = new Point(Bounds.Width / 2 - xOffset, Bounds.Height / 2 - yOffset);
+
+            Matrix rotation = Matrix.CreateRotation(90 * (Math.PI / 180));
+            Geometry? geometry = formattedYText.BuildGeometry(textCenter);
+            geometry.Transform = new MatrixTransform(rotation);
+
+            context.DrawGeometry(pen.Brush, pen, geometry);
         }
     }
 

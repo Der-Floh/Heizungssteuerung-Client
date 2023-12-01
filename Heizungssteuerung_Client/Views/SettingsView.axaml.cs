@@ -14,7 +14,7 @@ public partial class SettingsView : UserControl
     public static decimal MaxOutsideTemperature { get => _maxOutsideTemperature; set { _maxOutsideTemperature = value; InitUserTemps(); } }
     public static decimal _maxOutsideTemperature = 40.0m;
     public static decimal OutsideTemperatureStepSize { get => _outsideTemperatureStepSize; set { _outsideTemperatureStepSize = value; InitUserTemps(); } }
-    public static decimal _outsideTemperatureStepSize = 5m;
+    public static decimal _outsideTemperatureStepSize = 10m;
     public static decimal MinUserTemperature { get; set; } = 0.0m;
     public static decimal MaxUserTemperature { get; set; } = 40.0m;
     public static decimal TemperatureHandleSize { get; set; } = 30.0m;
@@ -67,7 +67,7 @@ public partial class SettingsView : UserControl
 
         for (int i = 0; i < numTemperatures; i++)
         {
-            Temperature temperature = new Temperature { XValue = minTemperature + i * stepSize };
+            Temperature temperature = new Temperature { XValue = minTemperature + i * stepSize, YValue = (maxTemperature - minTemperature) / 2 };
             temperatures[i] = temperature;
         }
 

@@ -1,4 +1,4 @@
-using Avalonia;
+﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Threading;
@@ -13,6 +13,7 @@ namespace Heizungssteuerung_Client.Views;
 public partial class WaveView : UserControl
 {
     public string? Text { get; set; }
+    public string[] TextLoader { get; set; } = ["◜", "◠", "◝", "◞", "◡", "◟"];
     public bool DrawWave { get => _drawWave; set { if (value == _drawWave) return; _drawWave = value; if (value) StartTimer(); else StopTimer(); } }
     private bool _drawWave;
     public double WaveHeightPercent { get; set; }
@@ -20,10 +21,12 @@ public partial class WaveView : UserControl
 
     private Timer? _timer;
     private Timer? _transitionTimer;
+    private Timer? _textLoaderTimer;
     private WaveGenerator _waveGenerator = new WaveGenerator();
     private Pen _pen;
     private double _currHeightPercent = 0;
     private bool _transitionFinished = true;
+    private int _textLoaderIndex = 0;
 
     public WaveView()
     {
@@ -113,19 +116,25 @@ public partial class WaveView : UserControl
     {
         Typeface typeface = new Typeface(FontFamily.Name, FontStyle.Normal, FontWeight.Bold);
         CultureInfo de = new CultureInfo("de-DE");
+
         FormattedText formattedText = new FormattedText(Text, de, FlowDirection.LeftToRight, typeface, FontSize, new SolidColorBrush(Colors.White));
         Geometry? tempNumberTextGeometry = formattedText.BuildGeometry(new Point(0, 0));
 
         double preWidth = tempNumberTextGeometry.Bounds.Width - tempNumberTextGeometry.Bounds.Width;
         double xOffset = (tempNumberTextGeometry.Bounds.Width / 2f) + preWidth;
 
+        string? text = Text;
+        if (_transitionFinished)
+            text += $" {TextLoader[_textLoaderIndex]}";
+        formattedText = new FormattedText(text, de, FlowDirection.LeftToRight, typeface, FontSize, new SolidColorBrush(Colors.White));
+
         context.DrawText(formattedText, new Point(Bounds.Width / 2 - xOffset, height * 2));
     }
 
     private void StartTimer()
     {
-        if (_timer is null)
-            _timer = new Timer(TimerCallback, null, 0, 20);
+        _timer ??= new Timer(TimerCallback, null, 0, 20);
+        _textLoaderTimer ??= new Timer(TextLoaderTimerCallback, null, 0, 80);
     }
 
     private void StopTimer()
@@ -134,6 +143,11 @@ public partial class WaveView : UserControl
         {
             _timer.Dispose();
             _timer = null;
+        }
+        if (_textLoaderTimer is not null)
+        {
+            _textLoaderTimer.Dispose();
+            _textLoaderTimer = null;
         }
     }
 
@@ -144,8 +158,7 @@ public partial class WaveView : UserControl
 
     private void StartTransitionTimer()
     {
-        if (_transitionTimer is null)
-            _transitionTimer = new Timer(TransitionTimerCallback, null, 0, Math.Abs(TransitionSpeed));
+        _transitionTimer ??= new Timer(TransitionTimerCallback, null, 0, Math.Abs(TransitionSpeed));
     }
 
     private void StopTransitionTimer()
@@ -177,5 +190,12 @@ public partial class WaveView : UserControl
                 _transitionFinished = true;
             }
         }
+    }
+
+    private void TextLoaderTimerCallback(object? state)
+    {
+        _textLoaderIndex++;
+        if (_textLoaderIndex >= TextLoader.Length)
+            _textLoaderIndex = 0;
     }
 }

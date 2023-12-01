@@ -58,8 +58,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Views\TempPredictorViewContainer.axaml.cs">
-      <DependentUpon>TempPredictorViewContainer.axaml</DependentUpon>
+    <Compile Update="Views\TempPredictorContainerView.axaml.cs">
+      <DependentUpon>TempPredictorContainerView.axaml</DependentUpon>
     </Compile>
     <Compile Update="Views\UserTempPickerView.axaml.cs">
       <DependentUpon>UserTempPickerView.axaml</DependentUpon>

@@ -23,7 +23,7 @@
 			<RowDefinition Height="6*"/>
 			<RowDefinition Height="*"/>
 		</Grid.RowDefinitions>
-		<views:UserTempPickerView Name="UserTemperaturePickerView" Editable="True" SyncSettings="True"/>
+		<views:UserTempPickerView Name="UserTemperaturePickerView" Editable="True" SyncSettings="True" XAxisText="Temperature Outside"/>
 		<ScrollViewer Grid.Row="1">
 			<WrapPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
 				<views:SettingView Name="IsolcationClassComboBox" SettingType="ComboBox" Text="Isolation Class"/>
