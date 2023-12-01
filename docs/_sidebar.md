@@ -40,3 +40,7 @@
 - [Heizungssteuerung API](/main/temp-control-api)
   - [Weather](/main/temp-control-api/weather)
   - [WeatherAPI](/main/temp-control-api/weather-api)
+- **Links**
+- [Client Github](https://github.com/Der-Floh/Heizungssteuerung-Client)
+- [SDK Github](https://github.com/Der-Floh/Heizungssteuerung-SDK)
+- [API Github](https://github.com/Der-Floh/Heizungssteuerung-API)
