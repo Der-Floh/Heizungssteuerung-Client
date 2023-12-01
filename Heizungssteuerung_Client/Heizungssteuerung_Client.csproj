@@ -36,4 +36,10 @@
     <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.5" />
     <PackageReference Include="SkiaSharp.Svg" Version="1.60.0" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Views\MenuItemView.axaml.cs">
+      <DependentUpon>MenuItemView.axaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
 </Project>
