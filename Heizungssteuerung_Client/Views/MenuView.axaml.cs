@@ -17,7 +17,7 @@ public partial class MenuView : UserControl
     public MenuView()
     {
         _settingsView = new SettingsView();
-        _tempPredictorContainerView = new TempPredictorContainerView { ViewName = "Cauldron Prediction", ViewIcon = "Assets/home.svg" };
+        _tempPredictorContainerView = new TempPredictorContainerView { ViewName = "Boiler Prediction", ViewIcon = "Assets/home.svg" };
         _userTempPickerContainerView = new UserTempPickerContainerView { ViewName = "Comfort Temperatures", ViewIcon = "Assets/home.svg" };
         _weatherInfoContainerView = new WeatherInfoContainerView { ViewName = "Weather Data", ViewIcon = "Assets/home.svg" };
         _weatherInfoContainerView.UpdateWeatherData();

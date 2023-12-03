@@ -34,7 +34,7 @@
 								  YTemperatureEnd="0"
 								  YTemperatureStepSize="0.5"
 								  XAxisText="Time in hours from now"
-								  YAxisText="Heating Cauldron Temperature in °C"/>
+								  YAxisText="Boiler Temperature in °C"/>
 		<ScrollViewer Grid.Row="2">
 			<WrapPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
 				<views:SettingView Name="PredictButton" SettingType="Button" Text="Predict Model"/>
