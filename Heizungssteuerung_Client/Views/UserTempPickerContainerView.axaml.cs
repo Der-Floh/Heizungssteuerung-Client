@@ -1,5 +1,6 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Threading;
+using Heizungssteuerung_SDK;
 using Heizungssteuerung_SDK.Training;
 using System;
 using System.Threading.Tasks;
@@ -39,12 +40,12 @@ public partial class UserTempPickerContainerView : UserControl
                 LoadingWaveView.WaveHeightPercent = 0.8;
                 LoadingWaveView.DrawWave = true;
                 await LoadingWaveView.EnterFromBottom();
-                await Task.Delay(10000);
-                //HeatingControlModel model = new HeatingControlModel();
-                //await model.Train();
-                //model.Save();
-                //float accuracy = await model.CalcAccuracy();
-                //await Dispatcher.UIThread.InvokeAsync(() => TrainButton.Text = $"Success (accuracy: {Math.Round(accuracy, 2)})", DispatcherPriority.Background);
+                //await Task.Delay(10000);
+                HeatingControlModel model = new HeatingControlModel();
+                await model.Train();
+                model.Save();
+                float accuracy = await model.CalcAccuracy();
+                await Dispatcher.UIThread.InvokeAsync(() => TrainButton.Text = $"Success (accuracy: {Math.Round(accuracy, 2)})", DispatcherPriority.Background);
                 await LoadingWaveView.ExitToBottom();
                 UserTemperaturePickerView.Editable = true;
             }
