@@ -21,11 +21,11 @@
 
 	<Grid>
 		<Grid.RowDefinitions>
-			<RowDefinition Height="1*"/>
+			<RowDefinition Height="2*"/>
 			<RowDefinition Height="8*"/>
 			<RowDefinition Height="2*"/>
 		</Grid.RowDefinitions>
-		<views:UserTempPickerView Grid.Row="1" Name="UserTemperaturePickerView"
+		<views:UserTempPickerView Grid.RowSpan="2" Name="UserTemperaturePickerView"
 								  SyncWeatherSettings="True"
 								  XValuesStringAppend="h"
 								  XTemperatureStart="3"
@@ -43,7 +43,7 @@
 		</ScrollViewer>
 		<WrapPanel Margin="8">
 			<local:SvgImage Name="ContainerSvgImage" ImageTint="White"/>
-			<TextBlock Name="ContainerNameTextBlock" VerticalAlignment="Center"/>
+			<TextBlock Name="ContainerNameTextBlock" VerticalAlignment="Bottom"/>
 		</WrapPanel>
 	</Grid>
 	

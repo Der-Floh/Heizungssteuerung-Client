@@ -27,7 +27,7 @@ public partial class TempPredictorContainerView : UserControl
         UserTemperaturePickerView.InitTemperatures();
     }
 
-    private void PredictButton_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    public void Predict()
     {
         if (SettingsView.UserTemperatures is null || SettingsView.UserTemperatures.Length == 0)
             return;
@@ -57,6 +57,11 @@ public partial class TempPredictorContainerView : UserControl
             };
             UserTemperaturePickerView.Temperatures[i].YValue = _model.Predict(input);
         }
+    }
+
+    private void PredictButton_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    {
+        Predict();
     }
 
     private double FindNearestTemperature(double targetTemperature, Temperature[] temperatureArray)
