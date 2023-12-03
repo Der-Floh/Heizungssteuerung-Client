@@ -8,14 +8,24 @@ namespace Heizungssteuerung_Client.Views;
 
 public partial class UserTempPickerContainerView : UserControl
 {
+    public string? ViewName { get => ContainerNameTextBlock.Text; set => ContainerNameTextBlock.Text = value; }
+    public string ViewIcon { get => ContainerSvgImage.Source; set => ContainerSvgImage.Source = value; }
+
     public UserTempPickerContainerView()
     {
         InitializeComponent();
 
         IsolcationClassComboBox.ItemsSource = Enum.GetNames(typeof(IsolationClasses));
         IsolcationClassComboBox.SelectedItem = SettingsView.IsolationClass;
+        IsolcationClassComboBox.PropertyChangedRuntime += IsolcationClassComboBox_PropertyChangedRuntime;
 
         TrainButton.Click += TrainButton_Click;
+    }
+
+    private void IsolcationClassComboBox_PropertyChangedRuntime(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName == nameof(IsolcationClassComboBox.SelectedItem))
+            SettingsView.IsolationClass = Enum.Parse<IsolationClasses>(IsolcationClassComboBox.SelectedItem.ToString());
     }
 
     private void TrainButton_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)

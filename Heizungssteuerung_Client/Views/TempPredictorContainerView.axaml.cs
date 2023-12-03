@@ -1,41 +1,30 @@
 using Avalonia.Controls;
 using Avalonia.Media;
-using Heizungssteuerung_API;
 using Heizungssteuerung_Client.Data;
 using Heizungssteuerung_SDK;
 using Heizungssteuerung_SDK.Training;
 using System;
-using System.Threading.Tasks;
+using System.Threading;
 
 namespace Heizungssteuerung_Client.Views;
 
 public partial class TempPredictorContainerView : UserControl
 {
+    public string? ViewName { get => ContainerNameTextBlock.Text; set => ContainerNameTextBlock.Text = value; }
+    public string ViewIcon { get => ContainerSvgImage.Source; set => ContainerSvgImage.Source = value; }
+
+    private Timer? _errorTimer;
+    private bool _modelLoaded;
+    private HeatingControlModel _model = new HeatingControlModel();
+
     public TempPredictorContainerView()
     {
         InitializeComponent();
 
         PredictButton.Click += PredictButton_Click;
-        WeatherDataButton.Click += WeatherDataButton_Click;
 
         UserTemperaturePickerView.LineColor = new SolidColorBrush(ColorSettings.WeatherLineColor);
         UserTemperaturePickerView.InitTemperatures();
-    }
-
-    private void WeatherDataButton_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
-    {
-        LoadWeatherData();
-    }
-
-    private async Task LoadWeatherData()
-    {
-        WeatherAPI weatherAPI = new WeatherAPI();
-        double[] temperatures = await weatherAPI.GetFutureTemperatures(UserTemperaturePickerView.Temperatures.Length);
-
-        for (int i = 0; i < UserTemperaturePickerView.Temperatures.Length; i++)
-        {
-            UserTemperaturePickerView.Temperatures[i].YValue = temperatures[i];
-        }
     }
 
     private void PredictButton_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
@@ -43,40 +32,54 @@ public partial class TempPredictorContainerView : UserControl
         if (SettingsView.UserTemperatures is null || SettingsView.UserTemperatures.Length == 0)
             return;
 
-        HeatingControlModel model = new HeatingControlModel();
-        model.Load();
+        try
+        {
+            if (!_modelLoaded)
+            {
+                _model.Load();
+                _modelLoaded = true;
+            }
+        }
+        catch
+        {
+            if (!_modelLoaded)
+                return;
+        }
         for (int i = 0; i < UserTemperaturePickerView.Temperatures.Length; i++)
         {
-            double userTemperature = FindNearestTemperature(UserTemperaturePickerView.Temperatures[i], SettingsView.UserTemperatures);
+            double weatherTemp = SettingsView.WeatherTemperatures[i].YValue;
+            double userTemperature = FindNearestTemperature(weatherTemp, SettingsView.UserTemperatures);
             TrainingDataInput input = new TrainingDataInput
             {
                 ComfortTemperature = (float)userTemperature,
-                AverageTemperatureOuterDay = (float)UserTemperaturePickerView.Temperatures[i].YValue,
+                AverageTemperatureOuterDay = (float)weatherTemp,
                 IsolationClass = SettingsView.IsolationClass
             };
-            UserTemperaturePickerView.Temperatures[i].YValue = model.Predict(input);
+            UserTemperaturePickerView.Temperatures[i].YValue = _model.Predict(input);
         }
     }
 
-    private double FindNearestTemperature(Temperature targetTemperature, Temperature[] temperatureArray)
+    private double FindNearestTemperature(double targetTemperature, Temperature[] temperatureArray)
     {
         if (temperatureArray == null || temperatureArray.Length == 0)
             throw new ArgumentException("Temperature array cannot be null or empty.");
 
-        double nearestTemperature = temperatureArray[0].YValue;
-        double minDifference = Math.Abs(targetTemperature.YValue - nearestTemperature);
+        double nearestTemperature = temperatureArray[0].XValue;
+        double minDifference = Math.Abs(targetTemperature - nearestTemperature);
+        double nearestTemp = -1;
 
         foreach (Temperature temperature in temperatureArray)
         {
-            double difference = Math.Abs(targetTemperature.YValue - temperature.YValue);
+            double difference = Math.Abs(targetTemperature - temperature.XValue);
 
             if (difference < minDifference)
             {
                 minDifference = difference;
-                nearestTemperature = temperature.YValue;
+                nearestTemperature = temperature.XValue;
+                nearestTemp = temperature.YValue;
             }
         }
 
-        return nearestTemperature;
+        return nearestTemp;
     }
 }

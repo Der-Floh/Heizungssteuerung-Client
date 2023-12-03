@@ -14,6 +14,7 @@ public partial class UserTempPickerView : UserControl
 {
     public bool SyncSettings { get => _syncSettings; set { _syncSettings = value; if (value) InitTemperatureEvents(); else InitTemperatures(); } }
     private bool _syncSettings;
+    public bool SyncWeatherSettings { get; set; }
     public double XTemperatureStart { get; set; } = (double)SettingsView.MinOutsideTemperature;
     public double XTemperatureEnd { get; set; } = (double)SettingsView.MaxOutsideTemperature;
     public double XTemperatureStepSize { get; set; } = (double)SettingsView.OutsideTemperatureStepSize;
@@ -47,7 +48,7 @@ public partial class UserTempPickerView : UserControl
     }
     private bool _editable;
 
-    public int MarginLines { get; set; } = 40;
+    public int MarginLines { get; set; } = 70;
     public int MarginBottom { get; set; } = 40;
     public int MarginTop { get; set; } = 20;
     public double SliderHeight { get; set; }
@@ -59,11 +60,21 @@ public partial class UserTempPickerView : UserControl
 
     public Temperature[] Temperatures
     {
-        get => SyncSettings ? SettingsView.UserTemperatures : _temperatures;
+        get
+        {
+            if (SyncSettings)
+                return SettingsView.UserTemperatures;
+            else if (SyncWeatherSettings)
+                return SettingsView.WeatherTemperatures;
+            else
+                return _temperatures;
+        }
         set
         {
             if (SyncSettings)
                 SettingsView.UserTemperatures = value;
+            else if (SyncWeatherSettings)
+                SettingsView.WeatherTemperatures = value;
             else
                 _temperatures = value;
         }
@@ -271,8 +282,7 @@ public partial class UserTempPickerView : UserControl
         {
             Pen pen = new Pen(GridColor)
             {
-                LineCap = PenLineCap.Round,
-                Thickness = 3
+                Thickness = 0.1
             };
 
             FormattedText formattedYText = new FormattedText(YAxisText, _de, FlowDirection.LeftToRight, _typeface, FontSize, GridColor);
@@ -280,11 +290,10 @@ public partial class UserTempPickerView : UserControl
             double xOffset = tempYTextGeometry.Bounds.Width / 2.0;
             double yOffset = tempYTextGeometry.Bounds.Height / 2.0;
 
-            Point textCenter = new Point(Bounds.Width / 2 - xOffset, Bounds.Height / 2 - yOffset);
-
-            Matrix rotation = Matrix.CreateRotation(90 * (Math.PI / 180));
-            Geometry? geometry = formattedYText.BuildGeometry(textCenter);
-            geometry.Transform = new MatrixTransform(rotation);
+            Matrix rotation = Matrix.CreateRotation(-90 * (Math.PI / 180));
+            Matrix translation = Matrix.CreateTranslation(yOffset, Bounds.Height / 2 + xOffset);
+            Geometry? geometry = formattedYText.BuildGeometry(new Point(0, 0));
+            geometry.Transform = new MatrixTransform(rotation * translation);
 
             context.DrawGeometry(pen.Brush, pen, geometry);
         }

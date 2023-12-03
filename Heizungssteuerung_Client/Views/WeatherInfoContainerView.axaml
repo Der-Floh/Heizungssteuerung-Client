@@ -5,7 +5,7 @@
              xmlns:views="clr-namespace:Heizungssteuerung_Client.Views"
 			 xmlns:local="clr-namespace:Heizungssteuerung_Client"
 			 mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="Heizungssteuerung_Client.Views.UserTempPickerContainerView">
+             x:Class="Heizungssteuerung_Client.Views.WeatherInfoContainerView">
 
 	<UserControl.Styles>
 		<Style Selector="TextBlock">
@@ -15,31 +15,36 @@
 			<Setter Property="FontSize" Value="18"/>
 		</Style>
 		<Style Selector="Button">
-			<Setter Property="FontSize" Value="18"/>
+			<Setter Property="FontSize" Value="28"/>
 		</Style>
 	</UserControl.Styles>
-	
+
 	<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="1*"/>
 			<RowDefinition Height="8*"/>
 			<RowDefinition Height="2*"/>
 		</Grid.RowDefinitions>
-		<views:UserTempPickerView Grid.RowSpan="2" Name="UserTemperaturePickerView"
-								  Editable="True"
-								  SyncSettings="True"
-								  XAxisText="Temperature Outside in °C"
-								  YAxisText="Comfort Temperature in °C"/>
+		<views:UserTempPickerView Grid.Row="1" Name="UserTemperaturePickerView"
+								  SyncWeatherSettings="True"
+								  XValuesStringAppend="h"
+								  XTemperatureStart="3"
+								  XTemperatureEnd="24"
+								  XTemperatureStepSize="3"
+								  YTemperatureStart="50"
+								  YTemperatureEnd="-20"
+								  YTemperatureStepSize="0.5"
+								  XAxisText="Time in hours from now"
+								  YAxisText="Temperature Outside in °C"/>
 		<ScrollViewer Grid.Row="2">
 			<WrapPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
-				<views:SettingView Name="IsolcationClassComboBox" SettingType="ComboBox" Text="Isolation Class"/>
-				<views:SettingView Name="TrainButton" SettingType="Button" Text="Train Model"/>
+				<views:SettingView Name="WeatherDataButton" SettingType="Button" Text="Update Weather"/>
 			</WrapPanel>
 		</ScrollViewer>
-		<views:WaveView Name="LoadingWaveView" Grid.RowSpan="3" Text="Loading" FontSize="48"/>
 		<WrapPanel Margin="8">
 			<local:SvgImage Name="ContainerSvgImage" ImageTint="White"/>
 			<TextBlock Name="ContainerNameTextBlock" VerticalAlignment="Center"/>
 		</WrapPanel>
 	</Grid>
+	
 </UserControl>

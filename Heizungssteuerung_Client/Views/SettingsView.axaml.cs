@@ -1,7 +1,9 @@
 using Avalonia.Controls;
+using Heizungssteuerung_API;
 using Heizungssteuerung_Client.Data;
 using Heizungssteuerung_SDK.Training;
 using System;
+using System.Threading.Tasks;
 
 namespace Heizungssteuerung_Client.Views;
 
@@ -19,7 +21,8 @@ public partial class SettingsView : UserControl
     public static decimal MaxUserTemperature { get; set; } = 40.0m;
     public static decimal TemperatureHandleSize { get; set; } = 30.0m;
     public static decimal RoundingPrecision { get; set; } = 2.0m;
-    public static Temperature[] UserTemperatures { get; set; } = new Temperature[11];
+    public static Temperature[] UserTemperatures { get; set; } = new Temperature[6];
+    public static Temperature[] WeatherTemperatures { get; set; } = new Temperature[8];
 
     public SettingsView()
     {
@@ -49,6 +52,11 @@ public partial class SettingsView : UserControl
         UserTemperatures = CalculateTemperatures();
     }
 
+    public static void InitWeatherTemps()
+    {
+        _ = LoadWeatherData();
+    }
+
     private static Temperature[] CalculateTemperatures()
     {
         double min = (double)Math.Min(MinOutsideTemperature, MaxOutsideTemperature);
@@ -72,6 +80,17 @@ public partial class SettingsView : UserControl
         }
 
         return temperatures;
+    }
+
+    private static async Task LoadWeatherData()
+    {
+        WeatherAPI weatherAPI = new WeatherAPI();
+        double[] temperatures = await weatherAPI.GetFutureTemperatures(WeatherTemperatures.Length);
+
+        for (int i = 0; i < WeatherTemperatures.Length; i++)
+        {
+            WeatherTemperatures[i].YValue = temperatures[i];
+        }
     }
 
     private void IsolationClassComboBox_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)

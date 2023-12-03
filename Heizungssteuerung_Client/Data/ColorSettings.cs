@@ -10,4 +10,5 @@ public static class ColorSettings
     public static Color TempLineColor { get; set; } = Color.FromArgb(255, 244, 74, 85);
     public static Color WeatherLineColor { get; set; } = Color.FromArgb(255, 0, 128, 128);
     public static Color TextColor { get; set; } = Color.FromArgb(255, 255, 255, 255);
+    public static Color TempWaterColor { get; set; } = Color.FromArgb(255, 244, 74, 85);
 }

@@ -3,6 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:views="clr-namespace:Heizungssteuerung_Client.Views"
+			 xmlns:local="clr-namespace:Heizungssteuerung_Client"
 			 mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Heizungssteuerung_Client.Views.TempPredictorContainerView">
 
@@ -20,24 +21,29 @@
 
 	<Grid>
 		<Grid.RowDefinitions>
-			<RowDefinition Height="6*"/>
-			<RowDefinition Height="*"/>
+			<RowDefinition Height="1*"/>
+			<RowDefinition Height="8*"/>
+			<RowDefinition Height="2*"/>
 		</Grid.RowDefinitions>
-		<views:UserTempPickerView Name="UserTemperaturePickerView" XValuesStringAppend="h"
+		<views:UserTempPickerView Grid.RowSpan="2" Name="UserTemperaturePickerView"
+								  XValuesStringAppend="h"
 								  XTemperatureStart="3"
 								  XTemperatureEnd="24"
 								  XTemperatureStepSize="3"
 								  YTemperatureStart="120"
 								  YTemperatureEnd="0"
 								  YTemperatureStepSize="0.5"
-								  XAxisText="Time in hours"
-								  YAxisText="Temperature Outside"/>
-		<ScrollViewer Grid.Row="1">
+								  XAxisText="Time in hours from now"
+								  YAxisText="Heating Cauldron Temperature in °C"/>
+		<ScrollViewer Grid.Row="2">
 			<WrapPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
 				<views:SettingView Name="PredictButton" SettingType="Button" Text="Predict Model"/>
-				<views:SettingView Name="WeatherDataButton" SettingType="Button" Text="Update Weather"/>
 			</WrapPanel>
 		</ScrollViewer>
+		<WrapPanel Margin="8">
+			<local:SvgImage Name="ContainerSvgImage" ImageTint="White"/>
+			<TextBlock Name="ContainerNameTextBlock" VerticalAlignment="Center"/>
+		</WrapPanel>
 	</Grid>
 
 </UserControl>

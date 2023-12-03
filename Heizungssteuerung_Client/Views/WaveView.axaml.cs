@@ -18,6 +18,7 @@ public partial class WaveView : UserControl
     private bool _drawWave;
     public double WaveHeightPercent { get; set; }
     public int TransitionSpeed { get; set; } = 20;
+    public IBrush WaterColor { get; set; } = new SolidColorBrush(ColorSettings.TempWaterColor);
 
     private Timer? _timer;
     private Timer? _transitionTimer;
@@ -39,7 +40,7 @@ public partial class WaveView : UserControl
         {
             LineCap = PenLineCap.Round,
             Thickness = 3,
-            Brush = Temperature.DefaultOffHandleColor
+            Brush = WaterColor
         };
     }
 
