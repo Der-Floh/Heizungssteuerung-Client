@@ -1,6 +1,6 @@
 # Heizungssteuerung-Client
 
-Der Heizungssteuerung Client beinhaltet die **gesamte GUI** für unsere Heizungssteuerung. 
+#### Der Heizungssteuerung Client beinhaltet die **gesamte GUI** für unsere Heizungssteuerung. 
 Darunter fallen sämtliche Objekte, die der Nutzer sehen und steuern kann. 
 
 Der Ordner für den Client besteht wiederum aus einigen Unterordern, welche alle im Detail in dieser Dokumentation an den entsprechenden Stellen erklärt werden.
