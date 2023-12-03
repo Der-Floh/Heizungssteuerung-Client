@@ -1,12 +1,10 @@
 # SettingTypes
 
-Das Objekt SettingTypes enthält sämtliche von uns selbst definierte Einstellungen, welche wir auf unserer Einstellungsseite erstellt haben.
+Das Enum SettingTypes enthält sämtliche von uns selbst definierte Einstellungen, welche wir auf unserer Einstellungsseite erstellt haben.
 
 Die einzelnen Einstellungstypen sind in einem enum definiert und können an jeder anderer Stelle im Programm gefunden und verwendet werden.
 
 ```c#
-namespace Heizungssteuerung_Client.Data;
-
 public enum SettingTypes
 {
     None,

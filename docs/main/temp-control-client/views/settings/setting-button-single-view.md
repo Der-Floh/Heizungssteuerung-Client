@@ -1,10 +1,10 @@
 # SettingButtonSingleView
 
-Die von uns selbst definierte Einstellung "setting-button-single-view" besteht aus einer .axaml-Datei, sowie aus einer zugehörigen .cs-Datei
+Die von uns selbst definierte Einstellung "setting-button-single-view" besteht aus einer .axaml-Datei, welche den eigentlichen View darstellt, sowie aus einer zugehörigen .cs-Datei, welche die Klasse des zugehörigen Views darstellt.
 
 Bei dieser Einstellung handelt es sich entsprechend des Namens um eine Einstellung, welche einen einzelnen Button enthält. 
 
-## .axaml-Datei (User Control)
+## User Control (.axaml-Datei) 
 
 In der .axaml-Datei definieren wir das eigentliche Aussehen des Settings in XML.
 
@@ -62,7 +62,7 @@ Dieser Code kann als "Grundlage" für diese Einstellung verstanden werden.<br><b
    - Die im TextBlock enthaltene Inhalte werden horizontal zentriert angeordnet.
 <br><br>
 
-## .cs-Datei (Klasse)
+## Klasse (.cs-Datei) 
 Die .cs-Datei, bzw. die Klasse besteht aus der Klasse "SettingButtonSingleView : UserControl", welche widerum aus einigen Unterklassen besteht, welche hier im Detail erklärt werden.
 ```c#
 public partial class SettingButtonSingleView : UserControl
