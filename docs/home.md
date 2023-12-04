@@ -1,6 +1,17 @@
 # Heizungssteuerung
+
+**Projektbeteiligte**
+- Florian Noever
+- Christopher Guschky
+- Ramon Pütz
+<br><br>
+
+
+**Allgemeine Informationen**
+
 Das Projekt "Heizungssteuerung" beinhaltet eine KI-gestützte Steuerung für ein Heizungssystem, wobei mithilfe einer Wetter-API die optimale Kesseltemperatur ermittelt werden kann.<br>
 Wir haben die Möglichkeit geschaffen, dabei die Energieeffizienzklasse des jeweiligen Gebäudes, in welchem sich die Heizung befindet zu berücksichtigen. Die Kesseltemperatur ändert sich entsprechend, je nach Energieeffizienzklasse.
+<br><br>
 
 **Vorgehensweise im Client**
 

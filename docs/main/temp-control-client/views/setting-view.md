@@ -1,1 +1,38 @@
 # SettingView
+Das View "SettingView" stellt das einzelne View das angelegt wird, dar. 
+<br><br>
+
+## User Control (.axaml-Datei) 
+```XML
+<Border Name="SettingBorder" BorderBrush="#3B3B3B" BorderThickness="2" CornerRadius="5" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center">
+	<Panel Name="SettingPanel"/>
+</Border>
+```
+Im View geben wir, aus rein ästhetischen Gründen, den einzelnen Einstellungen noch einen Rahmen hinzu, damit diese im Endeffekt abgerundete Ecken haben.
+<br><br> 
+
+## Klasse (.cs-Datei) 
+iufgsdiuhf
+
+### Eigenschaften
+
+SettingView enthält folgende Einegschaften:
+
+- `string Text` - Gibt den Text der Einstellung an
+- `string ToolTip` - Gibt den ToolTip der Einstellung an
+- `decimal Value` - Gibt den Wert für die NumericUpDown-Controls an (Siehe [SettingNumericUpDownSingleView](./settings/setting-numericupdown-single-view))
+- `decimal Increment` - Gibt den Wertzuwachs der NumericUpDown-Controls an (Siehe [SettingNumericUpDownSingleView](./settings/setting-numericupdown-single-view))
+- `decimal Minimum` - Gibt den minimalen Wert für die NumericUpDown-Controls an (Siehe [SettingNumericUpDownSingleView](./settings/setting-numericupdown-single-view))
+- `decimal Maximum` - Gibt den maximalen Wert für die NumericUpDown-Controls an (Siehe [SettingNumericUpDownSingleView](./settings/setting-numericupdown-single-view))
+- `decimal MinNumericUpDownValue` - Gibt den Wert des ersten NumericUpDown-Controls einer Min/Max-Einstellung an (Siehe [SettingNumericUpDownMinMaxView](./settings/setting-numericupdown-minmax-view))
+- `decimal MinNumericUpDownIncrement` - Gibt den Wertzuwachs des ersten NumericUpDown-Controls einer Min/Max-Einstellung an (Siehe [SettingNumericUpDownMinMaxView](./settings/setting-numericupdown-minmax-view))
+- `decimal MinNumericUpDownMinimum` - Gibt den minimalen Wert des ersten NumericUpDown-Controls einer Min/Max-Einstellung an (Siehe [SettingNumericUpDownMinMaxView](./settings/setting-numericupdown-minmax-view))
+- `decimal MinNumericUpDownMaximum` - Gibt den maximalen Wert des ersten NumericUpDown-Controls einer Min/Max-Einstellung an (Siehe [SettingNumericUpDownMinMaxView](./settings/setting-numericupdown-minmax-view))
+- `decimal MaxNumericUpDownValue` - Gibt den Wert des zweiten NumericUpDown-Controls einer Min/Max-Einstellung an (Siehe [SettingNumericUpDownMinMaxView](./settings/setting-numericupdown-minmax-view))
+- `decimal MaxNumericUpDownIncrement` - Gibt den Wertzuwachs des zweiten NumericUpDown-Controls einer Min/Max-Einstellung an (Siehe [SettingNumericUpDownMinMaxView](./settings/setting-numericupdown-minmax-view))
+- `decimal MaxNumericUpDownMinimum` - Gibt den minimalen Wert des zweiten NumericUpDown-Controls einer Min/Max-Einstellung an (Siehe [SettingNumericUpDownMinMaxView](./settings/setting-numericupdown-minmax-view))
+- `decimal MaxNumericUpDownMaximum` - Gibt den maximalen Wert des zweiten NumericUpDown-Controls einer Min/Max-Einstellung an (Siehe [SettingNumericUpDownMinMaxView](./settings/setting-numericupdown-minmax-view))
+- `IEnumerable? ItemSource` -
+- `object SelectedItem` -
+- `int SelectedIndex` - 
+- `bool IsChecked` - 
