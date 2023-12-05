@@ -2,7 +2,7 @@
 
 Das Enum IsolationClasses enthält sämtliche Isolationsklassen, die ein Gebäude haben kann.
 
-```c#
+```csharp
 public enum IsolationClasses
 {
     AA,

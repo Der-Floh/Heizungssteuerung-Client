@@ -4,7 +4,7 @@ Das Enum SettingTypes enthält sämtliche von uns selbst definierte Einstellunge
 
 Die einzelnen Einstellungstypen sind in einem enum definiert und können an jeder anderer Stelle im Programm gefunden und verwendet werden.
 
-```c#
+```csharp
 public enum SettingTypes
 {
     None,

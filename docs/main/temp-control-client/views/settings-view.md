@@ -26,7 +26,7 @@ Zusätzlich legen wie hier fest, welcher Text im TextBlock der Vorlage angewende
 Die zugehörige Klasse besteht im Grunde genommen aus 3 Blöcken.
 
 **Block 1 - Deklarierung Einstellungs-Variablen** 
-```c#
+```csharp
 public static IsolationClasses IsolationClass { get; set; } = IsolationClasses.A;
 public static decimal StepSizeTemperature { get; set; } = 0.5m;
 public static decimal MinOutsideTemperature { get => _minOutsideTemperature; set { _minOutsideTemperature = value; InitUserTemps(); } }
@@ -46,14 +46,14 @@ Hier werden sämtliche Variablen, welche die Werte für die Einstellungen enthal
 Diese Variablen werden vom restlichen Programm verwendet um die vorgenommenen Einstellungen entsprechend umzusetzen.<br><br>
 
 **Block 2 - SettingsView()**
-```c#
+```csharp
 IsolationClassComboBox.SelectedItem = IsolationClass;
 StepSizeTemperatureNumericUpDown.Value = StepSizeTemperature;
 ```
 In der Funktion "SettingsView" werden die jeweiligen Controls der Einstellungen den vorher deklarierten Variablen zugeordnet.<br><br>
 
 **Block 3 - PropertyChanged - Funktionen**
-```c#
+```csharp
 private void OutsideTemperatureNumericUpDown_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
 {
     if (e.PropertyName == nameof(OutsideTemperatureNumericUpDown.MinNumericUpDownValue))

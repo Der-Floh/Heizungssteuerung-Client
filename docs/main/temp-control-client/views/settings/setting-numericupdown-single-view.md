@@ -65,7 +65,7 @@ Dieser Code kann als "Grundlage" für diese Einstellung verstanden werden.<br><b
 
 ## Klasse (.cs-Datei) 
 Die .cs-Datei, bzw. die Klasse besteht aus der Klasse "SettingNumericUpDownSingleView : UserControl", welche widerum aus einigen Unterklassen besteht, welche hier im Detail erklärt werden.
-```c#
+```csharp
 public partial class SettingNumericUpDownSingleView : UserControl
 {
     public string? Text { get => _text; set { _text = value; SingleTextBlock.Text = value; } }
@@ -90,7 +90,7 @@ public partial class SettingNumericUpDownSingleView : UserControl
 Mit diesen Get- und Set-Methoden werden die Werte, welche im View dargestellt werden, also z.B. das ToolTip der einzelnen Einstellung, oder der Text innerhalb des TextBlocks, erfasst und in globale Variablen geschrieben, welche von hier aus vom restlichen Programm weiterverwendet werden können.
 <br><br>
 
-```c#
+```csharp
     public event EventHandler<NumericUpDownValueChangedEventArgs>? NumericUpDownValueChanged;
 
     public SettingNumericUpDownSingleView()
@@ -106,7 +106,7 @@ Das EventHandler-Event dient dazu, das OnClick-Event des Buttons an das restlich
 Wir stellen hiermit die Möglichkeit dar, diesen Wert von jeder Stelle im Programm zur Verfügung zu stellen. 
 <br><br>
 
-```c#
+```csharp
     private void UpdateToolTipVisibility()
     {
         if (string.IsNullOrEmpty(ToolTip))

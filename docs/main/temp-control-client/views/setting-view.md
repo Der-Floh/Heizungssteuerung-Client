@@ -12,12 +12,15 @@ Im View geben wir, aus rein ästhetischen Gründen, den einzelnen Einstellungen 
 <br><br> 
 
 ## Klasse (.cs-Datei) 
-iufgsdiuhf
+
+Die zugehörige Klasse beinhaltet die Funktionalität, dass zwischen mehreren Einstellungstypen gewählt werden kann und diese mit bestimmten Eigenschaften ausgestattet sind.<br>
+Durch Events können die verschiedenen Änderungen (Programmatisch oder durch den User) abgefangen werden
 
 ### Eigenschaften
 
 SettingView enthält folgende Einegschaften:
 
+- `SettingTypes SettingType` - Gibt den Typ der Einstellung an (Siehe [SettingTypes](../data/setting-types))
 - `string Text` - Gibt den Text der Einstellung an
 - `string ToolTip` - Gibt den ToolTip der Einstellung an
 - `decimal Value` - Gibt den Wert für die NumericUpDown-Controls an (Siehe [SettingNumericUpDownSingleView](./settings/setting-numericupdown-single-view))

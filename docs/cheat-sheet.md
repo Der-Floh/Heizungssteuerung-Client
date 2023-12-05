@@ -52,7 +52,7 @@ Absatz Ende
 Code Abschnitt Inline `private void CoolMethod()`
 
 Code Abschnitt:
-```c#
+```csharp
 private void CoolMethod()
 ```
 
