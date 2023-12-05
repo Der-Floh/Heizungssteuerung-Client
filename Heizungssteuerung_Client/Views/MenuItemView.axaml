@@ -6,9 +6,9 @@
 			 mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Heizungssteuerung_Client.Views.MenuItemView">
 
-	<StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Orientation="Horizontal">
-		<local:SvgImage Stretch="UniformToFill" Name="MenuItemIcon" Margin="0 0 70 0" ImageTint="White"/>
-		<TextBlock Name="MenuItemTextBlock" Margin="0 5 0 0"/>
+	<StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Top" Orientation="Horizontal">
+		<local:SvgImage Stretch="UniformToFill" Name="MenuItemIcon" Margin="0 0 50 0" ImageTint="White"/>
+		<TextBlock Name="MenuItemTextBlock" Margin="0 5 0 0" HorizontalAlignment="Center"/>
 	</StackPanel>
 	
 </UserControl>

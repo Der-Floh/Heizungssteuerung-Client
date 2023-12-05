@@ -7,7 +7,7 @@
              x:Class="Heizungssteuerung_Client.Views.MenuView">
 
 	<SplitView Name="SplitViewCom"
-			   OpenPaneLength="300"
+			   OpenPaneLength="250"
 			   CompactPaneLength="60"
 			   DisplayMode="CompactInline"
 			   Background="Black"

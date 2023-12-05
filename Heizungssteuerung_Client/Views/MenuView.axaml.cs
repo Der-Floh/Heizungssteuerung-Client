@@ -147,7 +147,7 @@ public partial class MenuView : UserControl
     private void TriggerPaneButton_Tapped(object? sender, TappedEventArgs e)
     {
         SplitViewCom.IsPaneOpen = !SplitViewCom.IsPaneOpen;
-        TitleText.Text = SplitViewCom.IsPaneOpen ? "KI-gesteuerte Heizungsanlage" : null;
+        TitleText.Text = SplitViewCom.IsPaneOpen ? "Heating Control" : null;
     }
 
     private void SplitviewListBox_SelectionChanged(object? sender, SelectionChangedEventArgs e)
