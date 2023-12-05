@@ -27,20 +27,15 @@ Die zugehörige Klasse besteht im Grunde genommen aus 3 Blöcken.
 
 **Block 1 - Deklarierung Einstellungs-Variablen** 
 ```csharp
-public static IsolationClasses IsolationClass { get; set; } = IsolationClasses.A;
-public static decimal StepSizeTemperature { get; set; } = 0.5m;
-public static decimal MinOutsideTemperature { get => _minOutsideTemperature; set { _minOutsideTemperature = value; InitUserTemps(); } }
-private static decimal _minOutsideTemperature = -10.0m;
-public static decimal MaxOutsideTemperature { get => _maxOutsideTemperature; set { _maxOutsideTemperature = value; InitUserTemps(); } }
-public static decimal _maxOutsideTemperature = 40.0m;
-public static decimal OutsideTemperatureStepSize { get => _outsideTemperatureStepSize; set { _outsideTemperatureStepSize = value; InitUserTemps(); } }
-public static decimal _outsideTemperatureStepSize = 10m;
-public static decimal MinUserTemperature { get; set; } = 0.0m;
-public static decimal MaxUserTemperature { get; set; } = 40.0m;
-public static decimal TemperatureHandleSize { get; set; } = 30.0m;
-public static decimal RoundingPrecision { get; set; } = 2.0m;
-public static Temperature[] UserTemperatures { get; set; } = new Temperature[6];
-public static Temperature[] WeatherTemperatures { get; set; } = new Temperature[8];
+public IsolationClasses IsolationClass { get; set; }
+public decimal StepSizeTemperature { get; set; }
+public decimal MinOutsideTemperature { get; set; }
+public decimal MaxOutsideTemperature { get; set; }
+public decimal OutsideTemperatureStepSize { get; set; }
+public decimal MinUserTemperature { get; set; }
+public decimal MaxUserTemperature { get; set; }
+public decimal TemperatureHandleSize { get; set; }
+public decimal RoundingPrecision { get; set; }
 ```
 Hier werden sämtliche Variablen, welche die Werte für die Einstellungen enthalten definiert.
 Diese Variablen werden vom restlichen Programm verwendet um die vorgenommenen Einstellungen entsprechend umzusetzen.<br><br>
@@ -54,12 +49,12 @@ In der Funktion "SettingsView" werden die jeweiligen Controls der Einstellungen 
 
 **Block 3 - PropertyChanged - Funktionen**
 ```csharp
-private void OutsideTemperatureNumericUpDown_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+private void OutsideTemperatureNumericUpDown_PropertyChanged(object? sender, PropertyChangedEventArgs e)
 {
     if (e.PropertyName == nameof(OutsideTemperatureNumericUpDown.MinNumericUpDownValue))
-        MinOutsideTemperature = OutsideTemperatureNumericUpDown.MinNumericUpDownValue;
+        OnPropertyChanged(nameof(MinOutsideTemperature));
     if (e.PropertyName == nameof(OutsideTemperatureNumericUpDown.MaxNumericUpDownValue))
-        MaxOutsideTemperature = OutsideTemperatureNumericUpDown.MaxNumericUpDownValue;
+        OnPropertyChanged(nameof(MaxOutsideTemperature));
 }
 ```
 Im dritten und letzten Block wird geprüft, ob jegliche Eingaben in den Einstellungen vorgenommen werden.

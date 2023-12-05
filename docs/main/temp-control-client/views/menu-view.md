@@ -78,3 +78,4 @@ MenuView enthält folgende Funktionen:
   - *`string content` - Name des Menüpunktes*
   - *`string icon` - Pfad zum SVG-Bild des Menüpunktes*
   - *`UserControl control` - UserControl das angezeigt werden soll wenn der Menüpunkt angeklickt wird (Siehe [Avalonia.Controls](https://docs.avaloniaui.net/docs/reference/controls/usercontrol))*
+- `void Predict()` - Vorhersagen der Heizkesseltemperaturen auf Basis der in den einzelnen Views eingestellten Werte

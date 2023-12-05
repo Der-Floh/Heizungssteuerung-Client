@@ -36,48 +36,40 @@ public partial class SettingsView : UserControl, INotifyPropertyChanged
     {
         if (e.PropertyName == nameof(IsolationClassComboBox.SelectedItem))
             OnPropertyChanged(nameof(IsolationClass));
-        //IsolationClass = Enum.Parse<IsolationClasses>(IsolationClassComboBox.SelectedItem.ToString());
     }
 
     private void StepSizeTemperatureNumericUpDown_PropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName == nameof(StepSizeTemperatureNumericUpDown.Value))
             OnPropertyChanged(nameof(StepSizeTemperature));
-        //StepSizeTemperature = StepSizeTemperatureNumericUpDown.Value;
     }
 
     private void OutsideTemperatureNumericUpDown_PropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName == nameof(OutsideTemperatureNumericUpDown.MinNumericUpDownValue))
             OnPropertyChanged(nameof(MinOutsideTemperature));
-        //MinOutsideTemperature = OutsideTemperatureNumericUpDown.MinNumericUpDownValue;
         if (e.PropertyName == nameof(OutsideTemperatureNumericUpDown.MaxNumericUpDownValue))
             OnPropertyChanged(nameof(MaxOutsideTemperature));
-        //MaxOutsideTemperature = OutsideTemperatureNumericUpDown.MaxNumericUpDownValue;
     }
 
     private void UserTemperatureNumericUpDown_PropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName == nameof(UserTemperatureNumericUpDown.MinNumericUpDownValue))
             OnPropertyChanged(nameof(MinUserTemperature));
-        //MinUserTemperature = UserTemperatureNumericUpDown.MinNumericUpDownValue;
         if (e.PropertyName == nameof(UserTemperatureNumericUpDown.MaxNumericUpDownValue))
             OnPropertyChanged(nameof(MaxUserTemperature));
-        //MaxUserTemperature = UserTemperatureNumericUpDown.MaxNumericUpDownValue;
     }
 
     private void TemperatureHandleSizeNumericUpDown_PropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName == nameof(TemperatureHandleSizeNumericUpDown.Value))
             OnPropertyChanged(nameof(TemperatureHandleSize));
-        //TemperatureHandleSize = TemperatureHandleSizeNumericUpDown.Value;
     }
 
     private void RoundingprecisionNumericUpDown_PropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName == nameof(RoundingprecisionNumericUpDown.Value))
             OnPropertyChanged(nameof(DecimalPlaces));
-        //DecimalPlaces = RoundingprecisionNumericUpDown.Value;
     }
 
     protected virtual void OnPropertyChanged(string propertyName)
