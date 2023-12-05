@@ -6,8 +6,6 @@ public partial class MainWindow : Window
 {
     public MainWindow()
     {
-        SettingsView.InitUserTemps();
-
         InitializeComponent();
     }
 }

@@ -25,17 +25,7 @@
 			<RowDefinition Height="8*"/>
 			<RowDefinition Height="2*"/>
 		</Grid.RowDefinitions>
-		<views:UserTempPickerView Grid.RowSpan="2" Name="UserTemperaturePickerView"
-								  SyncWeatherSettings="True"
-								  XValuesStringAppend="h"
-								  XTemperatureStart="3"
-								  XTemperatureEnd="24"
-								  XTemperatureStepSize="3"
-								  YTemperatureStart="50"
-								  YTemperatureEnd="-20"
-								  YTemperatureStepSize="0.5"
-								  XAxisText="Time in hours from now"
-								  YAxisText="Temperature Outside in °C"/>
+		<Panel Grid.RowSpan="2" Name="UserTempPickerPanel"/>
 		<ScrollViewer Grid.Row="2">
 			<WrapPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
 				<views:SettingView Name="WeatherDataButton" SettingType="Button" Text="Update Weather"/>

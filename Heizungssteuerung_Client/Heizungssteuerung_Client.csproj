@@ -61,8 +61,9 @@
     <Compile Update="Views\TempPredictorContainerView.axaml.cs">
       <DependentUpon>TempPredictorContainerView.axaml</DependentUpon>
     </Compile>
-    <Compile Update="Views\UserTempPickerView.axaml.cs">
-      <DependentUpon>UserTempPickerView.axaml</DependentUpon>
-    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\UserTempPickerAdvancedView.axaml" />
   </ItemGroup>
 </Project>

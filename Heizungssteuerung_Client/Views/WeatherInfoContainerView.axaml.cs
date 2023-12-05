@@ -10,6 +10,7 @@ public partial class WeatherInfoContainerView : UserControl
 {
     public string? ViewName { get => ContainerNameTextBlock.Text; set => ContainerNameTextBlock.Text = value; }
     public string ViewIcon { get => ContainerSvgImage.Source; set => ContainerSvgImage.Source = value; }
+    public UserTempPickerAdvancedView UserTempPickerAdvancedView { get; set; }
 
     public WeatherInfoContainerView()
     {
@@ -18,8 +19,22 @@ public partial class WeatherInfoContainerView : UserControl
         Loaded += WeatherInfoContainerView_Loaded;
         WeatherDataButton.Click += WeatherDataButton_Click;
 
-        UserTemperaturePickerView.LineColor = new SolidColorBrush(ColorSettings.WeatherLineColor);
-        UserTemperaturePickerView.InitTemperatures();
+        UserTempPickerAdvancedView = new UserTempPickerAdvancedView
+        {
+            XTemperatureStart = 3,
+            XTemperatureEnd = 24,
+            XTemperatureStepSize = 3,
+            YTemperatureStart = 50,
+            YTemperatureEnd = -20,
+            YTemperatureStepSize = 0.5,
+            YTemperatureStartValue = 20,
+            XAxisText = "Time in hours from now",
+            YAxisText = "Temperature Outside in °C",
+            XValuesStringAppend = "h",
+            LineColor = new SolidColorBrush(ColorSettings.WeatherLineColor),
+        };
+        UserTempPickerAdvancedView.InitTemperatures();
+        UserTempPickerPanel.Children.Add(UserTempPickerAdvancedView);
     }
 
     private void WeatherInfoContainerView_Loaded(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
@@ -40,11 +55,11 @@ public partial class WeatherInfoContainerView : UserControl
     private async Task LoadWeatherData()
     {
         WeatherAPI weatherAPI = new WeatherAPI();
-        double[] temperatures = await weatherAPI.GetFutureTemperatures(UserTemperaturePickerView.Temperatures.Length);
+        double[] temperatures = await weatherAPI.GetFutureTemperatures(UserTempPickerAdvancedView.Temperatures.Count);
 
-        for (int i = 0; i < UserTemperaturePickerView.Temperatures.Length; i++)
+        for (int i = 0; i < UserTempPickerAdvancedView.Temperatures.Count; i++)
         {
-            UserTemperaturePickerView.Temperatures[i].YValue = temperatures[i];
+            UserTempPickerAdvancedView.Temperatures[i].YValue = temperatures[i];
         }
     }
 }

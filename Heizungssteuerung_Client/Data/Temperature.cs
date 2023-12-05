@@ -1,11 +1,9 @@
 ﻿using Avalonia.Media;
-using System;
 using System.ComponentModel;
 
 namespace Heizungssteuerung_Client.Data;
 public class Temperature : INotifyPropertyChanged
 {
-    public Guid Id { get; private set; } = Guid.NewGuid();
     public double X { get => _x; set { if (value != _x) { _x = value; OnPropertyChanged(nameof(X)); } } }
     private double _x = -1;
     public double Y { get => _y; set { if (value != _y) { _y = value; OnPropertyChanged(nameof(Y)); } } }
@@ -17,11 +15,10 @@ public class Temperature : INotifyPropertyChanged
     public double YValue { get => _yValue; set { if (value != _yValue) { _yValue = value; OnPropertyChanged(nameof(YValue)); } } }
     private double _yValue;
     public IBrush HandleColor { get; set; } = DefaultOffHandleColor;
-    public static IBrush DefaultOnHandleColor { get; } = new SolidColorBrush(ColorSettings.OnHandleColor);
-    public static IBrush DefaultOffHandleColor { get; } = new SolidColorBrush(ColorSettings.OffHandleColor);
+    public static IBrush DefaultOnHandleColor { get => new SolidColorBrush(ColorSettings.OnHandleColor); }
+    public static IBrush DefaultOffHandleColor { get => new SolidColorBrush(ColorSettings.OffHandleColor); }
 
     public Temperature() { }
-    public Temperature(Guid id) { Id = id; }
 
     public event PropertyChangedEventHandler? PropertyChanged;
     protected virtual void OnPropertyChanged(string propertyName)

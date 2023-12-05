@@ -11,9 +11,6 @@
 		<Style Selector="TextBlock">
 			<Setter Property="FontSize" Value="18"/>
 		</Style>
-		<Style Selector="NumericUpDown">
-			<Setter Property="FontSize" Value="18"/>
-		</Style>
 		<Style Selector="Button">
 			<Setter Property="FontSize" Value="28"/>
 		</Style>
@@ -25,20 +22,9 @@
 			<RowDefinition Height="8*"/>
 			<RowDefinition Height="2*"/>
 		</Grid.RowDefinitions>
-		<views:UserTempPickerView Grid.RowSpan="2" Name="UserTemperaturePickerView"
-								  XValuesStringAppend="h"
-								  XTemperatureStart="3"
-								  XTemperatureEnd="24"
-								  XTemperatureStepSize="3"
-								  YTemperatureStart="120"
-								  YTemperatureEnd="0"
-								  YTemperatureStepSize="0.5"
-								  XAxisText="Time in hours from now"
-								  YAxisText="Boiler Temperature in °C"/>
+		<Panel Grid.RowSpan="2" Name="UserTempPickerPanel"/>
 		<ScrollViewer Grid.Row="2">
-			<WrapPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
-				<views:SettingView Name="PredictButton" SettingType="Button" Text="Predict Model"/>
-			</WrapPanel>
+			<views:SettingView Name="PredictButton" SettingType="Button" Text="Predict Model"/>
 		</ScrollViewer>
 		<WrapPanel Margin="8">
 			<local:SvgImage Name="ContainerSvgImage" ImageTint="White"/>

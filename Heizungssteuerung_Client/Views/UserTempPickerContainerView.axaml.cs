@@ -1,7 +1,6 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Threading;
 using Heizungssteuerung_SDK;
-using Heizungssteuerung_SDK.Training;
 using System;
 using System.Threading.Tasks;
 
@@ -11,22 +10,29 @@ public partial class UserTempPickerContainerView : UserControl
 {
     public string? ViewName { get => ContainerNameTextBlock.Text; set => ContainerNameTextBlock.Text = value; }
     public string ViewIcon { get => ContainerSvgImage.Source; set => ContainerSvgImage.Source = value; }
+    public UserTempPickerAdvancedView UserTempPickerAdvancedView { get; set; }
 
     public UserTempPickerContainerView()
     {
         InitializeComponent();
 
-        IsolcationClassComboBox.ItemsSource = Enum.GetNames(typeof(IsolationClasses));
-        IsolcationClassComboBox.SelectedItem = SettingsView.IsolationClass;
-        IsolcationClassComboBox.PropertyChangedRuntime += IsolcationClassComboBox_PropertyChangedRuntime;
-
         TrainButton.Click += TrainButton_Click;
-    }
 
-    private void IsolcationClassComboBox_PropertyChangedRuntime(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
-    {
-        if (e.PropertyName == nameof(IsolcationClassComboBox.SelectedItem))
-            SettingsView.IsolationClass = Enum.Parse<IsolationClasses>(IsolcationClassComboBox.SelectedItem.ToString());
+        UserTempPickerAdvancedView = new UserTempPickerAdvancedView
+        {
+            Editable = true,
+            XTemperatureStart = -10,
+            XTemperatureEnd = 40,
+            XTemperatureStepSize = 10,
+            YTemperatureStart = 40,
+            YTemperatureEnd = 0,
+            YTemperatureStepSize = 0.5,
+            YTemperatureStartValue = 25,
+            XAxisText = "Temperature Outside in °C",
+            YAxisText = "Comfort Temperature in °C",
+        };
+        UserTempPickerAdvancedView.InitTemperatures();
+        UserTempPickerPanel.Children.Add(UserTempPickerAdvancedView);
     }
 
     private void TrainButton_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
@@ -35,7 +41,7 @@ public partial class UserTempPickerContainerView : UserControl
         {
             try
             {
-                UserTemperaturePickerView.Editable = false;
+                UserTempPickerAdvancedView.Editable = false;
                 LoadingWaveView.Text = "Training AI";
                 LoadingWaveView.WaveHeightPercent = 0.8;
                 LoadingWaveView.DrawWave = true;
@@ -47,11 +53,11 @@ public partial class UserTempPickerContainerView : UserControl
                 float accuracy = await model.CalcAccuracy();
                 await Dispatcher.UIThread.InvokeAsync(() => TrainButton.Text = $"Success (accuracy: {Math.Round(accuracy, 2)})", DispatcherPriority.Background);
                 await LoadingWaveView.ExitToBottom();
-                UserTemperaturePickerView.Editable = true;
+                UserTempPickerAdvancedView.Editable = true;
             }
             catch (Exception ex)
             {
-                UserTemperaturePickerView.Editable = true;
+                UserTempPickerAdvancedView.Editable = true;
                 await LoadingWaveView.ExitToBottom();
                 await Dispatcher.UIThread.InvokeAsync(() => TrainButton.Text = $"Failed: {ex.Message}", DispatcherPriority.Background);
             }
