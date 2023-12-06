@@ -16,6 +16,9 @@ public partial class SettingsView : UserControl, INotifyPropertyChanged
     public decimal TemperatureHandleSize { get => TemperatureHandleSizeNumericUpDown.Value; set { if (TemperatureHandleSizeNumericUpDown.Value == value) return; TemperatureHandleSizeNumericUpDown.Value = value; OnPropertyChanged(nameof(TemperatureHandleSize)); } }
     public decimal DecimalPlaces { get => RoundingprecisionNumericUpDown.Value; set { if (RoundingprecisionNumericUpDown.Value == value) return; RoundingprecisionNumericUpDown.Value = value; OnPropertyChanged(nameof(DecimalPlaces)); } }
 
+    public bool InstantSave { get => _instantSave; set { if (_instantSave == value) return; _instantSave = value; SaveButton.IsVisible = !value; } }
+    private bool _instantSave;
+
     public new event PropertyChangedEventHandler? PropertyChanged;
 
     public SettingsView()
@@ -23,6 +26,7 @@ public partial class SettingsView : UserControl, INotifyPropertyChanged
         InitializeComponent();
 
         IsolationClassComboBox.ItemsSource = Enum.GetNames(typeof(IsolationClasses));
+        IsolationClassComboBox.SelectedItem = IsolationClasses.C;
 
         IsolationClassComboBox.PropertyChangedRuntime += IsolationClassComboBox_PropertyChanged;
         StepSizeTemperatureNumericUpDown.PropertyChangedRuntime += StepSizeTemperatureNumericUpDown_PropertyChanged;
@@ -30,50 +34,125 @@ public partial class SettingsView : UserControl, INotifyPropertyChanged
         UserTemperatureNumericUpDown.PropertyChangedRuntime += UserTemperatureNumericUpDown_PropertyChanged;
         TemperatureHandleSizeNumericUpDown.PropertyChangedRuntime += TemperatureHandleSizeNumericUpDown_PropertyChanged;
         RoundingprecisionNumericUpDown.PropertyChangedRuntime += RoundingprecisionNumericUpDown_PropertyChanged;
+        SaveButton.Click += SaveButton_Click;
+
+        LoadSettings();
+    }
+
+    public void LoadSettings()
+    {
+        Data.Settings.Load();
+
+        string? valueInstantSave = Data.Settings.Get(nameof(InstantSave));
+        if (!string.IsNullOrEmpty(valueInstantSave) && bool.TryParse(valueInstantSave, out bool boolValue))
+            InstantSave = boolValue;
+
+        string? valueIsolationClass = Data.Settings.Get(nameof(IsolationClass));
+        if (!string.IsNullOrEmpty(valueIsolationClass) && Enum.TryParse(valueIsolationClass, out IsolationClasses enumValue))
+            IsolationClassComboBox.SelectedItem = enumValue;
+
+        string? valueStepSizeTemperature = Data.Settings.Get(nameof(StepSizeTemperature));
+        if (!string.IsNullOrEmpty(valueStepSizeTemperature) && decimal.TryParse(valueStepSizeTemperature, out decimal decimalValue))
+            StepSizeTemperatureNumericUpDown.Value = decimalValue;
+
+        string? valueMinOutsideTemperature = Data.Settings.Get(nameof(MinOutsideTemperature));
+        if (!string.IsNullOrEmpty(valueMinOutsideTemperature) && decimal.TryParse(valueMinOutsideTemperature, out decimalValue))
+            OutsideTemperatureNumericUpDown.MinNumericUpDownValue = decimalValue;
+
+        string? valueMaxOutsideTemperature = Data.Settings.Get(nameof(MaxOutsideTemperature));
+        if (!string.IsNullOrEmpty(valueMaxOutsideTemperature) && decimal.TryParse(valueMaxOutsideTemperature, out decimalValue))
+            OutsideTemperatureNumericUpDown.MaxNumericUpDownValue = decimalValue;
+
+        string? valueMinUserTemperature = Data.Settings.Get(nameof(MinUserTemperature));
+        if (!string.IsNullOrEmpty(valueMinUserTemperature) && decimal.TryParse(valueMinUserTemperature, out decimalValue))
+            UserTemperatureNumericUpDown.MinNumericUpDownValue = decimalValue;
+
+        string? valueMaxUserTemperature = Data.Settings.Get(nameof(MaxUserTemperature));
+        if (!string.IsNullOrEmpty(valueMaxUserTemperature) && decimal.TryParse(valueMaxUserTemperature, out decimalValue))
+            UserTemperatureNumericUpDown.MaxNumericUpDownValue = decimalValue;
+
+        string? valueTemperatureHandleSize = Data.Settings.Get(nameof(TemperatureHandleSize));
+        if (!string.IsNullOrEmpty(valueTemperatureHandleSize) && decimal.TryParse(valueTemperatureHandleSize, out decimalValue))
+            TemperatureHandleSizeNumericUpDown.Value = decimalValue;
+
+        string? valueDecimalPlaces = Data.Settings.Get(nameof(DecimalPlaces));
+        if (!string.IsNullOrEmpty(valueDecimalPlaces) && decimal.TryParse(valueDecimalPlaces, out decimalValue))
+            RoundingprecisionNumericUpDown.Value = decimalValue;
+    }
+
+    private void SaveButton_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    {
+        _ = Data.Settings.Save();
     }
 
     private void IsolationClassComboBox_PropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName == nameof(IsolationClassComboBox.SelectedItem))
+        {
+            Data.Settings.Set(nameof(IsolationClass), IsolationClass.ToString());
             OnPropertyChanged(nameof(IsolationClass));
+        }
     }
 
     private void StepSizeTemperatureNumericUpDown_PropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName == nameof(StepSizeTemperatureNumericUpDown.Value))
+        {
+            Data.Settings.Set(nameof(StepSizeTemperature), StepSizeTemperature.ToString());
             OnPropertyChanged(nameof(StepSizeTemperature));
+        }
     }
 
     private void OutsideTemperatureNumericUpDown_PropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName == nameof(OutsideTemperatureNumericUpDown.MinNumericUpDownValue))
+        {
+            Data.Settings.Set(nameof(MinOutsideTemperature), MinOutsideTemperature.ToString());
             OnPropertyChanged(nameof(MinOutsideTemperature));
+        }
         if (e.PropertyName == nameof(OutsideTemperatureNumericUpDown.MaxNumericUpDownValue))
+        {
+            Data.Settings.Set(nameof(MaxOutsideTemperature), MaxOutsideTemperature.ToString());
             OnPropertyChanged(nameof(MaxOutsideTemperature));
+        }
     }
 
     private void UserTemperatureNumericUpDown_PropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName == nameof(UserTemperatureNumericUpDown.MinNumericUpDownValue))
+        {
+            Data.Settings.Set(nameof(MinUserTemperature), MinUserTemperature.ToString());
             OnPropertyChanged(nameof(MinUserTemperature));
+        }
         if (e.PropertyName == nameof(UserTemperatureNumericUpDown.MaxNumericUpDownValue))
+        {
+            Data.Settings.Set(nameof(MaxUserTemperature), MaxUserTemperature.ToString());
             OnPropertyChanged(nameof(MaxUserTemperature));
+        }
     }
 
     private void TemperatureHandleSizeNumericUpDown_PropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName == nameof(TemperatureHandleSizeNumericUpDown.Value))
+        {
+            Data.Settings.Set(nameof(TemperatureHandleSize), TemperatureHandleSize.ToString());
             OnPropertyChanged(nameof(TemperatureHandleSize));
+        }
     }
 
     private void RoundingprecisionNumericUpDown_PropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName == nameof(RoundingprecisionNumericUpDown.Value))
+        {
+            Data.Settings.Set(nameof(DecimalPlaces), DecimalPlaces.ToString());
             OnPropertyChanged(nameof(DecimalPlaces));
+        }
     }
 
     protected virtual void OnPropertyChanged(string propertyName)
     {
+        if (InstantSave)
+            _ = Data.Settings.Save();
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

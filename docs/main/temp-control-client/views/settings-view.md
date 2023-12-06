@@ -25,7 +25,7 @@ Zusätzlich legen wie hier fest, welcher Text im TextBlock der Vorlage angewende
 ## Klasse
 Die zugehörige Klasse besteht im Grunde genommen aus 3 Blöcken.
 
-**Block 1 - Deklarierung Einstellungs-Variablen** 
+**Block 1 - Deklarierung Einstellungs-Variablen**
 ```csharp
 public IsolationClasses IsolationClass { get; set; }
 public decimal StepSizeTemperature { get; set; }
@@ -40,12 +40,12 @@ public decimal RoundingPrecision { get; set; }
 Hier werden sämtliche Variablen, welche die Werte für die Einstellungen enthalten definiert.
 Diese Variablen werden vom restlichen Programm verwendet um die vorgenommenen Einstellungen entsprechend umzusetzen.<br><br>
 
-**Block 2 - SettingsView()**
+**Block 2 - Konstruktor**
 ```csharp
-IsolationClassComboBox.SelectedItem = IsolationClass;
-StepSizeTemperatureNumericUpDown.Value = StepSizeTemperature;
+IsolationClassComboBox.PropertyChangedRuntime += IsolationClassComboBox_PropertyChanged;
+LoadSettings();
 ```
-In der Funktion "SettingsView" werden die jeweiligen Controls der Einstellungen den vorher deklarierten Variablen zugeordnet.<br><br>
+In dem Konstruktor werden die **Changed Events** der jeweiligen Controls der zugeordnet und anschließen die gepseicherten Einstellungen geladen.<br><br>
 
 **Block 3 - PropertyChanged - Funktionen**
 ```csharp

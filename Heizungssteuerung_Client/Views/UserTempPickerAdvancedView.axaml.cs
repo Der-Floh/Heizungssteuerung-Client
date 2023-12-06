@@ -7,7 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
-using System.Linq;
 
 namespace Heizungssteuerung_Client.Views;
 
@@ -310,43 +309,28 @@ public partial class UserTempPickerAdvancedView : UserControl, INotifyPropertyCh
 
     private void InitializeTemperaturePositions(double w, double h)
     {
-        if (Temperatures.All(x => x.YValue == YTemperatureStartValue))
+        double lineSpacing = w / (Temperatures.Count - 1);
+        for (int i = 0; i < Temperatures.Count; i++)
         {
-            double lineSpacing = w / (Temperatures.Count - 1);
-            for (int i = 0; i < Temperatures.Count; i++)
-            {
-                Temperatures[i].X = MarginLines + i * lineSpacing;
+            Temperatures[i].X = MarginLines + i * lineSpacing;
+            if (Temperatures[i].YValue == YTemperatureStartValue)
                 Temperatures[i].YValue = PositionToValue(h / 2, h);
-            }
-        }
-        else
-        {
-            double lineSpacing = w / (Temperatures.Count - 1);
-            for (int i = 0; i < Temperatures.Count; i++)
-            {
-                Temperatures[i].X = MarginLines + i * lineSpacing;
+            else
                 Temperatures[i].YValue = YTemperatureStartValue;
-            }
         }
     }
 
     private void UpdateTemperaturePositions(double w, double h)
     {
-        if (!_positionInitialized && Temperatures.All(x => x.YValue != YTemperatureStartValue))
+        bool posInit = _positionInitialized;
+        double lineSpacing = w / (Temperatures.Count - 1);
+        for (int i = 0; i < Temperatures.Count; i++)
         {
-            double lineSpacing = w / (Temperatures.Count - 1);
-            for (int i = 0; i < Temperatures.Count; i++)
-            {
-                Temperatures[i].X = MarginLines + i * lineSpacing;
+            Temperatures[i].X = MarginLines + i * lineSpacing;
+            if (!posInit && Temperatures[i].YValue != YTemperatureStartValue)
                 Temperatures[i].YValue = YTemperatureStartValue;
-            }
-        }
-        else
-        {
-            double lineSpacing = w / (Temperatures.Count - 1);
-            for (int i = 0; i < Temperatures.Count; i++)
+            else
             {
-                Temperatures[i].X = MarginLines + i * lineSpacing;
                 double newPos = ValueToPosition(Temperatures[i].YValue, h);
                 if (Temperatures[i].Y != newPos)
                     Temperatures[i].Y = newPos;

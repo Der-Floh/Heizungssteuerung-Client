@@ -179,5 +179,8 @@ public partial class MenuView : UserControl
         if (_prevIndex != -1)
             ContentPanel.Children[_prevIndex].IsVisible = false;
         _prevIndex = SplitviewListBox.SelectedIndex;
+
+        if (ContentPanel.Children[SplitviewListBox.SelectedIndex] is TempPredictorContainerView)
+            _ = Predict();
     }
 }

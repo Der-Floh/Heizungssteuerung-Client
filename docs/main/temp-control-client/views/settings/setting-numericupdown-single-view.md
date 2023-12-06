@@ -68,23 +68,12 @@ Die .cs-Datei, bzw. die Klasse besteht aus der Klasse "SettingNumericUpDownSingl
 ```csharp
 public partial class SettingNumericUpDownSingleView : UserControl
 {
-    public string? Text { get => _text; set { _text = value; SingleTextBlock.Text = value; } }
-    private string? _text;
-
-    public string? ToolTip { get => _toolTip; set { _toolTip = value; UpdateToolTipVisibility(); } }
-    private string? _toolTip;
-
-    public decimal Value { get => _value; set { _value = value; SingleNumericUpDown.Value = value; } }
-    private decimal _value;
-
-    public decimal Increment { get => _increment; set { _increment = value; SingleNumericUpDown.Increment = value; } }
-    private decimal _increment;
-
-    public decimal Minimum { get => _minimum; set { _minimum = value; SingleNumericUpDown.Minimum = value; } }
-    private decimal _minimum;
-
-    public decimal Maximum { get => _maximum; set { _maximum = value; SingleNumericUpDown.Maximum = value; } }
-    private decimal _maximum;
+    public string Text { get; set; }
+    public string ToolTip { get; set; }
+    public decimal Value { get; set; }
+    public decimal Increment { get; set; }
+    public decimal Minimum { get; set; }
+    public decimal Maximum { get; set; }
 }
 ```
 Mit diesen Get- und Set-Methoden werden die Werte, welche im View dargestellt werden, also z.B. das ToolTip der einzelnen Einstellung, oder der Text innerhalb des TextBlocks, erfasst und in globale Variablen geschrieben, welche von hier aus vom restlichen Programm weiterverwendet werden können.

@@ -67,20 +67,11 @@ Die .cs-Datei, bzw. die Klasse besteht aus der Klasse "SettingComboBoxSingleView
 ```csharp
 public partial class SettingComboBoxSingleView : UserControl
 {
-    public string? Text { get => _text; set { _text = value; SingleTextBlock.Text = value; } }
-    private string? _text;
-
-    public string? ToolTip { get => _toolTip; set { _toolTip = value; UpdateToolTipVisibility(); } }
-    private string? _toolTip;
-
-    public IEnumerable? Items { get => _items; set { _items = value; SingleComboBox.ItemsSource = value; } }
-    private IEnumerable? _items;
-
-    public object? SelectedItem { get => _selectedItem; set { _selectedItem = value; SingleComboBox.SelectedItem = value?.ToString(); } }
-    private object? _selectedItem;
-
-    public int SelectedIndex { get => _selectedIndex; set { _selectedIndex = value; SingleComboBox.SelectedIndex = value; } }
-    private int _selectedIndex;
+    public string Text { get; set; }
+    public string ToolTip { get; set; }
+    public IEnumerable Items { get; set; }
+    public object SelectedItem { get; set; }
+    public int SelectedIndex { get; set; }
 }
 ```
 Mit diesen Get- und Set-Methoden werden die Werte, welche im View dargestellt werden, also z.B. das ToolTip der einzelnen Einstellung, oder der Text innerhalb des TextBlocks, erfasst und in globale Variablen geschrieben, welche von hier aus vom restlichen Programm weiterverwendet werden können.

@@ -67,17 +67,10 @@ Die .cs-Datei, bzw. die Klasse besteht aus der Klasse "SettingButtonSingleView :
 ```csharp
 public partial class SettingButtonSingleView : UserControl
 {
-    public bool TextOutsideButtonVisible { get => _textOutsideButtonVisible; set { _textOutsideButtonVisible = value; SingleTextBlock.IsVisible = value; } }
-    private bool _textOutsideButtonVisible;
-
-    public string? TextBlockText { get => _textBlockText; set { _textBlockText = value; SingleTextBlock.Text = value; } }
-    private string? _textBlockText;
-
-    public string? ToolTip { get => _toolTip; set { _toolTip = value; UpdateToolTipVisibility(); } }
-    private string? _toolTip;
-
-    public string? Text { get => _text; set { _text = value; SingleTextBlock.Text = value; SingleButton.Content = value; } }
-    private string? _text;
+    public bool TextOutsideButtonVisible { get; set; }
+    public string TextBlockText { get; set; }
+    public string ToolTip { get; set; }
+    public string Text { get; set; }
 }
 ```
 Mit diesen Get- und Set-Methoden werden die Werte, welche im View dargestellt werden, also z.B. das ToolTip der einzelnen Einstellung, oder der Text innerhalb des TextBlocks, erfasst und in globale Variablen geschrieben, welche von hier aus vom restlichen Programm weiterverwendet werden können.

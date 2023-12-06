@@ -17,53 +17,61 @@
 			<Setter Property="FontSize" Value="24"/>
 		</Style>
 	</UserControl.Styles>
+
 	
 	<ScrollViewer>
-		<WrapPanel Name="SettingsWrapPanel" Margin="10">
-			<views:SettingView Name="IsolationClassComboBox"
-							   SettingType="ComboBox"
-							   Text="Energy Effiency"
-							   ToolTip="The energy effiency of your house. Can usually be found in your Energy Certificate (Energieausweis)."/>
+		<StackPanel>
+			<WrapPanel Name="SettingsWrapPanel" Margin="10">
+				<views:SettingView Name="IsolationClassComboBox"
+								   SettingType="ComboBox"
+								   Text="Energy Effiency"
+								   ToolTip="The energy effiency of your house. Can usually be found in your Energy Certificate (Energieausweis)."/>
 			
-			<views:SettingView Name="StepSizeTemperatureNumericUpDown"
-							   SettingType="NumericUpDown"
-							   Text="Step Size"
-							   Increment="0.5"
-							   Minimum="0.5"
-							   Maximum="5.0"
-							   Value="0.5"/>
+				<views:SettingView Name="StepSizeTemperatureNumericUpDown"
+								   SettingType="NumericUpDown"
+								   Text="Step Size"
+								   Increment="0.5"
+								   Minimum="0.5"
+								   Maximum="5.0"
+								   Value="0.5"/>
 
-			<views:SettingView Name="OutsideTemperatureNumericUpDown"
-							   SettingType="NumericUpDownMinMax"
-							   Text="Outside Temperature Range"
-							   Minimum="-40.0"
-							   Maximum="70.0"
-							   MinNumericUpDownValue="-10.0"
-							   MaxNumericUpDownValue="40.0"
-							   ToolTip="Specifiy the range of the minimum and maximum outside temperature."/>
+				<views:SettingView Name="OutsideTemperatureNumericUpDown"
+								   SettingType="NumericUpDownMinMax"
+								   Text="Outside Temperature Range"
+								   Minimum="-40.0"
+								   Maximum="70.0"
+								   MinNumericUpDownValue="-10.0"
+								   MaxNumericUpDownValue="40.0"
+								   ToolTip="Specifiy the range of the minimum and maximum outside temperature."/>
 			
-			<views:SettingView Name="UserTemperatureNumericUpDown"
-							   SettingType="NumericUpDownMinMax"
-							   Text="User Temperature Range"
-							   Minimum="0.0"
-							   Maximum="40.0"
-							   MinNumericUpDownValue="0.0"
-							   MaxNumericUpDownValue="40.0"
-							   ToolTip="Specifiy the range of the minimum and maximum prefered user temperature."/>
+				<views:SettingView Name="UserTemperatureNumericUpDown"
+								   SettingType="NumericUpDownMinMax"
+								   Text="User Temperature Range"
+								   Minimum="0.0"
+								   Maximum="40.0"
+								   MinNumericUpDownValue="0.0"
+								   MaxNumericUpDownValue="40.0"
+								   ToolTip="Specifiy the range of the minimum and maximum prefered user temperature."/>
 
-			<views:SettingView Name="TemperatureHandleSizeNumericUpDown"
-							   SettingType="NumericUpDown"
-							   Text="Temperature Handle Size Radius"
-							   Minimum="1.0"
-							   Maximum="100.0"
-							   Value="30.0"/>
+				<views:SettingView Name="TemperatureHandleSizeNumericUpDown"
+								   SettingType="NumericUpDown"
+								   Text="Temperature Handle Size Radius"
+								   Minimum="1.0"
+								   Maximum="100.0"
+								   Value="30.0"/>
 			
-			<views:SettingView Name="RoundingprecisionNumericUpDown"
-							   SettingType="NumericUpDown"
-							   Text="Rounding Precision"
-							   Minimum="1.0"
-							   Maximum="4.0"
-							   Value="2.0"/>
-		</WrapPanel>
+				<views:SettingView Name="RoundingprecisionNumericUpDown"
+								   SettingType="NumericUpDown"
+								   Text="Rounding Precision"
+								   Minimum="1.0"
+								   Maximum="4.0"
+								   Value="2.0"/>
+			</WrapPanel>
+			<views:SettingView Name="SaveButton"
+							   HorizontalAlignment="Center"
+							   SettingType="Button"
+							   Text="Save"/>
+		</StackPanel>
 	</ScrollViewer>
+	
 </UserControl>

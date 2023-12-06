@@ -100,39 +100,21 @@ Die .cs-Datei, bzw. die Klasse besteht aus der Klasse "SettingNumericUpDownMinMa
 ```csharp
 public partial class SettingNumericUpDownMinMaxView : UserControl
 {
-    public string? Text { get => _text; set { _text = value; MinMaxTextBlock.Text = value; } }
-    private string? _text;
-
-    public string? ToolTip { get => _toolTip; set { _toolTip = value; UpdateToolTipVisibility(); } }
-    private string? _toolTip;
-
-    public decimal MinNumericUpDownValue { get => _minNumericUpDownValue; set { _minNumericUpDownValue = value; MinNumericUpDown.Value = value; } }
-    private decimal _minNumericUpDownValue;
-
-    public decimal MinNumericUpDownIncrement { get => _minNumericUpDownIncrement; set { _minNumericUpDownIncrement = value; MinNumericUpDown.Increment = value; } }
-    private decimal _minNumericUpDownIncrement;
-
-    public decimal MinNumericUpDownMinimum { get => _minNumericUpDownMinimum; set { _minNumericUpDownMinimum = value; MinNumericUpDown.Minimum = value; } }
-    private decimal _minNumericUpDownMinimum;
-
-    public decimal MinNumericUpDownMaximum { get => _minNumericUpDownMaximum; set { _minNumericUpDownMaximum = value; MinNumericUpDown.Maximum = value; } }
-    private decimal _minNumericUpDownMaximum;
-
-    public decimal MaxNumericUpDownValue { get => _maxNumericUpDownValue; set { _maxNumericUpDownValue = value; MaxNumericUpDown.Value = value; } }
-    private decimal _maxNumericUpDownValue;
-
-    public decimal MaxNumericUpDownIncrement { get => _maxNumericUpDownIncrement; set { _maxNumericUpDownIncrement = value; MaxNumericUpDown.Increment = value; } }
-    private decimal _maxNumericUpDownIncrement;
-
-    public decimal MaxNumericUpDownMinimum { get => _maxNumericUpDownMinimum; set { _maxNumericUpDownMinimum = value; MaxNumericUpDown.Minimum = value; } }
-    private decimal _maxNumericUpDownMinimum;
-
-    public decimal MaxNumericUpDownMaximum { get => _maxNumericUpDownMaximum; set { _maxNumericUpDownMaximum = value; MaxNumericUpDown.Maximum = value; } }
-    private decimal _maxNumericUpDownMaximum;
+    public string Text { get; set; }
+    public string ToolTip { get; set; }
+    public decimal MinNumericUpDownValue { get; set; }
+    public decimal MinNumericUpDownIncrement { get; set; }
+    public decimal MinNumericUpDownMinimum { get; set; }
+    public decimal MinNumericUpDownMaximum { get; set; }
+    public decimal MaxNumericUpDownValue { get; set; }
+    public decimal MaxNumericUpDownIncrement { get; set; }
+    public decimal MaxNumericUpDownMinimum { get; set; }
+    public decimal MaxNumericUpDownMaximum { get; set; }
 }
 ```
 Mit diesen Get- und Set-Methoden werden die Werte, welche im View dargestellt werden, also z.B. das ToolTip der einzelnen Einstellung, oder der Text innerhalb des TextBlocks, erfasst und in globale Variablen geschrieben, welche von hier aus vom restlichen Programm weiterverwendet werden können.
 <br><br>
+
 ```csharp
     public event EventHandler<NumericUpDownValueChangedEventArgs>? MinNumericUpDownValueChanged;
     public event EventHandler<NumericUpDownValueChangedEventArgs>? MaxNumericUpDownValueChanged;
