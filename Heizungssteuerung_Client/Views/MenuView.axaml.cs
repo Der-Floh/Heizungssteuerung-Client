@@ -5,6 +5,7 @@ using Heizungssteuerung_SDK;
 using Heizungssteuerung_SDK.Training;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Heizungssteuerung_Client.Views;
 
@@ -19,15 +20,23 @@ public partial class MenuView : UserControl
     private WeatherInfoContainerView _weatherInfoContainerView;
     private bool _modelLoaded;
     private HeatingControlModel _model = new HeatingControlModel();
+    private bool _settingsViewLoaded, _tempPredictorContainerViewLoaded, _userTempPickerContainerViewLoaded, _weatherInfoContainerViewLoaded;
 
     public MenuView()
     {
         _settingsView = new SettingsView();
+        _settingsView.Loaded += _settingsView_Loaded;
         _settingsView.PropertyChanged += _settingsView_PropertyChanged;
+
         _tempPredictorContainerView = new TempPredictorContainerView { ViewName = "Boiler Prediction", ViewIcon = "Assets/home.svg" };
+        _tempPredictorContainerView.Loaded += _tempPredictorContainerView_Loaded;
         _tempPredictorContainerView.PredictButton_Click += _tempPredictorContainerView_PredictButton_Click;
+
         _userTempPickerContainerView = new UserTempPickerContainerView { ViewName = "Comfort Temperatures", ViewIcon = "Assets/home.svg" };
+        _userTempPickerContainerView.LoadingFinished += _userTempPickerContainerView_LoadingFinished;
+
         _weatherInfoContainerView = new WeatherInfoContainerView { ViewName = "Weather Data", ViewIcon = "Assets/home.svg" };
+        _weatherInfoContainerView.LoadingFinished += _weatherInfoContainerView_LoadingFinished;
 
         InitializeComponent();
 
@@ -40,7 +49,14 @@ public partial class MenuView : UserControl
         TriggerPaneButton.Tapped += TriggerPaneButton_Tapped;
 
         SplitviewListBox.SelectedIndex = 0;
+
+        _ = Predict();
     }
+
+    private void _settingsView_Loaded(object? sender, Avalonia.Interactivity.RoutedEventArgs e) => _settingsViewLoaded = true;
+    private void _tempPredictorContainerView_Loaded(object? sender, Avalonia.Interactivity.RoutedEventArgs e) => _tempPredictorContainerViewLoaded = true;
+    private void _userTempPickerContainerView_LoadingFinished(object? sender, Avalonia.Interactivity.RoutedEventArgs e) => _userTempPickerContainerViewLoaded = true;
+    private void _weatherInfoContainerView_LoadingFinished(object? sender, Avalonia.Interactivity.RoutedEventArgs e) => _weatherInfoContainerViewLoaded = true;
 
     private void _settingsView_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
     {
@@ -72,7 +88,7 @@ public partial class MenuView : UserControl
 
     private void _tempPredictorContainerView_PredictButton_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
-        Predict();
+        _ = Predict();
     }
 
     public void AddContent(string content, string icon, UserControl control)
@@ -88,8 +104,9 @@ public partial class MenuView : UserControl
         ContentPanel.Children.Add(control);
     }
 
-    public void Predict()
+    public async Task Predict()
     {
+        await WaitForMenusLoaded();
         try
         {
             if (!_modelLoaded)
@@ -142,6 +159,12 @@ public partial class MenuView : UserControl
         }
 
         return nearestTemp;
+    }
+
+    private async Task WaitForMenusLoaded()
+    {
+        while (!_settingsViewLoaded || !_tempPredictorContainerViewLoaded || !_userTempPickerContainerViewLoaded || !_weatherInfoContainerViewLoaded)
+            await Task.Delay(50);
     }
 
     private void TriggerPaneButton_Tapped(object? sender, TappedEventArgs e)

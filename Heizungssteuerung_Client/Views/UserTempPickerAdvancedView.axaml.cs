@@ -303,6 +303,11 @@ public partial class UserTempPickerAdvancedView : UserControl, INotifyPropertyCh
         return temperatures;
     }
 
+    public void InitializeTemperaturePositions()
+    {
+        InitializeTemperaturePositions(Bounds.Width - MarginLines * 2, Bounds.Height);
+    }
+
     private void InitializeTemperaturePositions(double w, double h)
     {
         if (Temperatures.All(x => x.YValue == YTemperatureStartValue))

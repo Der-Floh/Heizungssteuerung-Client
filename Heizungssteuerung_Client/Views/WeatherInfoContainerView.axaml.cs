@@ -1,7 +1,9 @@
 using Avalonia.Controls;
+using Avalonia.Interactivity;
 using Avalonia.Media;
 using Heizungssteuerung_API;
 using Heizungssteuerung_Client.Data;
+using System;
 using System.Threading.Tasks;
 
 namespace Heizungssteuerung_Client.Views;
@@ -11,6 +13,7 @@ public partial class WeatherInfoContainerView : UserControl
     public string? ViewName { get => ContainerNameTextBlock.Text; set => ContainerNameTextBlock.Text = value; }
     public string ViewIcon { get => ContainerSvgImage.Source; set => ContainerSvgImage.Source = value; }
     public UserTempPickerAdvancedView UserTempPickerAdvancedView { get; set; }
+    public event EventHandler<RoutedEventArgs>? LoadingFinished;
 
     public WeatherInfoContainerView()
     {
@@ -39,7 +42,7 @@ public partial class WeatherInfoContainerView : UserControl
 
     private void WeatherInfoContainerView_Loaded(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
-        UpdateWeatherData();
+        UpdateWeatherData(true);
     }
 
     private void WeatherDataButton_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
@@ -47,19 +50,23 @@ public partial class WeatherInfoContainerView : UserControl
         UpdateWeatherData();
     }
 
-    public void UpdateWeatherData()
+    public void UpdateWeatherData(bool triggerLoaded = false)
     {
-        _ = LoadWeatherData();
+        _ = LoadWeatherData(triggerLoaded);
     }
 
-    private async Task LoadWeatherData()
+    private async Task LoadWeatherData(bool triggerLoaded = false)
     {
         WeatherAPI weatherAPI = new WeatherAPI();
+
         double[] temperatures = await weatherAPI.GetFutureTemperatures(UserTempPickerAdvancedView.Temperatures.Count);
 
         for (int i = 0; i < UserTempPickerAdvancedView.Temperatures.Count; i++)
         {
             UserTempPickerAdvancedView.Temperatures[i].YValue = temperatures[i];
         }
+
+        if (triggerLoaded)
+            LoadingFinished?.Invoke(this, new RoutedEventArgs());
     }
 }

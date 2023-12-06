@@ -1,4 +1,5 @@
 ﻿using Avalonia.Controls;
+using Avalonia.Interactivity;
 using Avalonia.Threading;
 using Heizungssteuerung_SDK;
 using System;
@@ -11,11 +12,13 @@ public partial class UserTempPickerContainerView : UserControl
     public string? ViewName { get => ContainerNameTextBlock.Text; set => ContainerNameTextBlock.Text = value; }
     public string ViewIcon { get => ContainerSvgImage.Source; set => ContainerSvgImage.Source = value; }
     public UserTempPickerAdvancedView UserTempPickerAdvancedView { get; set; }
+    public event EventHandler<RoutedEventArgs>? LoadingFinished;
 
     public UserTempPickerContainerView()
     {
         InitializeComponent();
 
+        Loaded += UserTempPickerContainerView_Loaded;
         TrainButton.Click += TrainButton_Click;
 
         UserTempPickerAdvancedView = new UserTempPickerAdvancedView
@@ -35,7 +38,13 @@ public partial class UserTempPickerContainerView : UserControl
         UserTempPickerPanel.Children.Add(UserTempPickerAdvancedView);
     }
 
-    private void TrainButton_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    private void UserTempPickerContainerView_Loaded(object? sender, RoutedEventArgs e)
+    {
+        UserTempPickerAdvancedView.InitializeTemperaturePositions();
+        LoadingFinished?.Invoke(this, e);
+    }
+
+    private void TrainButton_Click(object? sender, RoutedEventArgs e)
     {
         Task.Run(async () =>
         {
