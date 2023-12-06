@@ -59,6 +59,7 @@ public partial class UserTempPickerAdvancedView : UserControl, INotifyPropertyCh
     private double _handleSize;
 
     public new event PropertyChangedEventHandler? PropertyChanged;
+    public event EventHandler<int>? TempChanged;
     #endregion
 
 
@@ -126,6 +127,7 @@ public partial class UserTempPickerAdvancedView : UserControl, INotifyPropertyCh
     {
         if (_currentTempIndex >= 0)
         {
+            TempChanged?.Invoke(this, _currentTempIndex);
             IsTempMoving = false;
             _currentTempIndex = -1;
         }
@@ -276,7 +278,7 @@ public partial class UserTempPickerAdvancedView : UserControl, INotifyPropertyCh
         Temperatures = CalculateTemperatures();
     }
 
-    private List<Temperature> CalculateTemperatures()
+    public List<Temperature> CalculateTemperatures()
     {
         double min = Math.Min(XTemperatureStart, XTemperatureEnd);
         double max = Math.Max(XTemperatureStart, XTemperatureEnd);

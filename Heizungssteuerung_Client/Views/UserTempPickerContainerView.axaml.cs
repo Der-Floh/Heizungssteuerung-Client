@@ -21,6 +21,8 @@ public partial class UserTempPickerContainerView : UserControl
         Loaded += UserTempPickerContainerView_Loaded;
         TrainButton.Click += TrainButton_Click;
 
+        Data.Settings.LoadUserTemps();
+
         UserTempPickerAdvancedView = new UserTempPickerAdvancedView
         {
             Editable = true,
@@ -35,12 +37,28 @@ public partial class UserTempPickerContainerView : UserControl
             YAxisText = "Comfort Temperature in °C",
         };
         UserTempPickerAdvancedView.InitTemperatures();
+
+        UserTempPickerAdvancedView.TempChanged += UserTempPickerAdvancedView_TempChanged;
         UserTempPickerPanel.Children.Add(UserTempPickerAdvancedView);
+    }
+
+    private void UserTempPickerAdvancedView_TempChanged(object? sender, int i)
+    {
+        Data.Settings.SetUserTemps(i, UserTempPickerAdvancedView.Temperatures[i].YValue);
+        _ = Data.Settings.SaveUserTemps();
     }
 
     private void UserTempPickerContainerView_Loaded(object? sender, RoutedEventArgs e)
     {
         UserTempPickerAdvancedView.InitializeTemperaturePositions();
+        foreach (var kvp in Data.Settings.UserTemps)
+        {
+            try
+            {
+                UserTempPickerAdvancedView.Temperatures[kvp.Key].YValue = kvp.Value;
+            }
+            catch { }
+        }
         LoadingFinished?.Invoke(this, e);
     }
 
