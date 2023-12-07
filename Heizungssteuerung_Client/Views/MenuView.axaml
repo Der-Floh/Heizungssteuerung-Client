@@ -15,12 +15,12 @@
 		<SplitView.Pane>
 			<StackPanel Spacing="5" Margin="5">
 				<StackPanel Orientation="Horizontal">
-					<Button HorizontalAlignment="Left" VerticalAlignment="Top" Name="TriggerPaneButton" Cursor="Hand" Width="50" Height="45" CornerRadius="10" Grid.Column="1">
+					<Button HorizontalAlignment="Left" VerticalAlignment="Top" Name="TriggerPaneButton" Cursor="Hand" Width="50" Height="45" CornerRadius="5" Grid.Column="1">
 						<local:SvgImage Grid.Column="1" Stretch="UniformToFill" Source="/Assets/menu.svg" ImageTint="White"/>
 					</Button>
 					<TextBlock Name="TitleText" Grid.Column="2" Margin="5 12 0 0" FontSize="16" FontWeight="500"/>
 				</StackPanel>
-				<ListBox SelectionMode="Single" Name="SplitviewListBox" CornerRadius="10" Cursor="Hand"/>
+				<ListBox SelectionMode="Single" Name="SplitviewListBox" CornerRadius="5" Cursor="Hand"/>
 			</StackPanel>
 		</SplitView.Pane>
 		<SplitView.Content>

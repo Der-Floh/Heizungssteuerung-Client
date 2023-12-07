@@ -23,13 +23,15 @@
 			<RowDefinition Height="2*"/>
 		</Grid.RowDefinitions>
 		<Panel Grid.RowSpan="2" Name="UserTempPickerPanel"/>
-		<ScrollViewer Grid.Row="2">
-			<views:SettingView Name="PredictButton" SettingType="Button" Text="Predict Model"/>
-		</ScrollViewer>
-		<WrapPanel Margin="8">
-			<local:SvgImage Name="ContainerSvgImage" ImageTint="White"/>
-			<TextBlock Name="ContainerNameTextBlock" VerticalAlignment="Center"/>
-		</WrapPanel>
+		<views:SettingView Name="PredictButton" Grid.Row="2"
+						   SettingType="Button"
+						   Text="Predict Model"
+						   HorizontalAlignment="Center"
+						   VerticalAlignment="Center"/>
+		<StackPanel Orientation="Horizontal" Margin="8">
+			<local:SvgImage Name="ContainerSvgImage" ImageTint="White" VerticalAlignment="Top"/>
+			<TextBlock Name="ContainerNameTextBlock" Background="#2d2d2d" Padding="0,2,0,2" VerticalAlignment="Top"/>
+		</StackPanel>
 	</Grid>
 
 </UserControl>

@@ -23,13 +23,15 @@
 			<RowDefinition Height="2*"/>
 		</Grid.RowDefinitions>
 		<Panel Grid.RowSpan="2" Name="UserTempPickerPanel"/>
-		<ScrollViewer Grid.Row="2">
-			<views:SettingView Name="TrainButton" SettingType="Button" Text="Train Model"/>
-		</ScrollViewer>
+		<views:SettingView Name="TrainButton" Grid.Row="2"
+						   SettingType="Button" 
+						   Text="Train Model"
+						   HorizontalAlignment="Center"
+						   VerticalAlignment="Center"/>
 		<views:WaveView Name="LoadingWaveView" Grid.RowSpan="3" Text="Loading" FontSize="48"/>
-		<WrapPanel Margin="8">
-			<local:SvgImage Name="ContainerSvgImage" ImageTint="White"/>
-			<TextBlock Name="ContainerNameTextBlock" VerticalAlignment="Center"/>
-		</WrapPanel>
+		<StackPanel Orientation="Horizontal" Margin="8">
+			<local:SvgImage Name="ContainerSvgImage" ImageTint="White" VerticalAlignment="Top"/>
+			<TextBlock Name="ContainerNameTextBlock" Background="#2d2d2d" Padding="0,2,0,2" VerticalAlignment="Top"/>
+		</StackPanel>
 	</Grid>
 </UserControl>

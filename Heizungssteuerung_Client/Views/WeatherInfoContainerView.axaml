@@ -11,9 +11,6 @@
 		<Style Selector="TextBlock">
 			<Setter Property="FontSize" Value="18"/>
 		</Style>
-		<Style Selector="NumericUpDown">
-			<Setter Property="FontSize" Value="18"/>
-		</Style>
 		<Style Selector="Button">
 			<Setter Property="FontSize" Value="28"/>
 		</Style>
@@ -26,15 +23,15 @@
 			<RowDefinition Height="2*"/>
 		</Grid.RowDefinitions>
 		<Panel Grid.RowSpan="2" Name="UserTempPickerPanel"/>
-		<ScrollViewer Grid.Row="2">
-			<WrapPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
-				<views:SettingView Name="WeatherDataButton" SettingType="Button" Text="Update Weather"/>
-			</WrapPanel>
-		</ScrollViewer>
-		<WrapPanel Margin="8">
-			<local:SvgImage Name="ContainerSvgImage" ImageTint="White"/>
-			<TextBlock Name="ContainerNameTextBlock" VerticalAlignment="Bottom"/>
-		</WrapPanel>
+		<views:SettingView Name="WeatherDataButton" Grid.Row="2"
+						   SettingType="Button"
+						   Text="Update Weather"
+						   HorizontalAlignment="Center"
+						   VerticalAlignment="Center"/>
+		<StackPanel Orientation="Horizontal" Margin="8">
+			<local:SvgImage Name="ContainerSvgImage" ImageTint="White" VerticalAlignment="Top"/>
+			<TextBlock Name="ContainerNameTextBlock" Background="#2d2d2d" Padding="3,2,0,2" VerticalAlignment="Top"/>
+		</StackPanel>
 	</Grid>
 	
 </UserControl>

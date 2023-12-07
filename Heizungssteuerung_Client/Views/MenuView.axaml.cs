@@ -32,10 +32,10 @@ public partial class MenuView : UserControl
         _tempPredictorContainerView.Loaded += _tempPredictorContainerView_Loaded;
         _tempPredictorContainerView.PredictButton_Click += _tempPredictorContainerView_PredictButton_Click;
 
-        _userTempPickerContainerView = new UserTempPickerContainerView { ViewName = "Comfort Temperatures", ViewIcon = "Assets/home.svg" };
+        _userTempPickerContainerView = new UserTempPickerContainerView { ViewName = "Comfort Temperatures", ViewIcon = "Assets/device_thermostat.svg" };
         _userTempPickerContainerView.LoadingFinished += _userTempPickerContainerView_LoadingFinished;
 
-        _weatherInfoContainerView = new WeatherInfoContainerView { ViewName = "Weather Data", ViewIcon = "Assets/home.svg" };
+        _weatherInfoContainerView = new WeatherInfoContainerView { ViewName = "Weather Data", ViewIcon = "Assets/partly_cloudy_day.svg" };
         _weatherInfoContainerView.LoadingFinished += _weatherInfoContainerView_LoadingFinished;
 
         InitializeComponent();

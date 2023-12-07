@@ -16,7 +16,7 @@ public partial class SettingsView : UserControl, INotifyPropertyChanged
     public decimal TemperatureHandleSize { get => TemperatureHandleSizeNumericUpDown.Value; set { if (TemperatureHandleSizeNumericUpDown.Value == value) return; TemperatureHandleSizeNumericUpDown.Value = value; OnPropertyChanged(nameof(TemperatureHandleSize)); } }
     public decimal DecimalPlaces { get => RoundingprecisionNumericUpDown.Value; set { if (RoundingprecisionNumericUpDown.Value == value) return; RoundingprecisionNumericUpDown.Value = value; OnPropertyChanged(nameof(DecimalPlaces)); } }
 
-    public bool InstantSave { get => _instantSave; set { if (_instantSave == value) return; _instantSave = value; SaveButton.IsVisible = !value; } }
+    public bool InstantSave { get => _instantSave; set { if (_instantSave == value) return; _instantSave = value; HandleInstantSaveChanged(value); } }
     private bool _instantSave;
 
     public new event PropertyChangedEventHandler? PropertyChanged;
@@ -78,6 +78,18 @@ public partial class SettingsView : UserControl, INotifyPropertyChanged
         string? valueDecimalPlaces = Data.Settings.Get(nameof(DecimalPlaces));
         if (!string.IsNullOrEmpty(valueDecimalPlaces) && decimal.TryParse(valueDecimalPlaces, out decimalValue))
             RoundingprecisionNumericUpDown.Value = decimalValue;
+    }
+
+    private void HandleInstantSaveChanged(bool value)
+    {
+        SaveButton.IsVisible = !value;
+        if (value)
+        {
+            if (SettingsGrid.RowDefinitions.Count >= 5)
+                SettingsGrid.RowDefinitions.RemoveAt(SettingsGrid.RowDefinitions.Count - 1);
+        }
+        else if (SettingsGrid.RowDefinitions.Count < 5)
+            SettingsGrid.RowDefinitions.Add(new RowDefinition(GridLength.Parse("*")));
     }
 
     private void SaveButton_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)

@@ -5,9 +5,9 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Heizungssteuerung_Client.Views.Settings.SettingComboBoxSingleView">
 
-	<WrapPanel Orientation="Horizontal" Background="#3B3B3B" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+	<StackPanel Orientation="Horizontal">
 		<TextBlock Name="SingleTextBlock" Padding="10,0,10,0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-		<ComboBox Name="SingleComboBox" Cursor="Hand" Margin="5,5,5,5" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-	</WrapPanel>
+		<ComboBox Name="SingleComboBox" Cursor="Hand" Margin="5,0,5,0" VerticalAlignment="Center"/>
+	</StackPanel>
 	
 </UserControl>
