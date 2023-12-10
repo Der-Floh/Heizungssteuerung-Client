@@ -6,7 +6,7 @@ using System;
 
 namespace Heizungssteuerung_Client.Views;
 
-public partial class TempPredictorContainerView : UserControl
+public partial class TempPredictorOutsideContainerView : UserControl
 {
     public string? ViewName { get => ContainerNameTextBlock.Text; set => ContainerNameTextBlock.Text = value; }
     public string? ViewIcon { get => ContainerSvgImage.Source; set => ContainerSvgImage.Source = value ?? string.Empty; }
@@ -14,7 +14,7 @@ public partial class TempPredictorContainerView : UserControl
 
     public event EventHandler<RoutedEventArgs>? PredictButton_Click;
 
-    public TempPredictorContainerView()
+    public TempPredictorOutsideContainerView()
     {
         InitializeComponent();
 
@@ -22,16 +22,15 @@ public partial class TempPredictorContainerView : UserControl
 
         UserTempPickerAdvancedView = new UserTempPickerAdvancedView
         {
-            XTemperatureStart = 3,
-            XTemperatureEnd = 24,
-            XTemperatureStepSize = 3,
+            XTemperatureStart = -10,
+            XTemperatureEnd = 40,
+            XTemperatureStepSize = 5,
             YTemperatureStart = 120,
             YTemperatureEnd = 0,
             YTemperatureStepSize = 0.5,
             YTemperatureStartValue = 60,
-            XAxisText = "Time in hours from now",
+            XAxisText = "Temperature Outside in °C",
             YAxisText = "Boiler Temperature in °C",
-            XValuesStringAppend = "h",
             LineColor = new SolidColorBrush(ColorSettings.WeatherLineColor),
         };
         UserTempPickerAdvancedView.InitTemperatures();

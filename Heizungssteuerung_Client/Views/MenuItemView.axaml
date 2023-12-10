@@ -7,8 +7,8 @@
              x:Class="Heizungssteuerung_Client.Views.MenuItemView">
 
 	<StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Top" Orientation="Horizontal">
-		<local:SvgImage Stretch="UniformToFill" Name="MenuItemIcon" Margin="0 0 50 0" ImageTint="White"/>
-		<TextBlock Name="MenuItemTextBlock" Margin="0 5 0 0" HorizontalAlignment="Center"/>
+		<local:SvgImage Stretch="UniformToFill" Name="MenuItemIcon" Margin="0,0,50,0" ImageTint="White"/>
+		<TextBlock Name="MenuItemTextBlock" Margin="0,5,0,0" HorizontalAlignment="Center"/>
 	</StackPanel>
 	
 </UserControl>

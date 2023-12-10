@@ -3,7 +3,6 @@ using Avalonia.Input;
 using Heizungssteuerung_Client.Data;
 using Heizungssteuerung_SDK;
 using Heizungssteuerung_SDK.Training;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -16,15 +15,16 @@ public partial class MenuView : UserControl
     private int _prevIndex = -1;
     private SettingsView _settingsView;
     private TempPredictorContainerView _tempPredictorContainerView;
+    private TempPredictorOutsideContainerView _tempPredictorOutsideContainerView;
     private UserTempPickerContainerView _userTempPickerContainerView;
     private WeatherInfoContainerView _weatherInfoContainerView;
     private bool _modelLoaded;
     private HeatingControlModel _model = new HeatingControlModel();
-    private bool _settingsViewLoaded, _tempPredictorContainerViewLoaded, _userTempPickerContainerViewLoaded, _weatherInfoContainerViewLoaded;
+    private bool _settingsViewLoaded, _tempPredictorContainerViewLoaded, _tempPredictorOutsideContainerViewLoaded, _userTempPickerContainerViewLoaded, _weatherInfoContainerViewLoaded;
 
     public MenuView()
     {
-        _settingsView = new SettingsView();
+        _settingsView = new SettingsView { ViewName = "Settings", ViewIcon = "Assets/settings.svg" };
         _settingsView.Loaded += _settingsView_Loaded;
         _settingsView.PropertyChanged += _settingsView_PropertyChanged;
 
@@ -32,7 +32,11 @@ public partial class MenuView : UserControl
         _tempPredictorContainerView.Loaded += _tempPredictorContainerView_Loaded;
         _tempPredictorContainerView.PredictButton_Click += _tempPredictorContainerView_PredictButton_Click;
 
-        _userTempPickerContainerView = new UserTempPickerContainerView { ViewName = "Comfort Temperatures", ViewIcon = "Assets/device_thermostat.svg" };
+        _tempPredictorOutsideContainerView = new TempPredictorOutsideContainerView { ViewName = "Boiler Prediction Outside", ViewIcon = "Assets/device_thermostat.svg" };
+        _tempPredictorOutsideContainerView.Loaded += _tempPredictorOutsideContainerView_Loaded;
+        _tempPredictorOutsideContainerView.PredictButton_Click += _tempPredictorOutsideContainerView_PredictButton_Click;
+
+        _userTempPickerContainerView = new UserTempPickerContainerView { ViewName = "Comfort Temperatures", ViewIcon = "Assets/thermometer_add.svg" };
         _userTempPickerContainerView.LoadingFinished += _userTempPickerContainerView_LoadingFinished;
 
         _weatherInfoContainerView = new WeatherInfoContainerView { ViewName = "Weather Data", ViewIcon = "Assets/partly_cloudy_day.svg" };
@@ -40,19 +44,19 @@ public partial class MenuView : UserControl
 
         InitializeComponent();
 
-        AddContent("Homepage", "Assets/home.svg", _tempPredictorContainerView);
-        AddContent("Training", "Assets/device_thermostat.svg", _userTempPickerContainerView);
-        AddContent("Weather", "Assets/partly_cloudy_day.svg", _weatherInfoContainerView);
-        AddContent("Settings", "Assets/settings.svg", _settingsView);
+        AddContent("Homepage", _tempPredictorContainerView.ViewIcon, _tempPredictorContainerView);
+        AddContent("Outside", _tempPredictorOutsideContainerView.ViewIcon, _tempPredictorOutsideContainerView);
+        AddContent("Training", _userTempPickerContainerView.ViewIcon, _userTempPickerContainerView);
+        AddContent("Weather", _weatherInfoContainerView.ViewIcon, _weatherInfoContainerView);
+        AddContent("Settings", _settingsView.ViewIcon, _settingsView);
 
         SplitviewListBox.SelectionChanged += SplitviewListBox_SelectionChanged;
         TriggerPaneButton.Tapped += TriggerPaneButton_Tapped;
 
         SplitviewListBox.SelectedIndex = 0;
-
-        _ = Predict();
     }
 
+    private void _tempPredictorOutsideContainerView_Loaded(object? sender, Avalonia.Interactivity.RoutedEventArgs e) => _tempPredictorOutsideContainerViewLoaded = true;
     private void _settingsView_Loaded(object? sender, Avalonia.Interactivity.RoutedEventArgs e) => _settingsViewLoaded = true;
     private void _tempPredictorContainerView_Loaded(object? sender, Avalonia.Interactivity.RoutedEventArgs e) => _tempPredictorContainerViewLoaded = true;
     private void _userTempPickerContainerView_LoadingFinished(object? sender, Avalonia.Interactivity.RoutedEventArgs e) => _userTempPickerContainerViewLoaded = true;
@@ -80,15 +84,23 @@ public partial class MenuView : UserControl
             case nameof(_settingsView.TemperatureHandleSize):
                 _userTempPickerContainerView.UserTempPickerAdvancedView.HandleSize = (double)_settingsView.TemperatureHandleSize;
                 break;
+            case nameof(_settingsView.PredictTemperatureStepSize):
+                _tempPredictorOutsideContainerView.UserTempPickerAdvancedView.XTemperatureStepSize = (double)_settingsView.PredictTemperatureStepSize;
+                break;
             case nameof(_settingsView.DecimalPlaces):
                 _userTempPickerContainerView.UserTempPickerAdvancedView.DecimalPlaces = (int)_settingsView.DecimalPlaces;
                 break;
         }
     }
 
+    private void _tempPredictorOutsideContainerView_PredictButton_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    {
+        _ = PredictTempView();
+    }
+
     private void _tempPredictorContainerView_PredictButton_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
-        _ = Predict();
+        _ = PredictTimeView();
     }
 
     public void AddContent(string content, string icon, UserControl control)
@@ -104,9 +116,52 @@ public partial class MenuView : UserControl
         ContentPanel.Children.Add(control);
     }
 
-    public async Task Predict()
+    public async Task PredictTimeView()
     {
-        await WaitForMenusLoaded();
+        while (!_settingsViewLoaded || !_tempPredictorContainerViewLoaded || !_userTempPickerContainerViewLoaded || !_weatherInfoContainerViewLoaded)
+            await Task.Delay(50);
+
+        if (!TryLoadModel())
+            return;
+
+        for (int i = 0; i < _tempPredictorContainerView.UserTempPickerAdvancedView.Temperatures.Count; i++)
+        {
+            double weatherTemp = _weatherInfoContainerView.UserTempPickerAdvancedView.Temperatures[i].YValue;
+            double userTemperature = _userTempPickerContainerView.UserTempPickerAdvancedView.Temperatures.FindNearestTemperature(weatherTemp);
+            TrainingDataInput input = new TrainingDataInput
+            {
+                ComfortTemperature = (float)userTemperature,
+                AverageTemperatureOuterDay = (float)weatherTemp,
+                IsolationClass = _settingsView.IsolationClass
+            };
+            _tempPredictorContainerView.UserTempPickerAdvancedView.Temperatures[i].YValue = _model.Predict(input);
+        }
+    }
+
+    public async Task PredictTempView()
+    {
+        while (!_settingsViewLoaded || !_tempPredictorOutsideContainerViewLoaded || !_userTempPickerContainerViewLoaded || !_weatherInfoContainerViewLoaded)
+            await Task.Delay(50);
+
+        if (!TryLoadModel())
+            return;
+
+        for (int i = 0; i < _tempPredictorOutsideContainerView.UserTempPickerAdvancedView.Temperatures.Count; i++)
+        {
+            double weatherTemp = _tempPredictorOutsideContainerView.UserTempPickerAdvancedView.Temperatures[i].XValue;
+            double userTemperature = _userTempPickerContainerView.UserTempPickerAdvancedView.Temperatures.FindNearestTemperature(weatherTemp);
+            TrainingDataInput input = new TrainingDataInput
+            {
+                ComfortTemperature = (float)userTemperature,
+                AverageTemperatureOuterDay = (float)weatherTemp,
+                IsolationClass = _settingsView.IsolationClass
+            };
+            _tempPredictorOutsideContainerView.UserTempPickerAdvancedView.Temperatures[i].YValue = _model.Predict(input);
+        }
+    }
+
+    public bool TryLoadModel()
+    {
         try
         {
             if (!_modelLoaded)
@@ -120,51 +175,10 @@ public partial class MenuView : UserControl
             if (!_modelLoaded)
             {
                 _tempPredictorContainerView.PredictButton.Text = "Error: Model couldn't be loaded.";
-                return;
+                return false;
             }
         }
-        for (int i = 0; i < _tempPredictorContainerView.UserTempPickerAdvancedView.Temperatures.Count; i++)
-        {
-            double weatherTemp = _weatherInfoContainerView.UserTempPickerAdvancedView.Temperatures[i].YValue;
-            double userTemperature = FindNearestTemperature(weatherTemp, _userTempPickerContainerView.UserTempPickerAdvancedView.Temperatures.ToArray());
-            TrainingDataInput input = new TrainingDataInput
-            {
-                ComfortTemperature = (float)userTemperature,
-                AverageTemperatureOuterDay = (float)weatherTemp,
-                IsolationClass = _settingsView.IsolationClass
-            };
-            _tempPredictorContainerView.UserTempPickerAdvancedView.Temperatures[i].YValue = _model.Predict(input);
-        }
-    }
-
-    private double FindNearestTemperature(double targetTemperature, Temperature[] temperatureArray)
-    {
-        if (temperatureArray == null || temperatureArray.Length == 0)
-            throw new ArgumentException("Temperature array cannot be null or empty.");
-
-        double nearestTemperature = temperatureArray[0].XValue;
-        double minDifference = Math.Abs(targetTemperature - nearestTemperature);
-        double nearestTemp = temperatureArray[0].YValue;
-
-        foreach (Temperature temperature in temperatureArray)
-        {
-            double difference = Math.Abs(targetTemperature - temperature.XValue);
-
-            if (difference < minDifference)
-            {
-                minDifference = difference;
-                nearestTemperature = temperature.XValue;
-                nearestTemp = temperature.YValue;
-            }
-        }
-
-        return nearestTemp;
-    }
-
-    private async Task WaitForMenusLoaded()
-    {
-        while (!_settingsViewLoaded || !_tempPredictorContainerViewLoaded || !_userTempPickerContainerViewLoaded || !_weatherInfoContainerViewLoaded)
-            await Task.Delay(50);
+        return true;
     }
 
     private void TriggerPaneButton_Tapped(object? sender, TappedEventArgs e)
@@ -181,6 +195,9 @@ public partial class MenuView : UserControl
         _prevIndex = SplitviewListBox.SelectedIndex;
 
         if (ContentPanel.Children[SplitviewListBox.SelectedIndex] is TempPredictorContainerView)
-            _ = Predict();
+            _ = PredictTimeView();
+
+        if (ContentPanel.Children[SplitviewListBox.SelectedIndex] is TempPredictorOutsideContainerView)
+            _ = PredictTempView();
     }
 }

@@ -26,6 +26,7 @@
 			<RowDefinition Height="*"/>
 			<RowDefinition Height="*"/>
 			<RowDefinition Height="*"/>
+			<RowDefinition Height="*"/>
 		</Grid.RowDefinitions>
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="*"/>
@@ -68,7 +69,7 @@
 
 		<views:SettingView Name="UserTemperatureNumericUpDown" Grid.Row="2" Grid.ColumnSpan="3"
 						   SettingType="NumericUpDownMinMax"
-						   Text="User Temperature Range"
+						   Text="Comfort Temperature Range"
 						   Minimum="0.0"
 						   Maximum="40.0"
 						   MinNumericUpDownValue="0.0"
@@ -83,8 +84,16 @@
 						   Maximum="100.0"
 						   Value="30.0"
 						   Margin="10"/>
+
+		<views:SettingView Name="PredictTempNumericUpDown" Grid.Row="4" Grid.ColumnSpan="3"
+						   SettingType="NumericUpDown"
+						   Text="Prediction Outside Temperature Step Size"
+						   Minimum="1.0"
+						   Maximum="10.0"
+						   Value="5.0"
+						   Margin="10"/>
 		
-		<views:SettingView Name="SaveButton" Grid.Row="4" Grid.Column="1"
+		<views:SettingView Name="SaveButton" Grid.Row="5" Grid.Column="1"
 						   SettingType="Button"
 						   Text="Save"
 						   HorizontalAlignment="Center"

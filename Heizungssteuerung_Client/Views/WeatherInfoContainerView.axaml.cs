@@ -11,7 +11,7 @@ namespace Heizungssteuerung_Client.Views;
 public partial class WeatherInfoContainerView : UserControl
 {
     public string? ViewName { get => ContainerNameTextBlock.Text; set => ContainerNameTextBlock.Text = value; }
-    public string ViewIcon { get => ContainerSvgImage.Source; set => ContainerSvgImage.Source = value; }
+    public string? ViewIcon { get => ContainerSvgImage.Source; set => ContainerSvgImage.Source = value ?? string.Empty; }
     public UserTempPickerAdvancedView UserTempPickerAdvancedView { get; set; }
     public event EventHandler<RoutedEventArgs>? LoadingFinished;
 

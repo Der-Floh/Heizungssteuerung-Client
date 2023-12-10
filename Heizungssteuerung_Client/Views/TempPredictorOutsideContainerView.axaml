@@ -5,7 +5,7 @@
              xmlns:views="clr-namespace:Heizungssteuerung_Client.Views"
 			 xmlns:local="clr-namespace:Heizungssteuerung_Client"
 			 mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="Heizungssteuerung_Client.Views.UserTempPickerContainerView">
+             x:Class="Heizungssteuerung_Client.Views.TempPredictorOutsideContainerView">
 
 	<UserControl.Styles>
 		<Style Selector="TextBlock">
@@ -15,7 +15,7 @@
 			<Setter Property="FontSize" Value="28"/>
 		</Style>
 	</UserControl.Styles>
-	
+
 	<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="2*"/>
@@ -23,15 +23,15 @@
 			<RowDefinition Height="2*"/>
 		</Grid.RowDefinitions>
 		<Panel Grid.RowSpan="2" Name="UserTempPickerPanel"/>
-		<views:SettingView Name="TrainButton" Grid.Row="2"
-						   SettingType="Button" 
-						   Text="Train Model"
+		<views:SettingView Name="PredictButton" Grid.Row="2"
+						   SettingType="Button"
+						   Text="Predict Model"
 						   HorizontalAlignment="Center"
 						   VerticalAlignment="Center"/>
-		<views:WaveView Name="LoadingWaveView" Grid.RowSpan="3" Text="Loading" FontSize="48"/>
 		<StackPanel Orientation="Horizontal" Margin="8">
-			<local:SvgImage Name="ContainerSvgImage" ImageTint="White" Stretch="UniformToFill" Width="16" Margin="3,0,2,0" VerticalAlignment="Top"/>
+			<local:SvgImage Name="ContainerSvgImage" ImageTint="White" Stretch="UniformToFill" Width="16" Margin="0,0,2,0" VerticalAlignment="Top"/>
 			<TextBlock Name="ContainerNameTextBlock" Background="#2d2d2d" Padding="0,2,0,2" VerticalAlignment="Top"/>
 		</StackPanel>
 	</Grid>
+	
 </UserControl>

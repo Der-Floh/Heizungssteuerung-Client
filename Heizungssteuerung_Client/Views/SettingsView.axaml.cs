@@ -7,6 +7,9 @@ namespace Heizungssteuerung_Client.Views;
 
 public partial class SettingsView : UserControl, INotifyPropertyChanged
 {
+    public string? ViewName { get; set; }
+    public string? ViewIcon { get; set; }
+
     public IsolationClasses IsolationClass { get => Enum.Parse<IsolationClasses>(IsolationClassComboBox.SelectedItem.ToString()); set { if (Enum.Parse<IsolationClasses>(IsolationClassComboBox.SelectedItem.ToString()) == value) return; IsolationClassComboBox.SelectedItem = value; OnPropertyChanged(nameof(IsolationClass)); } }
     public decimal StepSizeTemperature { get => StepSizeTemperatureNumericUpDown.Value; set { if (StepSizeTemperatureNumericUpDown.Value == value) return; StepSizeTemperatureNumericUpDown.Value = value; OnPropertyChanged(nameof(StepSizeTemperature)); } }
     public decimal MinOutsideTemperature { get => OutsideTemperatureNumericUpDown.MinNumericUpDownValue; set { if (OutsideTemperatureNumericUpDown.MinNumericUpDownValue == value) return; OutsideTemperatureNumericUpDown.MinNumericUpDownValue = value; OnPropertyChanged(nameof(MinOutsideTemperature)); } }
@@ -14,6 +17,7 @@ public partial class SettingsView : UserControl, INotifyPropertyChanged
     public decimal MinUserTemperature { get => UserTemperatureNumericUpDown.MinNumericUpDownValue; set { if (UserTemperatureNumericUpDown.MinNumericUpDownValue == value) return; UserTemperatureNumericUpDown.MinNumericUpDownValue = value; OnPropertyChanged(nameof(MinUserTemperature)); } }
     public decimal MaxUserTemperature { get => UserTemperatureNumericUpDown.MaxNumericUpDownValue; set { if (UserTemperatureNumericUpDown.MaxNumericUpDownValue == value) return; UserTemperatureNumericUpDown.MaxNumericUpDownValue = value; OnPropertyChanged(nameof(MaxUserTemperature)); } }
     public decimal TemperatureHandleSize { get => TemperatureHandleSizeNumericUpDown.Value; set { if (TemperatureHandleSizeNumericUpDown.Value == value) return; TemperatureHandleSizeNumericUpDown.Value = value; OnPropertyChanged(nameof(TemperatureHandleSize)); } }
+    public decimal PredictTemperatureStepSize { get => PredictTempNumericUpDown.Value; set { if (PredictTempNumericUpDown.Value == value) return; PredictTempNumericUpDown.Value = value; OnPropertyChanged(nameof(PredictTemperatureStepSize)); } }
     public decimal DecimalPlaces { get => RoundingprecisionNumericUpDown.Value; set { if (RoundingprecisionNumericUpDown.Value == value) return; RoundingprecisionNumericUpDown.Value = value; OnPropertyChanged(nameof(DecimalPlaces)); } }
 
     public bool InstantSave { get => _instantSave; set { if (_instantSave == value) return; _instantSave = value; HandleInstantSaveChanged(value); } }
@@ -33,6 +37,7 @@ public partial class SettingsView : UserControl, INotifyPropertyChanged
         OutsideTemperatureNumericUpDown.PropertyChangedRuntime += OutsideTemperatureNumericUpDown_PropertyChanged;
         UserTemperatureNumericUpDown.PropertyChangedRuntime += UserTemperatureNumericUpDown_PropertyChanged;
         TemperatureHandleSizeNumericUpDown.PropertyChangedRuntime += TemperatureHandleSizeNumericUpDown_PropertyChanged;
+        PredictTempNumericUpDown.PropertyChangedRuntime += PredictTempNumericUpDown_PropertyChangedRuntime;
         RoundingprecisionNumericUpDown.PropertyChangedRuntime += RoundingprecisionNumericUpDown_PropertyChanged;
         SaveButton.Click += SaveButton_Click;
 
@@ -74,6 +79,10 @@ public partial class SettingsView : UserControl, INotifyPropertyChanged
         string? valueTemperatureHandleSize = Data.Settings.Get(nameof(TemperatureHandleSize));
         if (!string.IsNullOrEmpty(valueTemperatureHandleSize) && decimal.TryParse(valueTemperatureHandleSize, out decimalValue))
             TemperatureHandleSizeNumericUpDown.Value = decimalValue;
+
+        string? valuePredictTemperatureStepSize = Data.Settings.Get(nameof(PredictTemperatureStepSize));
+        if (!string.IsNullOrEmpty(valuePredictTemperatureStepSize) && decimal.TryParse(valuePredictTemperatureStepSize, out decimalValue))
+            PredictTempNumericUpDown.Value = decimalValue;
 
         string? valueDecimalPlaces = Data.Settings.Get(nameof(DecimalPlaces));
         if (!string.IsNullOrEmpty(valueDecimalPlaces) && decimal.TryParse(valueDecimalPlaces, out decimalValue))
@@ -149,6 +158,15 @@ public partial class SettingsView : UserControl, INotifyPropertyChanged
         {
             Data.Settings.Set(nameof(TemperatureHandleSize), TemperatureHandleSize.ToString());
             OnPropertyChanged(nameof(TemperatureHandleSize));
+        }
+    }
+
+    private void PredictTempNumericUpDown_PropertyChangedRuntime(object? sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName == nameof(PredictTempNumericUpDown.Value))
+        {
+            Data.Settings.Set(nameof(PredictTemperatureStepSize), PredictTemperatureStepSize.ToString());
+            OnPropertyChanged(nameof(PredictTemperatureStepSize));
         }
     }
 
