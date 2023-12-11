@@ -20,19 +20,38 @@ public partial class TempPredictorOutsideContainerView : UserControl
 
         PredictButton.Click += (sender, e) => PredictButton_Click?.Invoke(sender, e);
 
-        UserTempPickerAdvancedView = new UserTempPickerAdvancedView
+        if (OperatingSystem.IsAndroid())
         {
-            XTemperatureStart = -10,
-            XTemperatureEnd = 40,
-            XTemperatureStepSize = 5,
-            YTemperatureStart = 120,
-            YTemperatureEnd = 0,
-            YTemperatureStepSize = 0.5,
-            YTemperatureStartValue = 60,
-            XAxisText = "Temperature Outside in °C",
-            YAxisText = "Boiler Temperature in °C",
-            LineColor = new SolidColorBrush(ColorSettings.WeatherLineColor),
-        };
+            UserTempPickerAdvancedView = new UserTempPickerAdvancedView
+            {
+                XTemperatureStart = -10,
+                XTemperatureEnd = 30,
+                XTemperatureStepSize = 10,
+                YTemperatureStart = 120,
+                YTemperatureEnd = 0,
+                YTemperatureStepSize = 0.5,
+                YTemperatureStartValue = 60,
+                XAxisText = "Temperature Outside in °C",
+                YAxisText = "Boiler Temperature in °C",
+                LineColor = new SolidColorBrush(ColorSettings.WeatherLineColor),
+            };
+        }
+        else
+        {
+            UserTempPickerAdvancedView = new UserTempPickerAdvancedView
+            {
+                XTemperatureStart = -10,
+                XTemperatureEnd = 40,
+                XTemperatureStepSize = 5,
+                YTemperatureStart = 120,
+                YTemperatureEnd = 0,
+                YTemperatureStepSize = 0.5,
+                YTemperatureStartValue = 60,
+                XAxisText = "Temperature Outside in °C",
+                YAxisText = "Boiler Temperature in °C",
+                LineColor = new SolidColorBrush(ColorSettings.WeatherLineColor),
+            };
+        }
         UserTempPickerAdvancedView.InitTemperatures();
         UserTempPickerPanel.Children.Add(UserTempPickerAdvancedView);
     }

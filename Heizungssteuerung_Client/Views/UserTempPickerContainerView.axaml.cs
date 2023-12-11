@@ -23,19 +23,38 @@ public partial class UserTempPickerContainerView : UserControl
 
         Data.Settings.LoadUserTemps();
 
-        UserTempPickerAdvancedView = new UserTempPickerAdvancedView
+        if (OperatingSystem.IsAndroid())
         {
-            Editable = true,
-            XTemperatureStart = -10,
-            XTemperatureEnd = 40,
-            XTemperatureStepSize = 10,
-            YTemperatureStart = 40,
-            YTemperatureEnd = 0,
-            YTemperatureStepSize = 0.5,
-            YTemperatureStartValue = 25,
-            XAxisText = "Temperature Outside in °C",
-            YAxisText = "Comfort Temperature in °C",
-        };
+            UserTempPickerAdvancedView = new UserTempPickerAdvancedView
+            {
+                Editable = true,
+                XTemperatureStart = -10,
+                XTemperatureEnd = 30,
+                XTemperatureStepSize = 10,
+                YTemperatureStart = 40,
+                YTemperatureEnd = 0,
+                YTemperatureStepSize = 0.5,
+                YTemperatureStartValue = 25,
+                XAxisText = "Temperature Outside in °C",
+                YAxisText = "Comfort Temperature in °C",
+            };
+        }
+        else
+        {
+            UserTempPickerAdvancedView = new UserTempPickerAdvancedView
+            {
+                Editable = true,
+                XTemperatureStart = -10,
+                XTemperatureEnd = 40,
+                XTemperatureStepSize = 10,
+                YTemperatureStart = 40,
+                YTemperatureEnd = 0,
+                YTemperatureStepSize = 0.5,
+                YTemperatureStartValue = 25,
+                XAxisText = "Temperature Outside in °C",
+                YAxisText = "Comfort Temperature in °C",
+            };
+        }
         UserTempPickerAdvancedView.InitTemperatures();
 
         UserTempPickerAdvancedView.TempChanged += UserTempPickerAdvancedView_TempChanged;

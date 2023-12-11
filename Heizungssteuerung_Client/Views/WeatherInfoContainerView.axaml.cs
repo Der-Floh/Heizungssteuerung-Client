@@ -22,20 +22,40 @@ public partial class WeatherInfoContainerView : UserControl
         Loaded += WeatherInfoContainerView_Loaded;
         WeatherDataButton.Click += WeatherDataButton_Click;
 
-        UserTempPickerAdvancedView = new UserTempPickerAdvancedView
+        if (OperatingSystem.IsAndroid())
         {
-            XTemperatureStart = 3,
-            XTemperatureEnd = 24,
-            XTemperatureStepSize = 3,
-            YTemperatureStart = 50,
-            YTemperatureEnd = -20,
-            YTemperatureStepSize = 0.5,
-            YTemperatureStartValue = 20,
-            XAxisText = "Time in hours from now",
-            YAxisText = "Temperature Outside in °C",
-            XValuesStringAppend = "h",
-            LineColor = new SolidColorBrush(ColorSettings.WeatherLineColor),
-        };
+            UserTempPickerAdvancedView = new UserTempPickerAdvancedView
+            {
+                XTemperatureStart = 3,
+                XTemperatureEnd = 12,
+                XTemperatureStepSize = 3,
+                YTemperatureStart = 50,
+                YTemperatureEnd = -20,
+                YTemperatureStepSize = 0.5,
+                YTemperatureStartValue = 20,
+                XAxisText = "Time in hours from now",
+                YAxisText = "Temperature Outside in °C",
+                XValuesStringAppend = "h",
+                LineColor = new SolidColorBrush(ColorSettings.WeatherLineColor),
+            };
+        }
+        else
+        {
+            UserTempPickerAdvancedView = new UserTempPickerAdvancedView
+            {
+                XTemperatureStart = 3,
+                XTemperatureEnd = 24,
+                XTemperatureStepSize = 3,
+                YTemperatureStart = 50,
+                YTemperatureEnd = -20,
+                YTemperatureStepSize = 0.5,
+                YTemperatureStartValue = 20,
+                XAxisText = "Time in hours from now",
+                YAxisText = "Temperature Outside in °C",
+                XValuesStringAppend = "h",
+                LineColor = new SolidColorBrush(ColorSettings.WeatherLineColor),
+            };
+        }
         UserTempPickerAdvancedView.InitTemperatures();
         UserTempPickerPanel.Children.Add(UserTempPickerAdvancedView);
     }

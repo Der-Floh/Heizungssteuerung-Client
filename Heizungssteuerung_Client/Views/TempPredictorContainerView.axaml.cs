@@ -20,20 +20,40 @@ public partial class TempPredictorContainerView : UserControl
 
         PredictButton.Click += (sender, e) => PredictButton_Click?.Invoke(sender, e);
 
-        UserTempPickerAdvancedView = new UserTempPickerAdvancedView
+        if (OperatingSystem.IsAndroid())
         {
-            XTemperatureStart = 3,
-            XTemperatureEnd = 24,
-            XTemperatureStepSize = 3,
-            YTemperatureStart = 120,
-            YTemperatureEnd = 0,
-            YTemperatureStepSize = 0.5,
-            YTemperatureStartValue = 60,
-            XAxisText = "Time in hours from now",
-            YAxisText = "Boiler Temperature in °C",
-            XValuesStringAppend = "h",
-            LineColor = new SolidColorBrush(ColorSettings.WeatherLineColor),
-        };
+            UserTempPickerAdvancedView = new UserTempPickerAdvancedView
+            {
+                XTemperatureStart = 3,
+                XTemperatureEnd = 12,
+                XTemperatureStepSize = 3,
+                YTemperatureStart = 120,
+                YTemperatureEnd = 0,
+                YTemperatureStepSize = 0.5,
+                YTemperatureStartValue = 60,
+                XAxisText = "Time in hours from now",
+                YAxisText = "Boiler Temperature in °C",
+                XValuesStringAppend = "h",
+                LineColor = new SolidColorBrush(ColorSettings.WeatherLineColor),
+            };
+        }
+        else
+        {
+            UserTempPickerAdvancedView = new UserTempPickerAdvancedView
+            {
+                XTemperatureStart = 3,
+                XTemperatureEnd = 24,
+                XTemperatureStepSize = 3,
+                YTemperatureStart = 120,
+                YTemperatureEnd = 0,
+                YTemperatureStepSize = 0.5,
+                YTemperatureStartValue = 60,
+                XAxisText = "Time in hours from now",
+                YAxisText = "Boiler Temperature in °C",
+                XValuesStringAppend = "h",
+                LineColor = new SolidColorBrush(ColorSettings.WeatherLineColor),
+            };
+        }
         UserTempPickerAdvancedView.InitTemperatures();
         UserTempPickerPanel.Children.Add(UserTempPickerAdvancedView);
     }
