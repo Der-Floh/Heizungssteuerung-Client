@@ -1,4 +1,5 @@
 using Avalonia.Controls;
+using Avalonia.Styling;
 using Heizungssteuerung_SDK.Training;
 using System;
 using System.ComponentModel;
@@ -18,7 +19,8 @@ public partial class SettingsView : UserControl, INotifyPropertyChanged
     public decimal MaxUserTemperature { get => UserTemperatureNumericUpDown.MaxNumericUpDownValue; set { if (UserTemperatureNumericUpDown.MaxNumericUpDownValue == value) return; UserTemperatureNumericUpDown.MaxNumericUpDownValue = value; OnPropertyChanged(nameof(MaxUserTemperature)); } }
     public decimal TemperatureHandleSize { get => TemperatureHandleSizeNumericUpDown.Value; set { if (TemperatureHandleSizeNumericUpDown.Value == value) return; TemperatureHandleSizeNumericUpDown.Value = value; OnPropertyChanged(nameof(TemperatureHandleSize)); } }
     public decimal PredictTemperatureStepSize { get => PredictTempNumericUpDown.Value; set { if (PredictTempNumericUpDown.Value == value) return; PredictTempNumericUpDown.Value = value; OnPropertyChanged(nameof(PredictTemperatureStepSize)); } }
-    public decimal DecimalPlaces { get => RoundingprecisionNumericUpDown.Value; set { if (RoundingprecisionNumericUpDown.Value == value) return; RoundingprecisionNumericUpDown.Value = value; OnPropertyChanged(nameof(DecimalPlaces)); } }
+
+    public double DefaultFontSize { get; set; } = 34.0;
 
     public bool InstantSave { get => _instantSave; set { if (_instantSave == value) return; _instantSave = value; HandleInstantSaveChanged(value); } }
     private bool _instantSave;
@@ -29,6 +31,8 @@ public partial class SettingsView : UserControl, INotifyPropertyChanged
     {
         InitializeComponent();
 
+        InstantSave = true;
+
         IsolationClassComboBox.ItemsSource = Enum.GetNames(typeof(IsolationClasses));
         IsolationClassComboBox.SelectedItem = IsolationClasses.C;
 
@@ -38,10 +42,39 @@ public partial class SettingsView : UserControl, INotifyPropertyChanged
         UserTemperatureNumericUpDown.PropertyChangedRuntime += UserTemperatureNumericUpDown_PropertyChanged;
         TemperatureHandleSizeNumericUpDown.PropertyChangedRuntime += TemperatureHandleSizeNumericUpDown_PropertyChanged;
         PredictTempNumericUpDown.PropertyChangedRuntime += PredictTempNumericUpDown_PropertyChangedRuntime;
-        RoundingprecisionNumericUpDown.PropertyChangedRuntime += RoundingprecisionNumericUpDown_PropertyChanged;
         SaveButton.Click += SaveButton_Click;
 
         LoadSettings();
+
+        if (OperatingSystem.IsAndroid())
+        {
+            DefaultFontSize = 14.0;
+            OutsideTemperatureNumericUpDown.IsVisible = false;
+            UserTemperatureNumericUpDown.IsVisible = false;
+            StepSizeTemperatureNumericUpDown.Text = "Comfort Temp Step";
+            PredictTempNumericUpDown.Text = "Outside Temp Step";
+
+            TemperatureHandleSize = 24.0m;
+        }
+
+        Style textBlockStyle = new Style(x => x.OfType<TextBlock>())
+        {
+            Setters = { new Setter(TextBlock.FontSizeProperty, DefaultFontSize) }
+        };
+
+        Style numericUpDownStyle = new Style(x => x.OfType<NumericUpDown>())
+        {
+            Setters = { new Setter(NumericUpDown.FontSizeProperty, DefaultFontSize) }
+        };
+
+        Style buttonStyle = new Style(x => x.OfType<Button>())
+        {
+            Setters = { new Setter(Button.FontSizeProperty, DefaultFontSize) }
+        };
+
+        Styles.Add(textBlockStyle);
+        Styles.Add(numericUpDownStyle);
+        Styles.Add(buttonStyle);
     }
 
     public void LoadSettings()
@@ -83,22 +116,11 @@ public partial class SettingsView : UserControl, INotifyPropertyChanged
         string? valuePredictTemperatureStepSize = Data.Settings.Get(nameof(PredictTemperatureStepSize));
         if (!string.IsNullOrEmpty(valuePredictTemperatureStepSize) && decimal.TryParse(valuePredictTemperatureStepSize, out decimalValue))
             PredictTempNumericUpDown.Value = decimalValue;
-
-        string? valueDecimalPlaces = Data.Settings.Get(nameof(DecimalPlaces));
-        if (!string.IsNullOrEmpty(valueDecimalPlaces) && decimal.TryParse(valueDecimalPlaces, out decimalValue))
-            RoundingprecisionNumericUpDown.Value = decimalValue;
     }
 
     private void HandleInstantSaveChanged(bool value)
     {
         SaveButton.IsVisible = !value;
-        if (value)
-        {
-            if (SettingsGrid.RowDefinitions.Count >= 5)
-                SettingsGrid.RowDefinitions.RemoveAt(SettingsGrid.RowDefinitions.Count - 1);
-        }
-        else if (SettingsGrid.RowDefinitions.Count < 5)
-            SettingsGrid.RowDefinitions.Add(new RowDefinition(GridLength.Parse("*")));
     }
 
     private void SaveButton_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
@@ -167,15 +189,6 @@ public partial class SettingsView : UserControl, INotifyPropertyChanged
         {
             Data.Settings.Set(nameof(PredictTemperatureStepSize), PredictTemperatureStepSize.ToString());
             OnPropertyChanged(nameof(PredictTemperatureStepSize));
-        }
-    }
-
-    private void RoundingprecisionNumericUpDown_PropertyChanged(object? sender, PropertyChangedEventArgs e)
-    {
-        if (e.PropertyName == nameof(RoundingprecisionNumericUpDown.Value))
-        {
-            Data.Settings.Set(nameof(DecimalPlaces), DecimalPlaces.ToString());
-            OnPropertyChanged(nameof(DecimalPlaces));
         }
     }
 

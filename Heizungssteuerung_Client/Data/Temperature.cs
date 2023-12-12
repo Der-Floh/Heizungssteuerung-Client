@@ -22,7 +22,7 @@ public class Temperature : INotifyPropertyChanged
     public Temperature()
     {
         if (OperatingSystem.IsAndroid())
-            _radius = 25;
+            _radius = 24;
         else
             _radius = 30;
     }

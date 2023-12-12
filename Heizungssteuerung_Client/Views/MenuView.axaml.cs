@@ -82,13 +82,13 @@ public partial class MenuView : UserControl
                 _userTempPickerContainerView.UserTempPickerAdvancedView.YTemperatureStart = (double)_settingsView.MaxUserTemperature;
                 break;
             case nameof(_settingsView.TemperatureHandleSize):
+                _tempPredictorContainerView.UserTempPickerAdvancedView.HandleSize = (double)_settingsView.TemperatureHandleSize;
+                _tempPredictorOutsideContainerView.UserTempPickerAdvancedView.HandleSize = (double)_settingsView.TemperatureHandleSize;
                 _userTempPickerContainerView.UserTempPickerAdvancedView.HandleSize = (double)_settingsView.TemperatureHandleSize;
+                _weatherInfoContainerView.UserTempPickerAdvancedView.HandleSize = (double)_settingsView.TemperatureHandleSize;
                 break;
             case nameof(_settingsView.PredictTemperatureStepSize):
                 _tempPredictorOutsideContainerView.UserTempPickerAdvancedView.XTemperatureStepSize = (double)_settingsView.PredictTemperatureStepSize;
-                break;
-            case nameof(_settingsView.DecimalPlaces):
-                _userTempPickerContainerView.UserTempPickerAdvancedView.DecimalPlaces = (int)_settingsView.DecimalPlaces;
                 break;
         }
     }

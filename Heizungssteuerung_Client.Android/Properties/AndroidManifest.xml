@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:installLocation="auto">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:installLocation="auto" package="com.bku.heatingcontrol">
 	<uses-permission android:name="android.permission.INTERNET" />
-	<application android:label="Heizungssteuerung_Client" android:icon="@drawable/Icon" />
+	<application android:label="Heizungssteuerung Client" android:icon="@drawable/icon" />
+	<uses-sdk android:minSdkVersion="24" android:targetSdkVersion="33" />
 </manifest>
