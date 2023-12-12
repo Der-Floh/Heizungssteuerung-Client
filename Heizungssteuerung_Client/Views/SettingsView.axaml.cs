@@ -55,6 +55,7 @@ public partial class SettingsView : UserControl, INotifyPropertyChanged
             PredictTempNumericUpDown.Text = "Outside Temp Step";
 
             TemperatureHandleSize = 24.0m;
+            PredictTemperatureStepSize = 10.0m;
         }
 
         Style textBlockStyle = new Style(x => x.OfType<TextBlock>())
