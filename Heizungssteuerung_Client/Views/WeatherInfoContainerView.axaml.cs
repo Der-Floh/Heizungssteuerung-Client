@@ -22,7 +22,7 @@ public partial class WeatherInfoContainerView : UserControl
         Loaded += WeatherInfoContainerView_Loaded;
         WeatherDataButton.Click += WeatherDataButton_Click;
 
-        if (OperatingSystem.IsAndroid())
+        if (Data.OS.IsMobile())
         {
             UserTempPickerAdvancedView = new UserTempPickerAdvancedView
             {

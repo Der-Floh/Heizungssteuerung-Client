@@ -1,5 +1,4 @@
 ﻿using Avalonia.Media;
-using System;
 using System.ComponentModel;
 
 namespace Heizungssteuerung_Client.Data;
@@ -21,7 +20,7 @@ public class Temperature : INotifyPropertyChanged
 
     public Temperature()
     {
-        if (OperatingSystem.IsAndroid())
+        if (Data.OS.IsMobile())
             _radius = 24;
         else
             _radius = 30;

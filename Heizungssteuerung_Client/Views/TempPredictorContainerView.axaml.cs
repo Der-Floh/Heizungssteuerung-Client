@@ -20,7 +20,7 @@ public partial class TempPredictorContainerView : UserControl
 
         PredictButton.Click += (sender, e) => PredictButton_Click?.Invoke(sender, e);
 
-        if (OperatingSystem.IsAndroid())
+        if (Data.OS.IsMobile())
         {
             UserTempPickerAdvancedView = new UserTempPickerAdvancedView
             {

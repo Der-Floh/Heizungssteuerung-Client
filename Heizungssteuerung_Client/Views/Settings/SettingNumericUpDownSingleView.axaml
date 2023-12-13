@@ -5,7 +5,7 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Heizungssteuerung_Client.Views.Settings.SettingNumericUpDownSingleView">
 
-	<StackPanel Orientation="Horizontal">
+	<StackPanel Orientation="Horizontal" Margin="0,10,0,10">
 		<TextBlock Name="SingleTextBlock" Padding="10,0,10,0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
 		<NumericUpDown Name="SingleNumericUpDown" Value="0.0" FontFamily="Monospace" Cursor="Hand" Margin="5" VerticalAlignment="Center"/>
 	</StackPanel>

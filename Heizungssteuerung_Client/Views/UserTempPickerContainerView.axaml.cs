@@ -23,7 +23,7 @@ public partial class UserTempPickerContainerView : UserControl
 
         Data.Settings.LoadUserTemps();
 
-        if (OperatingSystem.IsAndroid())
+        if (Data.OS.IsMobile())
         {
             UserTempPickerAdvancedView = new UserTempPickerAdvancedView
             {

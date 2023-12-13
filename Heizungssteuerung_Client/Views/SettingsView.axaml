@@ -8,22 +8,20 @@
 	
 	<ScrollViewer Name="SettingsGrid">
 		<StackPanel Orientation="Vertical">
-			<WrapPanel Orientation="Horizontal" HorizontalAlignment="Center">
-				<views:SettingView Name="IsolationClassComboBox"
-						   SettingType="ComboBox"
-						   Text="Energy Effiency"
-						   ToolTip="The energy effiency of your house. Can usually be found in your Energy Certificate (Energieausweis)."
-						   Margin="10"/>
+			<views:SettingView Name="IsolationClassComboBox"
+							   SettingType="ComboBox"
+							   Text="Energy Effiency"
+							   ToolTip="The energy effiency of your house. Can usually be found in your Energy Certificate (Energieausweis)."
+							   Margin="10"/>
 
-				<views:SettingView Name="StepSizeTemperatureNumericUpDown"
-								   SettingType="NumericUpDown"
-								   Text="Comfort Temperature Step Size"
-								   Increment="0.5"
-								   Minimum="0.5"
-								   Maximum="5.0"
-								   Value="0.5"
-								   Margin="10"/>
-			</WrapPanel>
+			<views:SettingView Name="StepSizeTemperatureNumericUpDown"
+							   SettingType="NumericUpDown"
+							   Text="Comfort Temperature Step Size"
+							   Increment="0.5"
+							   Minimum="0.5"
+							   Maximum="5.0"
+							   Value="0.5"
+							   Margin="10"/>
 		
 			<views:SettingView Name="OutsideTemperatureNumericUpDown"
 							   SettingType="NumericUpDownMinMax"

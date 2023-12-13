@@ -5,7 +5,7 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Heizungssteuerung_Client.Views.Settings.SettingNumericUpDownMinMaxView">
 
-	<StackPanel Orientation="Horizontal">
+	<StackPanel Orientation="Horizontal" Margin="0,10,0,10">
 		<TextBlock Name="MinMaxTextBlock" Padding="10,0,10,0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
 		<StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
 			<StackPanel Orientation="Vertical" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center">

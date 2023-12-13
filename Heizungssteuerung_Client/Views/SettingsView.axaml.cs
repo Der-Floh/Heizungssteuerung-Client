@@ -1,8 +1,9 @@
 using Avalonia.Controls;
-using Avalonia.Styling;
+using Heizungssteuerung_Client.Data;
 using Heizungssteuerung_SDK.Training;
 using System;
 using System.ComponentModel;
+using System.Globalization;
 
 namespace Heizungssteuerung_Client.Views;
 
@@ -27,9 +28,14 @@ public partial class SettingsView : UserControl, INotifyPropertyChanged
 
     public new event PropertyChangedEventHandler? PropertyChanged;
 
+    private FontSizeConverter _converter = new FontSizeConverter();
+
     public SettingsView()
     {
         InitializeComponent();
+
+        Loaded += SettingsView_Loaded;
+        SizeChanged += SettingsView_SizeChanged;
 
         InstantSave = true;
 
@@ -46,7 +52,7 @@ public partial class SettingsView : UserControl, INotifyPropertyChanged
 
         LoadSettings();
 
-        if (OperatingSystem.IsAndroid())
+        if (OS.IsMobile())
         {
             DefaultFontSize = 14.0;
             OutsideTemperatureNumericUpDown.IsVisible = false;
@@ -57,25 +63,14 @@ public partial class SettingsView : UserControl, INotifyPropertyChanged
             TemperatureHandleSize = 24.0m;
             PredictTemperatureStepSize = 10.0m;
         }
+    }
 
-        Style textBlockStyle = new Style(x => x.OfType<TextBlock>())
-        {
-            Setters = { new Setter(TextBlock.FontSizeProperty, DefaultFontSize) }
-        };
+    private void SettingsView_SizeChanged(object? sender, SizeChangedEventArgs e) => UpdateFontSize();
+    private void SettingsView_Loaded(object? sender, Avalonia.Interactivity.RoutedEventArgs e) => UpdateFontSize();
 
-        Style numericUpDownStyle = new Style(x => x.OfType<NumericUpDown>())
-        {
-            Setters = { new Setter(NumericUpDown.FontSizeProperty, DefaultFontSize) }
-        };
-
-        Style buttonStyle = new Style(x => x.OfType<Button>())
-        {
-            Setters = { new Setter(Button.FontSizeProperty, DefaultFontSize) }
-        };
-
-        Styles.Add(textBlockStyle);
-        Styles.Add(numericUpDownStyle);
-        Styles.Add(buttonStyle);
+    private void UpdateFontSize()
+    {
+        FontSize = (double)_converter.Convert(Bounds.Width, typeof(double), Bounds.Width / Bounds.Height, CultureInfo.CurrentCulture);
     }
 
     public void LoadSettings()
