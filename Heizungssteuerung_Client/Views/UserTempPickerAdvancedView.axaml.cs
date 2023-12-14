@@ -7,6 +7,8 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
+using System.Linq.Expressions;
+using System.Reflection;
 
 namespace Heizungssteuerung_Client.Views;
 
@@ -25,9 +27,9 @@ public partial class UserTempPickerAdvancedView : UserControl, INotifyPropertyCh
     private double _yTemperatureEnd;
     public double YTemperatureStepSize { get => _yTemperatureStepSize; set { if (_yTemperatureStepSize == value) return; _yTemperatureStepSize = value; OnPropertyChanged(nameof(YTemperatureStepSize)); } }
     private double _yTemperatureStepSize;
-    public string? XAxisText { get => _xAxisText; set { if (_xAxisText == value) return; _xAxisText = value; OnPropertyChanged(nameof(XAxisText)); } }
+    public string? XAxisText { get => _xAxisText; set { if (_xAxisText == value) return; _xAxisText = value; UpdateXAxisTextCache(value); OnPropertyChanged(nameof(XAxisText)); } }
     private string? _xAxisText;
-    public string? YAxisText { get => _yAxisText; set { if (_yAxisText == value) return; _yAxisText = value; OnPropertyChanged(nameof(YAxisText)); } }
+    public string? YAxisText { get => _yAxisText; set { if (_yAxisText == value) return; _yAxisText = value; UpdateYAxisTextCache(value); OnPropertyChanged(nameof(YAxisText)); } }
     private string? _yAxisText;
     public bool Editable { get => _editable; set { if (_editable == value) return; _editable = value; UpdateEditable(value); OnPropertyChanged(nameof(Editable)); } }
     private bool _editable;
@@ -39,12 +41,14 @@ public partial class UserTempPickerAdvancedView : UserControl, INotifyPropertyCh
     private int _marginTop = 20;
     public double SliderHeight { get => _sliderHeight; set { if (_sliderHeight == value) return; _sliderHeight = value; OnPropertyChanged(nameof(SliderHeight)); } }
     private double _sliderHeight;
-    public IBrush GridColor { get => _gridColor; set { if (_gridColor == value) return; _gridColor = value; OnPropertyChanged(nameof(GridColor)); } }
+    public IBrush GridColor { get => _gridColor; set { if (_gridColor == value) return; _gridColor = value; UpdateXAxisTextCache(XAxisText); UpdateYAxisTextCache(YAxisText); _cachedYAxisTextPen = new Pen(value) { Thickness = 0.1 }; OnPropertyChanged(nameof(GridColor)); } }
     private IBrush _gridColor = new SolidColorBrush(ColorSettings.GridColor);
-    public IBrush TempColor { get => _tempColor; set { if (_tempColor == value) return; _tempColor = value; OnPropertyChanged(nameof(TempColor)); } }
-    private IBrush _tempColor = new SolidColorBrush(ColorSettings.TextColor);
-    public IBrush LineColor { get => _lineColor; set { if (_lineColor == value) return; _lineColor = value; OnPropertyChanged(nameof(LineColor)); } }
-    private IBrush _lineColor = new SolidColorBrush(ColorSettings.TempLineColor);
+    public IBrush TempTextColor { get => _tempTextColor; set { if (_tempTextColor == value) return; _tempTextColor = value; UpdateTempProperties(x => x.TextColor, value); OnPropertyChanged(nameof(TempTextColor)); } }
+    private IBrush _tempTextColor = new SolidColorBrush(ColorSettings.TextColor);
+    public IBrush TempLineColor { get => _tempLineColor; set { if (_tempLineColor == value) return; _tempLineColor = value; UpdateTempProperties(x => x.LineColor, value); OnPropertyChanged(nameof(TempLineColor)); } }
+    private IBrush _tempLineColor = new SolidColorBrush(ColorSettings.TempLineColor);
+    public IBrush TempHandleColor { get => _tempHandleColor; set { if (_tempHandleColor == value) return; _tempHandleColor = value; UpdateTempProperties(x => x.HandleColor, value); OnPropertyChanged(nameof(TempHandleColor)); } }
+    private IBrush _tempHandleColor = new SolidColorBrush(ColorSettings.OffHandleColor);
     public string XValuesStringAppend { get => _xValuesStringAppend; set { if (_xValuesStringAppend == value) return; _xValuesStringAppend = value; OnPropertyChanged(nameof(XValuesStringAppend)); } }
     private string _xValuesStringAppend = "°";
     public string YValuesStringAppend { get => _yValuesStringAppend; set { if (_yValuesStringAppend == value) return; _yValuesStringAppend = value; OnPropertyChanged(nameof(YValuesStringAppend)); } }
@@ -55,7 +59,7 @@ public partial class UserTempPickerAdvancedView : UserControl, INotifyPropertyCh
     private double _yTemperatureStartValue;
     public int DecimalPlaces { get => _decimalPlaces; set { if (_decimalPlaces == value) return; _decimalPlaces = value; OnPropertyChanged(nameof(DecimalPlaces)); } }
     private int _decimalPlaces = 2;
-    public double HandleSize { get => _handleSize; set { if (_handleSize == value) return; _handleSize = value; UpdateHandleSize(value); OnPropertyChanged(nameof(HandleSize)); } }
+    public double HandleSize { get => _handleSize; set { if (_handleSize == value) return; _handleSize = value; UpdateTempProperties(x => x.Radius, value); OnPropertyChanged(nameof(HandleSize)); } }
     private double _handleSize;
 
     public new event PropertyChangedEventHandler? PropertyChanged;
@@ -74,10 +78,18 @@ public partial class UserTempPickerAdvancedView : UserControl, INotifyPropertyCh
     #region Private Variables
     private int _currentTempIndex = -1;
     private Typeface _typeface;
-    private CultureInfo _de = new CultureInfo("de-DE");
     private bool _positionInitialized;
     #endregion
 
+    #region Cached Variables
+    private FormattedText _cachedXAxisText;
+    private double _cachedXAxisTextYOffset;
+    private double _cachedXAxisTextXOffset;
+    private Pen _cachedYAxisTextPen = new Pen(new SolidColorBrush(ColorSettings.GridColor)) { Thickness = 0.1 };
+    private Geometry? _cachedYAxisTextGeometry;
+    private FormattedText _cachedXAxisTempsText;
+    private double _cachedXAxisTempsTextOffset;
+    #endregion
 
     public UserTempPickerAdvancedView(List<Temperature>? temperatures = null)
     {
@@ -100,6 +112,8 @@ public partial class UserTempPickerAdvancedView : UserControl, INotifyPropertyCh
         SliderHeight = Bounds.Height - MarginBottom - MarginTop;
         if (!_positionInitialized && Temperatures is not null)
             InitializeTemperaturePositions(Bounds.Width - MarginLines * 2, Bounds.Height);
+        UpdateXAxisTextCache(XAxisText);
+        UpdateYAxisTextCache(YAxisText);
     }
 
     private void UserTempPickerAdvancedView_SizeChanged(object? sender, SizeChangedEventArgs e)
@@ -107,6 +121,8 @@ public partial class UserTempPickerAdvancedView : UserControl, INotifyPropertyCh
         SliderHeight = Bounds.Height - MarginBottom - MarginTop;
         if (Temperatures is not null)
             UpdateTemperaturePositions(Bounds.Width - MarginLines * 2, SliderHeight);
+        UpdateXAxisTextCache(XAxisText);
+        UpdateYAxisTextCache(YAxisText);
     }
 
     private void UserTempPickerAdvancedView_PointerPressed(object? sender, PointerPressedEventArgs e)
@@ -115,8 +131,8 @@ public partial class UserTempPickerAdvancedView : UserControl, INotifyPropertyCh
         double x = point.Position.X;
         double y = point.Position.Y;
 
-        int index = GetNearestTemperatureIndex(x, y);
-        if (index != -1 && IsPointInsideCircle(x, y, Temperatures[index].X, Temperatures[index].Y, Temperatures[index].Radius))
+        (int index, double distance) = GetNearestTemperature(x, y);
+        if (index != -1 && IsPointInsideCircle(distance, Temperatures[index].Radius))
         {
             _currentTempIndex = index;
             IsTempMoving = true;
@@ -145,9 +161,9 @@ public partial class UserTempPickerAdvancedView : UserControl, INotifyPropertyCh
             PointerPoint point = e.GetCurrentPoint(this);
             double x = point.Position.X;
             double y = point.Position.Y;
-            int index = GetNearestTemperatureIndex(x, y);
+            (int index, double distance) = GetNearestTemperature(x, y);
             if (index != -1)
-                IsTempHovering = IsPointInsideCircle(x, y, Temperatures[index].X, Temperatures[index].Y, Temperatures[index].Radius);
+                IsTempHovering = IsPointInsideCircle(distance, Temperatures[index].Radius);
         }
     }
     #endregion
@@ -158,16 +174,15 @@ public partial class UserTempPickerAdvancedView : UserControl, INotifyPropertyCh
     {
         if (Temperatures is not null)
         {
-            DrawLines(context);
-            DrawConnectionLines(context);
-            DrawHandles(context);
+            DrawGridLines(context);
+            DrawTemperatures(context);
         }
-        DrawText(context);
+        DrawAxisText(context);
 
         base.Render(context);
     }
 
-    private void DrawLines(DrawingContext context)
+    private void DrawGridLines(DrawingContext context)
     {
         Pen pen = new Pen(GridColor)
         {
@@ -182,92 +197,32 @@ public partial class UserTempPickerAdvancedView : UserControl, INotifyPropertyCh
             double temp = Math.Round(Temperatures[i].XValue, DecimalPlaces);
             string text = temp.ToString("0.0") + XValuesStringAppend;
 
-            FormattedText formattedText = new FormattedText(text, _de, FlowDirection.LeftToRight, _typeface, FontSize, GridColor);
+            FormattedText formattedText = new FormattedText(text, CultureInfo.CurrentCulture, FlowDirection.LeftToRight, _typeface, FontSize, GridColor);
             Geometry? tempNumberTextGeometry = formattedText.BuildGeometry(new Point(0, 0));
 
-            double preWidth = tempNumberTextGeometry.Bounds.Width - tempNumberTextGeometry.Bounds.Width;
-            double xOffset = (tempNumberTextGeometry.Bounds.Width / 2f) + preWidth;
+            double xOffset = tempNumberTextGeometry.Bounds.Width / 2f;
 
             context.DrawText(formattedText, new Point(Temperatures[i].X - xOffset, Bounds.Height - tempNumberTextGeometry.Bounds.Height - MarginBottom / 2f));
         }
     }
 
-    private void DrawHandles(DrawingContext context)
+    private void DrawTemperatures(DrawingContext context)
     {
-        Pen pen = new Pen(LineColor)
-        {
-            LineCap = PenLineCap.Round,
-            Thickness = 3
-        };
-
-        for (int i = 0; i < Temperatures.Count; i++)
-        {
-            context.DrawEllipse(Temperatures[i].HandleColor, pen, new Point(Temperatures[i].X, Temperatures[i].Y), Temperatures[i].Radius, Temperatures[i].Radius);
-
-            double tempValue = Math.Round(Temperatures[i].YValue, 1);
-            string temp = tempValue.ToString("0.0") + YValuesStringAppend;
-
-            FormattedText formattedTempValueText = new FormattedText(temp, _de, FlowDirection.LeftToRight, _typeface, FontSize, TempColor);
-            Geometry? tempNumberTextGeometry = formattedTempValueText.BuildGeometry(new Point(0, 0));
-
-            double preWidth = tempNumberTextGeometry.Bounds.Width - tempNumberTextGeometry.Bounds.Width;
-            double preHeight = tempNumberTextGeometry.Bounds.Height - tempNumberTextGeometry.Bounds.Height;
-            double xOffset = (tempNumberTextGeometry.Bounds.Width / 2f) + preWidth;
-            double yOffset = (tempNumberTextGeometry.Bounds.Height / 1.5f) + preHeight;
-            context.DrawText(formattedTempValueText, new Point(Temperatures[i].X - xOffset, Temperatures[i].Y - yOffset));
-        }
-    }
-
-    private void DrawConnectionLines(DrawingContext context)
-    {
-        Pen pen = new Pen(LineColor)
-        {
-            LineCap = PenLineCap.Round,
-            Thickness = 3
-        };
-
         for (int i = 0; i < Temperatures.Count; i++)
         {
             if (i < Temperatures.Count - 1)
-            {
-                context.DrawLine(pen, new Point(Temperatures[i].X, Temperatures[i].Y), new Point(Temperatures[i + 1].X, Temperatures[i + 1].Y));
-            }
+                Temperatures[i].DrawConnection(context, Temperatures[i + 1]);
+            Temperatures[i].Draw(context, YValuesStringAppend);
         }
     }
 
-    private void DrawText(DrawingContext context)
+    private void DrawAxisText(DrawingContext context)
     {
         if (!string.IsNullOrEmpty(XAxisText))
-        {
-            FormattedText formattedXText = new FormattedText(XAxisText, _de, FlowDirection.LeftToRight, _typeface, FontSize, GridColor);
-            Geometry? tempXTextGeometry = formattedXText.BuildGeometry(new Point(0, 0));
-
-            double preWidth = tempXTextGeometry.Bounds.Width - tempXTextGeometry.Bounds.Width;
-            double preHeight = tempXTextGeometry.Bounds.Height - tempXTextGeometry.Bounds.Height;
-            double xOffset = (tempXTextGeometry.Bounds.Width / 2f) + preWidth;
-            double yOffset = (tempXTextGeometry.Bounds.Height / 2f) + preHeight;
-            context.DrawText(formattedXText, new Point(Bounds.Width / 2 - xOffset, Bounds.Height - yOffset * 3));
-        }
+            context.DrawText(_cachedXAxisText, new Point(Bounds.Width / 2 - _cachedXAxisTextXOffset, Bounds.Height - _cachedXAxisTextYOffset * 3));
 
         if (!string.IsNullOrEmpty(YAxisText))
-        {
-            Pen pen = new Pen(GridColor)
-            {
-                Thickness = 0.1
-            };
-
-            FormattedText formattedYText = new FormattedText(YAxisText, _de, FlowDirection.LeftToRight, _typeface, FontSize, GridColor);
-            Geometry? tempYTextGeometry = formattedYText.BuildGeometry(new Point(0, 0));
-            double xOffset = tempYTextGeometry.Bounds.Width / 2.0;
-            double yOffset = tempYTextGeometry.Bounds.Height / 2.0;
-
-            Matrix rotation = Matrix.CreateRotation(-90 * (Math.PI / 180));
-            Matrix translation = Matrix.CreateTranslation(yOffset, Bounds.Height / 2 + xOffset);
-            Geometry? geometry = formattedYText.BuildGeometry(new Point(0, 0));
-            geometry.Transform = new MatrixTransform(rotation * translation);
-
-            context.DrawGeometry(pen.Brush, pen, geometry);
-        }
+            context.DrawGeometry(_cachedYAxisTextPen.Brush, _cachedYAxisTextPen, _cachedYAxisTextGeometry);
     }
     #endregion
 
@@ -296,7 +251,7 @@ public partial class UserTempPickerAdvancedView : UserControl, INotifyPropertyCh
 
         for (int i = 0; i < numTemperatures; i++)
         {
-            Temperature temperature = new Temperature { XValue = minTemperature + i * stepSize };
+            Temperature temperature = new Temperature(FontFamily.Name, FontSize) { XValue = minTemperature + i * stepSize, LineColor = TempLineColor, TextColor = TempTextColor };
             temperature.PropertyChanged += Temperature_PropertyChanged;
             temperatures.Add(temperature);
         }
@@ -391,19 +346,27 @@ public partial class UserTempPickerAdvancedView : UserControl, INotifyPropertyCh
 
     private int GetNearestTemperatureIndex(double x, double y)
     {
+        (int index, _) = GetNearestTemperature(x, y);
+        return index;
+    }
+    private (int, double) GetNearestTemperature(double x, double y)
+    {
         int nearestTemperatureIndex = -1;
-        double minDistance = double.MaxValue;
+        double minDistanceSquared = double.MaxValue;
 
         for (int i = 0; i < Temperatures.Count; i++)
         {
-            double distance = Math.Sqrt(Math.Pow(x - Temperatures[i].X, 2) + Math.Pow(y - Temperatures[i].Y, 2));
-            if (distance < minDistance)
+            double dx = x - Temperatures[i].X;
+            double dy = y - Temperatures[i].Y;
+            double distanceSquared = dx * dx + dy * dy;
+
+            if (distanceSquared < minDistanceSquared)
             {
-                minDistance = distance;
+                minDistanceSquared = distanceSquared;
                 nearestTemperatureIndex = i;
             }
         }
-        return nearestTemperatureIndex;
+        return (nearestTemperatureIndex, Math.Sqrt(minDistanceSquared));
     }
 
     private bool IsPointInsideCircle(double x, double y, double centerX, double centerY, double radius)
@@ -411,6 +374,7 @@ public partial class UserTempPickerAdvancedView : UserControl, INotifyPropertyCh
         double distance = Math.Sqrt(Math.Pow(x - centerX, 2) + Math.Pow(y - centerY, 2));
         return distance <= radius;
     }
+    private bool IsPointInsideCircle(double distance, double radius) => distance <= radius;
     #endregion
 
 
@@ -434,7 +398,8 @@ public partial class UserTempPickerAdvancedView : UserControl, INotifyPropertyCh
 
     private void UpdateIsTempMoving(bool value)
     {
-        Temperatures[_currentTempIndex].HandleColor = value ? Temperature.DefaultOnHandleColor : Temperature.DefaultOffHandleColor; InvalidateVisual();
+        Temperatures[_currentTempIndex].HandleColor = value ? new SolidColorBrush(ColorSettings.OnHandleColor) : new SolidColorBrush(ColorSettings.OffHandleColor);
+        InvalidateVisual();
     }
 
     private void UpdateIsTempHovering(bool value)
@@ -442,11 +407,28 @@ public partial class UserTempPickerAdvancedView : UserControl, INotifyPropertyCh
         Cursor = value ? new Cursor(StandardCursorType.Hand) : new Cursor(StandardCursorType.Arrow);
     }
 
-    private void UpdateHandleSize(double radius)
+    private void UpdateTempProperties<T>(Expression<Func<Temperature, T>> propertySelector, T newValue)
     {
+        if (Temperatures is null)
+            return;
+
+        MemberExpression? member = propertySelector.Body as MemberExpression;
+        PropertyInfo? propertyInfoSelected = member?.Member as PropertyInfo;
+        string? propertyName = member?.Member.Name;
+
+        if (propertyName is null)
+            return;
+
         foreach (Temperature temperature in Temperatures)
         {
-            temperature.Radius = radius;
+            T propertyValue = propertySelector.Compile()(temperature);
+            if (EqualityComparer<T>.Default.Equals(propertyValue, newValue))
+                continue;
+
+            PropertyInfo? propertyInfo = typeof(Temperature).GetProperty(propertyName);
+
+            if (propertyInfo is not null && propertyInfo.CanWrite)
+                propertyInfo.SetValue(temperature, newValue);
         }
         InvalidateVisual();
     }
@@ -482,6 +464,34 @@ public partial class UserTempPickerAdvancedView : UserControl, INotifyPropertyCh
         Temperatures = temperatures;
         UpdateTemperaturePositions(Bounds.Width - MarginLines * 2, SliderHeight);
         InvalidateVisual();
+    }
+
+    private void UpdateXAxisTextCache(string? xAxisText)
+    {
+        if (string.IsNullOrEmpty(xAxisText))
+            return;
+
+        _cachedXAxisText = new FormattedText(xAxisText, CultureInfo.CurrentCulture, FlowDirection.LeftToRight, _typeface, FontSize, GridColor);
+        Geometry? tempXTextGeometry = _cachedXAxisText.BuildGeometry(new Point(0, 0));
+
+        _cachedXAxisTextXOffset = tempXTextGeometry.Bounds.Width / 2f;
+        _cachedXAxisTextYOffset = tempXTextGeometry.Bounds.Height / 2f;
+    }
+
+    private void UpdateYAxisTextCache(string? yAxisText)
+    {
+        if (string.IsNullOrEmpty(yAxisText))
+            return;
+
+        FormattedText formattedYText = new FormattedText(yAxisText, CultureInfo.CurrentCulture, FlowDirection.LeftToRight, _typeface, FontSize, GridColor);
+        Geometry? tempYTextGeometry = formattedYText.BuildGeometry(new Point(0, 0));
+        double xOffset = tempYTextGeometry.Bounds.Width / 2.0;
+        double yOffset = tempYTextGeometry.Bounds.Height / 2.0;
+
+        Matrix rotation = Matrix.CreateRotation(-90 * (Math.PI / 180));
+        Matrix translation = Matrix.CreateTranslation(yOffset, Bounds.Height / 2 + xOffset);
+        _cachedYAxisTextGeometry = formattedYText.BuildGeometry(new Point(0, 0));
+        _cachedYAxisTextGeometry.Transform = new MatrixTransform(rotation * translation);
     }
     #endregion
 

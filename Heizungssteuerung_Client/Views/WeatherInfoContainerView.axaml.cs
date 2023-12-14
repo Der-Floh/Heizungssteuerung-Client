@@ -36,7 +36,7 @@ public partial class WeatherInfoContainerView : UserControl
                 XAxisText = "Time in hours from now",
                 YAxisText = "Temperature Outside in °C",
                 XValuesStringAppend = "h",
-                LineColor = new SolidColorBrush(ColorSettings.WeatherLineColor),
+                TempLineColor = new SolidColorBrush(ColorSettings.WeatherLineColor),
             };
         }
         else
@@ -53,7 +53,7 @@ public partial class WeatherInfoContainerView : UserControl
                 XAxisText = "Time in hours from now",
                 YAxisText = "Temperature Outside in °C",
                 XValuesStringAppend = "h",
-                LineColor = new SolidColorBrush(ColorSettings.WeatherLineColor),
+                TempLineColor = new SolidColorBrush(ColorSettings.WeatherLineColor),
             };
         }
         UserTempPickerAdvancedView.InitTemperatures();

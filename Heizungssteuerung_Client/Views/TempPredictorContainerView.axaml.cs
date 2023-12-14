@@ -34,7 +34,7 @@ public partial class TempPredictorContainerView : UserControl
                 XAxisText = "Time in hours from now",
                 YAxisText = "Boiler Temperature in °C",
                 XValuesStringAppend = "h",
-                LineColor = new SolidColorBrush(ColorSettings.WeatherLineColor),
+                TempLineColor = new SolidColorBrush(ColorSettings.WeatherLineColor),
             };
         }
         else
@@ -51,7 +51,7 @@ public partial class TempPredictorContainerView : UserControl
                 XAxisText = "Time in hours from now",
                 YAxisText = "Boiler Temperature in °C",
                 XValuesStringAppend = "h",
-                LineColor = new SolidColorBrush(ColorSettings.WeatherLineColor),
+                TempLineColor = new SolidColorBrush(ColorSettings.WeatherLineColor),
             };
         }
         UserTempPickerAdvancedView.InitTemperatures();

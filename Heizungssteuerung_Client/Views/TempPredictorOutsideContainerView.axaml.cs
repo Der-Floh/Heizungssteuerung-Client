@@ -33,7 +33,7 @@ public partial class TempPredictorOutsideContainerView : UserControl
                 YTemperatureStartValue = 60,
                 XAxisText = "Temperature Outside in °C",
                 YAxisText = "Boiler Temperature in °C",
-                LineColor = new SolidColorBrush(ColorSettings.WeatherLineColor),
+                TempLineColor = new SolidColorBrush(ColorSettings.WeatherLineColor),
             };
         }
         else
@@ -49,7 +49,7 @@ public partial class TempPredictorOutsideContainerView : UserControl
                 YTemperatureStartValue = 60,
                 XAxisText = "Temperature Outside in °C",
                 YAxisText = "Boiler Temperature in °C",
-                LineColor = new SolidColorBrush(ColorSettings.WeatherLineColor),
+                TempLineColor = new SolidColorBrush(ColorSettings.WeatherLineColor),
             };
         }
         UserTempPickerAdvancedView.InitTemperatures();
