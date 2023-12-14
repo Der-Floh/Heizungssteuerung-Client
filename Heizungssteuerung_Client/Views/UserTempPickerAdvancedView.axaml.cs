@@ -87,8 +87,6 @@ public partial class UserTempPickerAdvancedView : UserControl, INotifyPropertyCh
     private double _cachedXAxisTextXOffset;
     private Pen _cachedYAxisTextPen = new Pen(new SolidColorBrush(ColorSettings.GridColor)) { Thickness = 0.1 };
     private Geometry? _cachedYAxisTextGeometry;
-    private FormattedText _cachedXAxisTempsText;
-    private double _cachedXAxisTempsTextOffset;
     #endregion
 
     public UserTempPickerAdvancedView(List<Temperature>? temperatures = null)
