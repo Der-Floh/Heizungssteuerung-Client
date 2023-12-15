@@ -21,6 +21,7 @@
 							   Minimum="0.5"
 							   Maximum="5.0"
 							   Value="0.5"
+							   ToolTip="Specifies the Step Size in between the individual temperatures in the comfort temperatures view."
 							   Margin="10"/>
 		
 			<views:SettingView Name="OutsideTemperatureNumericUpDown"
@@ -30,7 +31,7 @@
 							   Maximum="70.0"
 							   MinNumericUpDownValue="-10.0"
 							   MaxNumericUpDownValue="40.0"
-							   ToolTip="Specifiy the range of the minimum and maximum outside temperature."
+							   ToolTip="Specifies the minimum and maximum temperatur and therefore also the number of rows in the comfort temperature row."
 							   Margin="10"/>
 
 			<views:SettingView Name="UserTemperatureNumericUpDown"
@@ -40,7 +41,7 @@
 							   Maximum="40.0"
 							   MinNumericUpDownValue="0.0"
 							   MaxNumericUpDownValue="40.0"
-							   ToolTip="Specifiy the range of the minimum and maximum prefered user temperature."
+							   ToolTip="Specifies the minimum and maximum values that a user can set for their preferred temperature in the comfort temperature view."
 							   Margin="10"/>
 
 			<views:SettingView Name="TemperatureHandleSizeNumericUpDown"
@@ -49,6 +50,7 @@
 							   Minimum="1.0"
 							   Maximum="100.0"
 							   Value="30.0"
+							   ToolTip="Specifies the radius size of all handles in the client."
 							   Margin="10"/>
 
 			<views:SettingView Name="PredictTempNumericUpDown"
@@ -57,6 +59,7 @@
 							   Minimum="1.0"
 							   Maximum="10.0"
 							   Value="5.0"
+							   ToolTip="Specifies the distances between individual rows in the Boiler Prediction Outside - View, and consequently, the number of rows."
 							   Margin="10"/>
 		
 			<views:SettingView Name="SaveButton" Grid.Row="5"
