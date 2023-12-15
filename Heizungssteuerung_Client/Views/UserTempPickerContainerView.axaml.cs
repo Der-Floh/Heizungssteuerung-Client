@@ -95,9 +95,13 @@ public partial class UserTempPickerContainerView : UserControl
                 //await Task.Delay(10000);
                 HeatingControlModel model = new HeatingControlModel();
                 await model.Train();
-                model.Save();
-                float accuracy = await model.CalcAccuracy();
-                await Dispatcher.UIThread.InvokeAsync(() => TrainButton.Text = $"Success (accuracy: {Math.Round(accuracy, 2)})", DispatcherPriority.Background);
+                if (model.Save())
+                {
+                    float accuracy = await model.CalcAccuracy();
+                    await Dispatcher.UIThread.InvokeAsync(() => TrainButton.Text = $"Success (accuracy: {Math.Round(accuracy, 2)})", DispatcherPriority.Background);
+                }
+                else
+                    await Dispatcher.UIThread.InvokeAsync(() => TrainButton.Text = $"Failed: Model couldn't be saved", DispatcherPriority.Background);
                 await LoadingWaveView.ExitToBottom();
                 UserTempPickerAdvancedView.Editable = true;
             }

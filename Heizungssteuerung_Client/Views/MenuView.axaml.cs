@@ -18,13 +18,12 @@ public partial class MenuView : UserControl
     private TempPredictorOutsideContainerView _tempPredictorOutsideContainerView;
     private UserTempPickerContainerView _userTempPickerContainerView;
     private WeatherInfoContainerView _weatherInfoContainerView;
-    private bool _modelLoaded;
     private HeatingControlModel _model = new HeatingControlModel();
     private bool _settingsViewLoaded, _tempPredictorContainerViewLoaded, _tempPredictorOutsideContainerViewLoaded, _userTempPickerContainerViewLoaded, _weatherInfoContainerViewLoaded;
 
     public MenuView()
     {
-        _settingsView = new SettingsView { ViewName = "Settings", ViewIcon = "Assets/settings.svg" };
+        _settingsView = new SettingsView() { ViewName = "Settings", ViewIcon = "Assets/settings.svg" };
         _settingsView.Loaded += _settingsView_Loaded;
         _settingsView.PropertyChanged += _settingsView_PropertyChanged;
 
@@ -121,7 +120,7 @@ public partial class MenuView : UserControl
         while (!_settingsViewLoaded || !_tempPredictorContainerViewLoaded || !_userTempPickerContainerViewLoaded || !_weatherInfoContainerViewLoaded)
             await Task.Delay(50);
 
-        if (!TryLoadModel())
+        if (!LoadModel())
             return;
 
         for (int i = 0; i < _tempPredictorContainerView.UserTempPickerAdvancedView.Temperatures.Count; i++)
@@ -143,7 +142,7 @@ public partial class MenuView : UserControl
         while (!_settingsViewLoaded || !_tempPredictorOutsideContainerViewLoaded || !_userTempPickerContainerViewLoaded || !_weatherInfoContainerViewLoaded)
             await Task.Delay(50);
 
-        if (!TryLoadModel())
+        if (!LoadModel())
             return;
 
         for (int i = 0; i < _tempPredictorOutsideContainerView.UserTempPickerAdvancedView.Temperatures.Count; i++)
@@ -160,25 +159,11 @@ public partial class MenuView : UserControl
         }
     }
 
-    public bool TryLoadModel()
+    public bool LoadModel()
     {
-        try
-        {
-            if (!_modelLoaded)
-            {
-                _model.Load();
-                _modelLoaded = true;
-            }
-        }
-        catch
-        {
-            if (!_modelLoaded)
-            {
-                _tempPredictorContainerView.PredictButton.Text = "Error: Model couldn't be loaded.";
-                return false;
-            }
-        }
-        return true;
+        if (!_model.Load())
+            _tempPredictorContainerView.PredictButton.Text = "Error: Model couldn't be loaded.";
+        return _model.IsLoaded;
     }
 
     private void TriggerPaneButton_Tapped(object? sender, TappedEventArgs e)
