@@ -21,8 +21,8 @@ Oben links kann man das Menü öffnen, mit welchem man zwischen den einzelnen Us
 
 ![Heizungssteuerung_Client_Comfort_Temperature_Train_Model.png](./resources/Heizungssteuerung_Client_Comfort_Temperature_Train_Model.png)
 Im ersten Schritt muss die KI trainiert werden.<br>
-Es kann zusätzlich die Isolationsklasse des Gebäudes ausgewählt werden. Die KI berücksichtigt diesen Wert im Training um die optimale Kesseltemperatur zu berechnen.<br>
-Im Reiter "Training" öffnet sich das user Control "Comfort Temperatures". Am unteren Bildschirmrand hat der User nun die Mögichkeit, die KI mit dem Button "Train Model" zu trainieren.<br>
+Es kann zusätzlich die Isolationsklasse des Gebäudes ausgewählt werden. Die KI berücksichtigt diesen Wert im Training um die optimale Kesseltemperatur zu berechnen. Diesen Wert kann der User im View "Settings" entsprechend anpassen.<br>
+Im Reiter "Training" öffnet sich das user Control "Comfort Temperatures". Am unteren Bildschirmrand hat der User nun die Möglichkeit, die KI mit dem Button "Train Model" zu trainieren.<br>
 Nachdem der Ladebildschirm durchgelaufen ist, ist die KI trainiert.
 <br><br>
 
